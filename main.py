@@ -15,8 +15,8 @@ pygame.init()
 vec = pygame.math.Vector2 
 
 #
-HEIGHT = 800
-WIDTH = 1000
+HEIGHT = 750
+WIDTH = 1300
 ACC = 0.5
 FRIC = -0.12
 FPS = 60
