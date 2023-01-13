@@ -51,6 +51,10 @@ while True:
     #draw fighters
     fighter_1.draw(screen)
     fighter_2.draw(screen)
+    
+    #draw hp bar for fighters
+    draw_health_bars(fighter_1.health, 20, 20) #fighter, x cord., y cord.
+    draw_health_bars(fighter_1.health, WIDTH - (hp_width + 20), 20)
 
     #allows player to exit
     for event in pygame.event.get():
