@@ -1,9 +1,11 @@
 """
 Gods of Olympus
-Last Modified: 1/11/23 by jctjad
+Last Modified: 1/12/23 by jctjad
 Course: CS269
 File: titleScreen.py
 """
+
+### Setup 
 
 import pygame
 import pygame_gui
@@ -14,11 +16,16 @@ pygame.display.set_caption('Title Screen')
 x = 1300    # x-dimension (screen width)
 y = 750     # y-dimension (screen height)
 
-window_surface2 = pygame.display.set_mode((60, 60))
+# Create screen surface & background
 window_surface = pygame.display.set_mode((x, y))
-background = pygame.Surface((x, y))
-background.fill(pygame.Color('#999999'))
 
+background = pygame.Surface((x, y))
+background.fill(pygame.Color('#88c8ee'))
+sky_image = pygame.image.load("sky.webp").convert_alpha()
+background.blit(sky_image, (0, 0))
+
+
+### Methods
 
 # Creates all main buttons
 def createAllButtons():
@@ -40,7 +47,7 @@ def createAllButtons():
     size_x = 200
     size_y = 50
     location_x = (x / 2) - (size_x / 2)
-    location_y = (y / 2) + (size_y / 2) + 60    # 60 is changeable pixel amount for the height of the buttons
+    location_y = (y / 2) + (size_y / 2) + 55    # 55 is changeable pixel amount for the height of the buttons
     space_inbetween_buttons = size_y + (size_y / 2)
     border_size = 1
 
@@ -81,12 +88,53 @@ def createAllButtons():
 
     return all_buttons, all_button_backgrounds, all_managers
 
+# Colors all visible pixels of an image
+def color_surface(surface, red, green, blue):
+    arr = pygame.surfarray.pixels3d(surface)
+    arr[:,:,0] = red
+    arr[:,:,1] = green
+    arr[:,:,2] = blue
 
-# Back to main function...
+
+### Back to main function...
 
 clock = pygame.time.Clock()
 is_running = True
 all_buttons, all_button_backgrounds, all_managers = createAllButtons()
+
+# Add the background to the surface
+window_surface.blit(background, (0, 0))
+
+# Add characters to screen
+fighter_image_size = 500
+
+fighter_1_image = pygame.image.load("zeus_front.png").convert_alpha()
+fighter_1_art = pygame.transform.scale(fighter_1_image, (fighter_image_size, fighter_image_size))
+fighter_2_image = pygame.image.load("zeus_side.png").convert_alpha()
+fighter_2_image = pygame.transform.flip(fighter_2_image, True, False)   # Flip surface horizontally
+fighter_2_art = pygame.transform.scale(fighter_2_image, (fighter_image_size, fighter_image_size))
+
+background.blit(fighter_1_art, (-100, y / 5))
+background.blit(fighter_2_art, (x - fighter_image_size + 100, y / 5))
+#window_surface.blit(background, (0, 0))
+
+# Add logo/text/image
+image_size_x = 700
+image_size_y = 400
+
+center_image = pygame.image.load("logo.png").convert_alpha()
+center_image = pygame.transform.scale(center_image, (image_size_x, image_size_y))
+background.blit(center_image, ((x - image_size_x) / 2, 0))
+
+
+''' Button backgrounds
+# Draw button backgrounds
+background_color = '#333333'
+for button_background in all_button_backgrounds:
+    pygame.draw.rect(window_surface, pygame.Color(background_color), button_background)
+'''
+
+window_surface.blit(background, (0, 0))
 
 # Constant updating while loop
 while is_running:
@@ -113,22 +161,14 @@ while is_running:
             manager.process_events(event)
             manager.update(time_delta)
 
-    # Update window_surface
-    window_surface.blit(background, (0, 0))
-
-    # Draw button backgrounds
-    background_color = '#333333'
-    for button_background in all_button_backgrounds:
-        pygame.draw.rect(window_surface, pygame.Color(background_color), button_background)
-
     # Draw buttons
     for manager in all_managers:
         manager.draw_ui(window_surface)
 
     # Add gear to settings button
-    gear = pygame.image.load("gear2.png").convert_alpha()
+    gear = pygame.image.load("gear.png").convert_alpha()
+    color_surface(gear, 200, 200, 200)
     gear_scaled = pygame.transform.scale(gear, (40, 40))
     window_surface.blit(gear_scaled, (x - 50, 10))
 
     pygame.display.update()
-
