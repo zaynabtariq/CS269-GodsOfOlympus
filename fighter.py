@@ -23,14 +23,27 @@ class Fighter():
         key = pygame.key.get_pressed()
 
         #movement
-        if key[pygame.K_a]:
-            dx = -SPEED
-        if key[pygame.K_d]:
-            dx = SPEED
-        #jump
-        if key[pygame.K_w] and self.jump == False:
-            self.jump = True
-            self.vel_y = -30
+        #check player 1 controls
+        if self.player == 1:
+            if key[pygame.K_a]:
+                dx = -SPEED
+            if key[pygame.K_d]:
+                dx = SPEED
+            #jump
+            if key[pygame.K_w] and self.jump == False:
+                self.jump = True
+                self.vel_y = -30
+        
+        #check player 2 controls
+        if self.player == 2:
+            if key[pygame.K_LEFT]:
+                dx = -SPEED
+            if key[pygame.K_RIGHT]:
+                dx = SPEED
+            #jump
+            if key[pygame.K_UP] and self.jump == False:
+                self.jump = True
+                self.vel_y = -30
 
         #apply gravity
         if self.rect.y < HEIGHT - 50:
