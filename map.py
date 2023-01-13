@@ -22,6 +22,14 @@ class Map():
 
         # Load background
         self.bg_image = pygame.image.load("OlympusBackground.jpg").convert_alpha()
+        
+        #colors
+        RED = (255, 0, 0)
+        YELLOW = (255, 255, 0)
+        WHITE = (255, 255, 255)
+        
+        #width of hp bars
+        hp_width = 500
     
     def draw_ledges(self):
         ledge_1_rect = pygame.Rect((150, self.HEIGHT - 100, 200, 15))  # (left, top), (width, height)
@@ -35,3 +43,7 @@ class Map():
     def draw_bg(self):
         scaled_bg = pygame.transform.scale(self.bg_image, (self.WIDTH, self.HEIGHT))
         self.screen.blit(scaled_bg, (0,0))
+        
+    #draws health bars
+    def draw_health_bars(health, x, y):
+        pygame.draw.rect(screen, YELLOW, (x, y, hp_width, 30))
