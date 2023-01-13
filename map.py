@@ -23,10 +23,9 @@ class Map():
         # Load background
         self.bg_image = pygame.image.load("OlympusBackground.jpg").convert_alpha()
         
-        #colors
-        RED = (255, 0, 0)
-        YELLOW = (255, 255, 0)
-        WHITE = (255, 255, 255)
+        #scoreboard
+        outer_scoreboard = pygame.image.load("Images/scoreboard.jpg").convert_alpha()
+        inner_scoreboard = pygame.image.load("Images/inner_scoreboard.jpg").convert_alpha()
         
         #width of hp bars
         hp_width = 500
@@ -44,6 +43,12 @@ class Map():
         scaled_bg = pygame.transform.scale(self.bg_image, (self.WIDTH, self.HEIGHT))
         self.screen.blit(scaled_bg, (0,0))
         
-    #draws health bars
+    #draws the two scoreboards
     def draw_health_bars(health, x, y):
-        pygame.draw.rect(screen, YELLOW, (x, y, hp_width, 30))
+        #inner scoreboard
+        scaled_isb = pygame.transform.scale(inner_scoreboard, (1000, 50))
+        screen.blit(scaled_isb, (150,30))    
+
+        #outer scoreboard
+        scaled_osb = pygame.transform.scale(outer_scoreboard, (1000, 50))
+        screen.blit(scaled_osb, (150,30))
