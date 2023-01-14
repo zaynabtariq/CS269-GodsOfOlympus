@@ -1,6 +1,6 @@
 """
 Gods of Olympus
-Last Modified: 1/6/23
+Last Modified: 1/14/23
 Course: CS269
 File: main.py
 """
@@ -45,8 +45,8 @@ while True:
     draw_bg()
 
     #move fighters 
-    fighter_1.move(WIDTH, HEIGHT)
-    # fighter_2.move()
+    fighter_1.move(WIDTH, HEIGHT, screen, fighter_2) #last variable references the target
+    fighter_2.move(WIDTH, HEIGHT, screen, fighter_1)
 
     #draw fighters
     fighter_1.draw(screen)
