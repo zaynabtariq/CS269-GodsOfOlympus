@@ -1,11 +1,11 @@
 """
 Gods of Olympus
-Last Modified: 1/12/23 by jctjad
+Last Modified: 1/15/23 by jctjad
 Course: CS269
 File: titleScreen.py
 """
 
-### Setup 
+##################### Setup #####################
 
 import pygame
 import pygame_gui
@@ -25,7 +25,7 @@ sky_image = pygame.image.load("sky.webp").convert_alpha()
 background.blit(sky_image, (0, 0))
 
 
-### Methods
+##################### Methods #####################
 
 # Creates all main buttons
 def createAllButtons():
@@ -33,14 +33,12 @@ def createAllButtons():
     # Method to make a standard button
     def makeStandardButton(location_y, the_text, the_manager):
         button = pygame_gui.elements.UIButton(pygame.Rect((location_x, location_y), (size_x, size_y)), text = the_text, manager = the_manager)
-        button_background = pygame.Rect((location_x - border_size, location_y - border_size), (size_x + (2 * border_size), size_y + (2 * border_size)))
-        return button, button_background
+        return button
 
     # Method to make the settings button
     def makeSettingsButton(the_manager):
         settings_button = pygame_gui.elements.UIButton(pygame.Rect((settings_location_x, settings_location_y), (settings_size, settings_size)), text = '', manager = the_manager)
-        settings_button_background = pygame.Rect((settings_location_x - border_size, settings_location_y - border_size), (settings_size + (2 * border_size), settings_size + (2 * border_size)))
-        return settings_button, settings_button_background
+        return settings_button
 
 
     # Standard button variables
@@ -57,36 +55,35 @@ def createAllButtons():
     settings_location_x = x - settings_size - distance_from_edge
     settings_location_y = distance_from_edge
 
-
     # Define button managers
     all_managers = []
     for i in range(0, 5):
-        manager = pygame_gui.UIManager((x, y), 'button.json')   # Where x and y are background dimensions
+        manager = pygame_gui.UIManager((x, y), 'button.json')   # Where x and y are background dimensions, and button.json is the button theme
+                                                                # If button.json isn't working on your computer just delete it (theme is optional)
         all_managers.append(manager)
 
     # Button 1 ('Play' button)
     button_1_y = location_y     # location_y of button_1
-    button_1, button_1_background = makeStandardButton(button_1_y, 'Play', all_managers[0])
+    button_1 = makeStandardButton(button_1_y, 'Play', all_managers[0])
 
     # Button 2 ('Character select' button)
     button_2_y = button_1_y + space_inbetween_buttons    # Adding size_y to account for first button size. Unnecessary for following buttons
-    button_2, button_2_background = makeStandardButton(button_2_y, 'Character Select', all_managers[1])
+    button_2 = makeStandardButton(button_2_y, 'Character Select', all_managers[1])
 
     # Button 3 ('Freeplay' button)
     button_3_y = button_2_y + space_inbetween_buttons
-    button_3, button_3_background = makeStandardButton(button_3_y, 'Freeplay', all_managers[2])
+    button_3 = makeStandardButton(button_3_y, 'Freeplay', all_managers[2])
 
     # Button 4 ('Controls' button)
     button_4_y = button_3_y + space_inbetween_buttons
-    button_4, button_4_background = makeStandardButton(button_4_y, 'Controls', all_managers[3])
+    button_4 = makeStandardButton(button_4_y, 'Controls', all_managers[3])
 
     # Button 5 ('Settings' button) -> unique location
-    button_5, button_5_background = makeSettingsButton(all_managers[4])
+    button_5 = makeSettingsButton(all_managers[4])
 
     all_buttons = [button_1, button_2, button_3, button_4, button_5]
-    all_button_backgrounds = [button_1_background, button_2_background, button_3_background, button_4_background, button_5_background]
 
-    return all_buttons, all_button_backgrounds, all_managers
+    return all_buttons, all_managers
 
 # Colors all visible pixels of an image
 def color_surface(surface, red, green, blue):
@@ -96,11 +93,11 @@ def color_surface(surface, red, green, blue):
     arr[:,:,2] = blue
 
 
-### Back to main function...
+##################### Back to main function #####################
 
 clock = pygame.time.Clock()
 is_running = True
-all_buttons, all_button_backgrounds, all_managers = createAllButtons()
+all_buttons, all_managers = createAllButtons()
 
 # Add the background to the surface
 window_surface.blit(background, (0, 0))
@@ -116,7 +113,6 @@ fighter_2_art = pygame.transform.scale(fighter_2_image, (fighter_image_size, fig
 
 background.blit(fighter_1_art, (-100, y / 5))
 background.blit(fighter_2_art, (x - fighter_image_size + 100, y / 5))
-#window_surface.blit(background, (0, 0))
 
 # Add logo/text/image
 image_size_x = 700
@@ -126,14 +122,7 @@ center_image = pygame.image.load("logo.png").convert_alpha()
 center_image = pygame.transform.scale(center_image, (image_size_x, image_size_y))
 background.blit(center_image, ((x - image_size_x) / 2, 0))
 
-
-''' Button backgrounds
-# Draw button backgrounds
-background_color = '#333333'
-for button_background in all_button_backgrounds:
-    pygame.draw.rect(window_surface, pygame.Color(background_color), button_background)
-'''
-
+# Update background
 window_surface.blit(background, (0, 0))
 
 # Constant updating while loop
@@ -146,7 +135,7 @@ while is_running:
         # What to do if each button is pressed
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element == all_buttons[0]:
-                print('Starting game...')
+                print('Starting game...')           ## This is where we can call the Game class
             elif event.ui_element == all_buttons[1]:
                 print('Selecting character...')
             elif event.ui_element == all_buttons[2]:
