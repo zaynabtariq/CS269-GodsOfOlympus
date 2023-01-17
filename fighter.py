@@ -168,10 +168,6 @@ class Fighter():
                                 self.vel_y = 30
                                 dy = HEIGHT - self.char.bottom - 100
 
-
-
-
-
             # update player position
             self.char.x += dx
             self.char.y += dy
