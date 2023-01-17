@@ -27,8 +27,10 @@ class Fighter():
         self.direction = True
         self.update_time = pygame.time.get_ticks()
         self.frame_index = 0
+        # 0: idle right , 1: idle left , 2: left walk, 3: right walk, 4: ability1, 5: ability2, 6: ultimate, 7: hurt
+        self.action = 0
 
-    
+
     def move(self, WIDTH, HEIGHT, target, surface, ledges):
         SPEED = 10
         GRAVITY = 1.5
@@ -39,16 +41,21 @@ class Fighter():
         #get keypresses
         key = pygame.key.get_pressed()
 
+
         #movement
         if self.attacking == False and self.alive == True:
+
             #check player 1 controls
             if self.player == 1:
                 if key[pygame.K_a]:
                     dx = -SPEED
                     self.running = True
+                    self.action = 2
+
                 if key[pygame.K_d]:
                     dx = SPEED
                     self.running = True
+                    self.action = 3
                 #jump
                 if key[pygame.K_w] and self.jump == False:
                     self.jump = True
@@ -59,24 +66,37 @@ class Fighter():
                     self.attacking = True
                     if key[pygame.K_c]:
                         self.attack_type = 1
+                        self.action = 4
+                        self.frame_index = 0
+                        self.update_time = pygame.time.get_ticks()
                         self.attack(surface, target, self.attack_type)
                     if key[pygame.K_v]:
                         self.attack_type = 2
+                        self.action = 6
+                        self.frame_index = 0
+                        self.update_time = pygame.time.get_ticks()
                         self.attack(surface, target, self.attack_type)
                     if key[pygame.K_q]:
+                        self.action = 8
+                        self.frame_index = 0
+                        self.update_time = pygame.time.get_ticks()
                         self.attack_type = 3
                         self.attack(surface,target, self.attack_type)
 
 
 
             #check player 2 controls
+
             if self.player == 2:
+                self.action = 1
                 if key[pygame.K_LEFT]:
                     dx = -SPEED
                     self.running = True
+                    self.action = 2
                 if key[pygame.K_RIGHT]:
                     dx = SPEED
                     self.running = True
+                    self.action = 3
 
                 #jump
                 if key[pygame.K_UP] and self.jump == False:
@@ -88,12 +108,21 @@ class Fighter():
                     self.attacking = True
                     if key[pygame.K_PERIOD]:
                         self.attack_type = 1
+                        self.action = 5
+                        self.frame_index = 0
+                        self.update_time = pygame.time.get_ticks()
                         self.attack(surface, target, self.attack_type)
                     if key[pygame.K_SLASH]:
                         self.attack_type = 2
+                        self.action = 7
+                        self.frame_index = 0
+                        self.update_time = pygame.time.get_ticks()
                         self.attack(surface,target, self.attack_type)
                     if key[pygame.K_COMMA]:
                         self.attack_type = 3
+                        self.action = 9
+                        self.frame_index = 0
+                        self.update_time = pygame.time.get_ticks()
                         self.attack(surface, target, self.attack_type)
 
             # apply gravity
@@ -112,13 +141,18 @@ class Fighter():
                 dy = HEIGHT - self.char.bottom - 100 # write - X if there is a floor
 
             # ensures players are facing each other
-
             if target.char.centerx > self.char.centerx:
                 self.flip = False
+
             else:
                 self.flip = True
+                if self.player == 1:
+                    if self.action == 0:
+                        self.action = 1
+                    if self.action == 4:
+                        self.action = 5
 
-            #collision with ledges
+            # collision with ledges
             for ledge in ledges:
                 if self.char.x >= ledge[0] and self.char.x <= (ledge[0] + ledge[2]):
                     if self.char.bottom <= ledge[1]:
