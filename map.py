@@ -24,7 +24,7 @@ class Map():
 
         # Load background
         if self.num == 1:
-            self.bg_image = pygame.image.load("sky.png").convert_alpha()
+            self.bg_image = pygame.image.load("skybackground_2.png").convert_alpha()
         elif self.num == 2:
             self.bg_image = pygame.image.load("sky.png").convert_alpha()
         elif self.num == 3:
@@ -37,6 +37,9 @@ class Map():
 
     # width of hp bars
     hp_width = 500
+
+    # scroll indicator
+    scroll = 0
 
     def draw_ledges(self):
          if self.num == 1:
@@ -55,13 +58,45 @@ class Map():
             return ledge_1_rect, ledge_2_rect
 
     # Methods
-    def draw_bg(self):
+    def draw_bg(self, screen):
+
         scaled_bg = pygame.transform.scale(self.bg_image, (self.WIDTH, self.HEIGHT))
-        self.screen.blit(scaled_bg, (0, 0))
+
+        self.screen.fill((0, 0, 0))
+        self.screen.blit(scaled_bg, (self.scroll, 0))
+
+        self.screen.blit(scaled_bg, (self.WIDTH + self.scroll, 0))
+
+        if self.scroll == -self.WIDTH:
+            self.screen.blit(scaled_bg, (self.WIDTH + self.scroll, 0))
+            self.scroll = 0
+
+        self.scroll -= 1
+
+        ground = pygame.image.load("sky_floor.png").convert_alpha()
+        ground_scaled = pygame.transform.scale(ground, (self.WIDTH + 10, 110))
+        self.screen.blit(ground_scaled, (0, self.HEIGHT -110))
 
     # draws health bars
-    def draw_health_bars(self, health, x, y, screen):
+
+    def draw_health_bars(self, health, screen, player):
         ratio = health / 100
-        pygame.draw.rect(screen, (255, 255, 255), (x -2, y-2, 404, 34))
+        '''pygame.draw.rect(screen, (255, 255, 255), (x -2, y-2, 404, 34))
         pygame.draw.rect(screen, (255, 0, 0), (x, y, 400, 30))
-        pygame.draw.rect(screen, (255, 255, 0), (x, y, 400 * ratio, 30))
+        pygame.draw.rect(screen, (255, 255, 0), (x, y, 400 * ratio, 30))'''
+        #scoreboards
+        if player == 'fighter_2':
+            left_blue_inner = pygame.image.load("left_blue_inner.jpg").convert_alpha()
+            scaled_isb2 = pygame.transform.scale(left_blue_inner, (400, 50))
+            screen.blit(scaled_isb2, (150,60))
+            left_green_outer = pygame.image.load("left_green_outer.jpg").convert_alpha()
+            scaled_osb = pygame.transform.scale(left_green_outer, (400 * ratio, 50))
+            screen.blit(scaled_osb, (150 + (400 - 400 * ratio),60))
+
+        if player == 'fighter_1':
+            right_red_inner = pygame.image.load("right_red_inner.jpg").convert_alpha()
+            scaled_isb = pygame.transform.scale(right_red_inner, (400, 50))
+            screen.blit(scaled_isb, (750,60))
+            right_purple_outer = pygame.image.load("right_purple_outer.jpg").convert_alpha()
+            scaled_osb2 = pygame.transform.scale(right_purple_outer, (400 * ratio, 50))
+            screen.blit(scaled_osb2, (750, 60))

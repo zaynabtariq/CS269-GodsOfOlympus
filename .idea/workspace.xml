@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="00b9855f-8788-4eed-aae1-3e96c759d89f" name="Changes" comment="" />
+=======
+    <list default="true" id="27e560f8-baca-4afa-bc2d-c8e33b865c5b" name="Changes" comment="" />
+>>>>>>> Stashed changes
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,12 +39,39 @@
     "last_opened_file_path": "C:/Users/Zaynab Tariq/Documents/CS269",
     "settings.editor.selected.configurable": "vcs.Git"
   }
+<<<<<<< Updated upstream
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Zaynab Tariq\Documents\CS269" />
       <recent name="C:\Users\Zaynab Tariq\Documents\GitHub\CS269" />
     </key>
+=======
+}</component>
+  <component name="RunManager">
+    <configuration name="Game" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="CS269" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\Zaynab Tariq\PycharmProjects\pythonProject\venv\venv\Scripts\python.exe" />
+      <option name="SDK_NAME" value="Python 3.10 (pythonProject)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../CS269" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../../CS269/Game.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+>>>>>>> Stashed changes
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
