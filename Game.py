@@ -1,6 +1,6 @@
 """
 Gods of Olympus
-Last Modified: 1/15/23 by zaynab
+Last Modified: 1/17/23
 Course: CS269
 File: Game.py
 """
@@ -9,66 +9,66 @@ import pygame
 from fighter import Fighter
 from Zeus import Zeus
 from map import Map
-#from background import Background
 from pygame.locals import *
 import sys
 
-pygame.init()
-HEIGHT = 750
-WIDTH = 1300
-ACC = 0.5
-FRIC = -0.12
-FPS = 60
-FramePerSec = pygame.time.Clock()
+class Game():
 
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Gods of Olympus")
+    # Constructor
+    def __init__(self, HEIGHT, WIDTH, ACC, FRIC, FPS):
+        self.HEIGHT = HEIGHT
+        self.WIDTH = WIDTH
+        self.ACC = ACC
+        self.FRIC = FRIC
+        self.FPS = FPS
+        self.FramePerSec = pygame.time.Clock()
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
-# load map
-map = Map(1, HEIGHT, WIDTH, ACC, FRIC, FPS, screen)
+        # load map
+        self.map = Map(1, HEIGHT, WIDTH, ACC, FRIC, FPS, self.screen)
 
-#define fighter variables
+        #define fighter variables
+        self.ledges = self.map.draw_ledges()
 
-ledges = map.draw_ledges()
-# starting location of fighters
-fighter_1 = Fighter(1, 100, HEIGHT-200, ledges)
-fighter_2 = Fighter(2, WIDTH - 100, HEIGHT-500, ledges)
-
-
-# game looper
-while True:
-
-    # draw background
-    map.draw_bg()
-    ledges = map.draw_ledges()
+        # starting location of fighters
+        self.fighter_1 = Fighter(1, 100, self.HEIGHT-200, self.screen, self.ledges)
+        self.fighter_2 = Fighter(2, self.WIDTH - 100, self.HEIGHT-500, self.screen, self.ledges)
 
 
-    # move fighters
-    fighter_1.move(WIDTH, HEIGHT, fighter_2, screen, ledges)
-    fighter_2.move(WIDTH, HEIGHT, fighter_1, screen, ledges)
+    # Runs the game
+    def runGame(self):
+        pygame.display.set_caption("Gods of Olympus")
 
-    # draw fighters
-    fighter_1.draw(screen)
-    fighter_2.draw(screen)
+        # game looper
+        while True:
 
-    # draw hp bar for fighters
-    map.draw_health_bars(fighter_1.health, 20, 20, screen)  # fighter, x cord., y cord.
-    map.draw_health_bars(fighter_2.health, WIDTH - (400 + 20), 20, screen)
+            # draw background
+            self.map.draw_bg()
+            self.ledges = self.map.draw_ledges()
 
-    # allows player to exit
-    key = pygame.key.get_pressed()
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
+            # move fighters
+            self.fighter_1.move(self.WIDTH, self.HEIGHT, self.fighter_2, self.screen, self.ledges)
+            self.fighter_2.move(self.WIDTH, self.HEIGHT, self.fighter_1, self.screen, self.ledges)
 
-        if key[pygame.K_ESCAPE]:
-            pygame.quit()
-            sys.exit()
+            # draw fighters
+            self.fighter_1.draw(self.screen)
+            self.fighter_2.draw(self.screen)
 
-    # sets max frame rate
-    pygame.display.update()
-    FramePerSec.tick(FPS)
+            # draw hp bar for fighters
+            self.map.draw_health_bars(self.fighter_1.health, 20, 20, self.screen)  # fighter, x cord., y cord.
+            self.map.draw_health_bars(self.fighter_2.health, self.WIDTH - (400 + 20), 20, self.screen)
 
+            # allows player to exit
+            key = pygame.key.get_pressed()
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    sys.exit()
 
+                if key[pygame.K_ESCAPE]:
+                    pygame.quit()
+                    sys.exit()
 
+            # sets max frame rate
+            pygame.display.update()
+            self.FramePerSec.tick(self.FPS)
