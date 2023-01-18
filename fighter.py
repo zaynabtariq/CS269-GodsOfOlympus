@@ -162,7 +162,7 @@ class Fighter():
 
             # collision with ledges
             for ledge in ledges:
-                if self.char.x >= ledge[0] and self.char.x <= (ledge[0] + ledge[2]):
+                if self.char.x >= ledge[0] - 190 and self.char.x <= (ledge[0] + ledge[2]) - 190:
                     if self.char.bottom <= ledge[1]:
                         self.vel_y = 0
                         #self.jump = False

@@ -1,11 +1,12 @@
 """
 Gods of Olympus
-Last Modified: 1/15/23 by zaynab
+Last Modified: 1/18/23 by zaynab
 Course: CS269
 File: Game.py
 """
 
 import pygame
+from pygame import mixer
 from fighter import Fighter
 from Zeus import Zeus
 from Hades import Hades
@@ -15,12 +16,17 @@ from pygame.locals import *
 import sys
 
 pygame.init()
+
+
 HEIGHT = 750
 WIDTH = 1300
 ACC = 0.5
 FRIC = -0.12
 FPS = 60
 FramePerSec = pygame.time.Clock()
+
+mixer.music.load('sound_1.wav')
+mixer.music.play(-1)
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Gods of Olympus")
@@ -40,7 +46,7 @@ fighter_2 = Zeus(2, WIDTH - 10, HEIGHT-500, ledges, screen)
 while True:
 
     # draw background
-    map.draw_bg()
+    map.draw_bg(screen)
     ledges = map.draw_ledges()
 
 
@@ -55,8 +61,10 @@ while True:
     fighter_2.draw(screen)
 
     # draw hp bar for fighters
-    map.draw_health_bars(fighter_1.health, 20, 20, screen)  # fighter, x cord., y cord.
-    map.draw_health_bars(fighter_2.health, WIDTH - (400 + 20), 20, screen)
+    '''map.draw_health_bars(fighter_1.health, 20, 20, screen)  # fighter, x cord., y cord.
+    map.draw_health_bars(fighter_2.health, WIDTH - (400 + 20), 20, screen)'''
+    map.draw_health_bars(fighter_1.health, screen, 'fighter_2')  # fighter, x cord., y cord., player
+    map.draw_health_bars(fighter_2.health, screen, 'fighter_1')
 
     # allows player to exit
     key = pygame.key.get_pressed()
