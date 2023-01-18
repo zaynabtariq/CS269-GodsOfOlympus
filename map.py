@@ -30,10 +30,11 @@ class Map():
         elif self.num == 3:
             self.bg_image = pygame.image.load("sky.png").convert_alpha()
 
-    # colors
-    RED = (255, 0, 0)
-    YELLOW = (255, 255, 0)
-    WHITE = (255, 255, 255)
+    #scoreboard
+    left_green_outer = pygame.image.load("Images/left_green_outer.jpg").convert_alpha()
+    right_purple_outer = pygame.image.load("Images/right_purple_outer.jpg").convert_alpha()
+    left_blue_inner = pygame.image.load("Images/left_blue_inner.jpg").convert_alpha()
+    right_red_inner = pygame.image.load("Images/right_red_inner.jpg").convert_alpha()
 
     # width of hp bars
     hp_width = 500
@@ -62,6 +63,16 @@ class Map():
     # draws health bars
     def draw_health_bars(self, health, x, y, screen):
         ratio = health / 100
-        pygame.draw.rect(screen, (255, 255, 255), (x -2, y-2, 404, 34))
-        pygame.draw.rect(screen, (255, 0, 0), (x, y, 400, 30))
-        pygame.draw.rect(screen, (255, 255, 0), (x, y, 400 * ratio, 30))
+
+        #scoreboards
+        if player == fighter_2:
+            scaled_isb2 = pygame.transform.scale(left_blue_inner, (400, 50))
+            screen.blit(scaled_isb2, (150,30)) 
+            scaled_osb = pygame.transform.scale(left_green_outer, (400 * ratio, 50))
+            screen.blit(scaled_osb, (150 + (400 - 400 * ratio),30))   
+
+        if player == fighter_1:
+            scaled_isb = pygame.transform.scale(right_red_inner, (400, 50))
+            screen.blit(scaled_isb, (750,30))    
+            scaled_osb2 = pygame.transform.scale(right_purple_outer, (400 * ratio, 50))
+            screen.blit(scaled_osb2, (750,30)) 
