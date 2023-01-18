@@ -70,7 +70,7 @@ class Zeus(Fighter):
         # 6 : ability2
         temp_list = []
         for i in range(1, 12):
-            img = pygame.image.load(f'Images/right_ability2_{i}.png')
+            img = pygame.image.load(f'Images/right_ability2_redo_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
             temp_list.append(img)
         self.animation_list.append(temp_list)
