@@ -24,7 +24,7 @@ class Map():
 
         # Load background
         if self.num == 1:
-            self.bg_image = pygame.image.load("Images/background_scroll.png.png").convert_alpha()
+            self.bg_image = pygame.image.load("Images/skybackground_2.png").convert_alpha()
         elif self.num == 2:
             self.bg_image = pygame.image.load("Images/sky.png").convert_alpha()
         elif self.num == 3:
@@ -37,6 +37,9 @@ class Map():
 
     # width of hp bars
     hp_width = 500
+
+    # scroll indicator
+    scroll = 0
 
     def draw_ledges(self):
          if self.num == 1:
@@ -57,7 +60,17 @@ class Map():
     # Methods
     def draw_bg(self):
         scaled_bg = pygame.transform.scale(self.bg_image, (self.WIDTH, self.HEIGHT))
-        self.screen.blit(scaled_bg, (0, 0))
+
+        self.screen.fill((0,0,0))
+        self.screen.blit(scaled_bg, (self.scroll, 0))
+
+        self.screen.blit(scaled_bg, (self.WIDTH+self.scroll,0))
+
+        if self.scroll  == -self.WIDTH:
+            self.screen.blit(scaled_bg, (self.WIDTH+self.scroll,0) )
+            self.scroll = 0
+
+        self.scroll -= 1
 
     # draws health bars
     def draw_health_bars(self, health, x, y, screen):
