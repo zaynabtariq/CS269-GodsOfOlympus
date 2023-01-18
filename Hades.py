@@ -20,7 +20,7 @@ class Hades(Fighter):
         #  0 : idle right
         temp_list = []
         for i in range (1,3):
-            img = pygame.image.load(f'hades_idle_{i}.png')
+            img = pygame.image.load(f'Images/hades_idle_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() *1.5, img.get_height() *1.5))
             temp_list.append(img)
         self.animation_list.append(temp_list)
@@ -28,7 +28,7 @@ class Hades(Fighter):
         #  1 : idle left
         temp_list = []
         for i in range(1, 3):
-            img = pygame.image.load(f'hades_idle_{i}.png')
+            img = pygame.image.load(f'Images/hades_idle_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
             temp_list.append(img)
         self.animation_list.append(temp_list)
@@ -36,7 +36,7 @@ class Hades(Fighter):
         # 2 : walking left
         temp_list = []
         for i in range(1, 3):
-            img = pygame.image.load(f'hades_walkright_{i}.png')
+            img = pygame.image.load(f'Images/hades_walkright_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
             temp_list.append(img)
         self.animation_list.append(temp_list)
@@ -45,7 +45,7 @@ class Hades(Fighter):
         # 3 : walking right
         temp_list = []
         for i in range(1, 3):
-            img = pygame.image.load(f'hades_walkright_{i}.png')
+            img = pygame.image.load(f'Images/hades_walkright_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
             temp_list.append(img)
         self.animation_list.append(temp_list)
@@ -53,7 +53,7 @@ class Hades(Fighter):
         # 4 : ability1
         temp_list = []
         for i in range(2, 6):
-            img = pygame.image.load(f'ability1_{i}.png')
+            img = pygame.image.load(f'Images/ability1_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
             temp_list.append(img)
         self.animation_list.append(temp_list)
@@ -71,7 +71,7 @@ class Hades(Fighter):
         # 6 : ability2
         temp_list = []
         for i in range(1, 12):
-            img = pygame.image.load(f'right_ability2_{i}.png')
+            img = pygame.image.load(f'Images/right_ability2_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
             temp_list.append(img)
         self.animation_list.append(temp_list)
@@ -87,7 +87,7 @@ class Hades(Fighter):
         # 8 : attacked right
         temp_list = []
         for i in range(1, 7):
-            img = pygame.image.load(f'right_attacked_{i}.png')
+            img = pygame.image.load(f'Images/right_attacked_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
             temp_list.append(img)
         self.animation_list.append(temp_list)
@@ -167,7 +167,7 @@ class Hades(Fighter):
 
 
             for i in range(1, 8):
-                img = pygame.image.load(f'lightning{i}.png')
+                img = pygame.image.load(f'Images/lightning{i}.png')
                 img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
                 attacking_rect_img = img
                 attacking_rect_img_scaled = pygame.transform.scale(attacking_rect_img, (1300, 60))

@@ -171,10 +171,12 @@ class Fighter():
                             if key[pygame.K_s]:
                                 self.vel_y = 30
                                 dy = HEIGHT - self.char.bottom - 100
+                                self.jump = False
                         elif self.player == 2:
                             if key[pygame.K_DOWN]:
                                 self.vel_y = 30
                                 dy = HEIGHT - self.char.bottom - 100
+                                self.jump = False
 
             # update player position
             self.char.x += dx
