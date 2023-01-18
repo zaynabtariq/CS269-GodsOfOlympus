@@ -52,8 +52,8 @@ while True:
     fighter_2.draw(screen)
 
     # draw hp bar for fighters
-    map.draw_health_bars(fighter_1.health, 20, 20, screen)  # fighter, x cord., y cord.
-    map.draw_health_bars(fighter_2.health, WIDTH - (400 + 20), 20, screen)
+    map.draw_health_bars(fighter_1.health, 20, 20, screen, fighter_2)  # fighter, x cord., y cord., target
+    map.draw_health_bars(fighter_2.health, WIDTH - (400 + 20), 20, screen, fighter_1)
 
     # allows player to exit
     key = pygame.key.get_pressed()
