@@ -86,7 +86,7 @@ class Zeus(Fighter):
         # 8 : attacked right
         temp_list = []
         for i in range(1, 7):
-            img = pygame.image.load(f'Images/right_attacked_{i}.png')
+            img = pygame.image.load(f'Images/knockback_redo_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
             temp_list.append(img)
         self.animation_list.append(temp_list)
