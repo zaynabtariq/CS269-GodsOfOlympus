@@ -24,7 +24,7 @@ class Map():
 
         # Load background
         if self.num == 1:
-            self.bg_image = pygame.image.load("Images/skybackground_2.png").convert_alpha()
+            self.bg_image = pygame.image.load("Images/skybackground_final.png").convert_alpha()
         elif self.num == 2:
             self.bg_image = pygame.image.load("Images/sky.png").convert_alpha()
         elif self.num == 3:
@@ -66,7 +66,7 @@ class Map():
 
         self.screen.blit(scaled_bg, (self.WIDTH+self.scroll,0))
 
-        if self.scroll  == -self.WIDTH:
+        if self.scroll == -self.WIDTH:
             self.screen.blit(scaled_bg, (self.WIDTH+self.scroll,0) )
             self.scroll = 0
 
