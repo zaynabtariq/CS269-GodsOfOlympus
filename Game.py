@@ -8,6 +8,7 @@ File: Game.py
 import pygame
 from fighter import Fighter
 from Zeus import Zeus
+from Hades import Hades
 from map import Map
 #from background import Background
 from pygame.locals import *
@@ -32,7 +33,7 @@ map = Map(1, HEIGHT, WIDTH, ACC, FRIC, FPS, screen)
 ledges = map.draw_ledges()
 # starting location of fighters
 fighter_1 = Zeus(1, 0, HEIGHT-200, ledges, screen)
-fighter_2 = Zeus(2, WIDTH - 10, HEIGHT-500, ledges, screen)
+fighter_2 = Hades(2, WIDTH - 10, HEIGHT-500, ledges, screen)
 
 
 # game looper
