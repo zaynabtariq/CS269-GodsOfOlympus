@@ -31,8 +31,8 @@ map = Map(1, HEIGHT, WIDTH, ACC, FRIC, FPS, screen)
 
 ledges = map.draw_ledges()
 # starting location of fighters
-fighter_1 = Fighter(1, 100, HEIGHT-200, ledges)
-fighter_2 = Fighter(2, WIDTH - 100, HEIGHT-500, ledges)
+fighter_1 = Zeus(1, 0, HEIGHT-200, ledges, screen)
+fighter_2 = Zeus(2, WIDTH - 10, HEIGHT-500, ledges, screen)
 
 
 # game looper
@@ -48,6 +48,8 @@ while True:
     fighter_2.move(WIDTH, HEIGHT, fighter_1, screen, ledges)
 
     # draw fighters
+    fighter_1.update()
+    fighter_2.update()
     fighter_1.draw(screen)
     fighter_2.draw(screen)
 
@@ -69,6 +71,3 @@ while True:
     # sets max frame rate
     pygame.display.update()
     FramePerSec.tick(FPS)
-
-
-
