@@ -8,19 +8,18 @@ import pygame
 from fighter import Fighter
 
 class Zeus(Fighter):
-    def __init__(self, player, x, y, ledges):
-        super().__init__(player, x, y, ledges)
+    def __init__(self, player, x, y, ledges, surface):
+        super().__init__(player, x, y, ledges, surface)
         self.x = x
         self.y = y
-        self.animation_list = [] # will contain all sprites for Zeus
-        self.frame_index = 0 
+        self.animation_list = []
+        self.frame_index = 0
         self.update_time = pygame.time.get_ticks()
-        
-        #loading images and adding them to animation list
+        #load images
         #  0 : idle right
         temp_list = []
         for i in range (1,3):
-            img = pygame.image.load(f'idle_right_{i}.png')
+            img = pygame.image.load(f'Images/idle_redo_right_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() *1.5, img.get_height() *1.5))
             temp_list.append(img)
         self.animation_list.append(temp_list)
@@ -28,7 +27,7 @@ class Zeus(Fighter):
         #  1 : idle left
         temp_list = []
         for i in range(1, 3):
-            img = pygame.image.load(f'idle_left_{i}.png')
+            img = pygame.image.load(f'Images/idle_redo_left_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
             temp_list.append(img)
         self.animation_list.append(temp_list)
@@ -36,7 +35,7 @@ class Zeus(Fighter):
         # 2 : walking left
         temp_list = []
         for i in range(1, 3):
-            img = pygame.image.load(f'leftwalk_{i}.png')
+            img = pygame.image.load(f'Images/leftwalk_redo_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
             temp_list.append(img)
         self.animation_list.append(temp_list)
@@ -45,7 +44,7 @@ class Zeus(Fighter):
         # 3 : walking right
         temp_list = []
         for i in range(1, 3):
-            img = pygame.image.load(f'rightwalk_{i}.png')
+            img = pygame.image.load(f'Images/rightwalk_redo_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
             temp_list.append(img)
         self.animation_list.append(temp_list)
@@ -53,23 +52,58 @@ class Zeus(Fighter):
         # 4 : ability1
         temp_list = []
         for i in range(2, 6):
-            img = pygame.image.load(f'ability1_{i}.png')
+            img = pygame.image.load(f'Images/ability1_redo_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
             temp_list.append(img)
         self.animation_list.append(temp_list)
 
         # 5 : ability1 left
+        
         temp_list = []
         for i in range(2, 6):
-            img = pygame.image.load(f'left_ability1_{i}.png')
+            img = pygame.image.load(f'Images/left_ability1_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
             temp_list.append(img)
         self.animation_list.append(temp_list)
 
+
+
         # 6 : ability2
         temp_list = []
         for i in range(1, 12):
-            img = pygame.image.load(f'right_ability2_{i}.png')
+            img = pygame.image.load(f'Images/right_ability2_redo_{i}.png')
+            img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
+            temp_list.append(img)
+        self.animation_list.append(temp_list)
+
+        # 7 : ability2 left
+        temp_list = []
+        for i in range(11):
+            img = self.animation_list[6][i]
+            img_flipped = pygame.transform.flip(img, True, False)
+            temp_list.append(img_flipped)
+        self.animation_list.append(temp_list)
+
+        # 8 : attacked right
+        temp_list = []
+        for i in range(1, 7):
+            img = pygame.image.load(f'Images/knockback_redo_{i}.png')
+            img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
+            temp_list.append(img)
+        self.animation_list.append(temp_list)
+
+        # 9: attacked left
+        temp_list = []
+        for i in range(1, 7):
+            img = pygame.image.load(f'Images/right_attacked_{i}.png')
+            img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
+            temp_list.append(img)
+        self.animation_list.append(temp_list)
+
+        # 10: melee
+        temp_list = []
+        for i in range(1, 6):
+            img = pygame.image.load(f'Images/zeus_melee_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
             temp_list.append(img)
         self.animation_list.append(temp_list)
@@ -80,8 +114,9 @@ class Zeus(Fighter):
         self.char.y = y
         self.direction = True
 
-    # updates the position/action of players
+
     def update(self):
+        animation_cooldown = 0
         if self.action == 0 or self.action == 1:
             animation_cooldown = 270
         elif self.action == 2 or self.action == 3:
@@ -90,6 +125,11 @@ class Zeus(Fighter):
             animation_cooldown = 80
         elif self.action == 6 or self.action == 7:
             animation_cooldown = 80
+        elif self.action == 8:
+            animation_cooldown = 50
+        elif self.action == 10:
+            animation_cooldown = 60
+
 
         # handle animation
         # update image
@@ -105,7 +145,7 @@ class Zeus(Fighter):
             self.idle()
 
 
-    # resets values if player is idle
+
     def idle(self):
         if self.player == 1:
             self.action = 0
@@ -117,58 +157,56 @@ class Zeus(Fighter):
     def draw(self, surface):
         surface.blit(self.image, self.char)
 
+        #pygame.draw.rect(surface,(0,255,0), self.char)
+
+
 
     def attack(self, surface,  target, type):
         self.attacking = True
 
         if type == 1:  # ability 1 medium range
-            attacking_rect = pygame.Rect(self.char.centerx - (2 * self.char.width * self.flip), self.char.y,
-                                         2 * self.char.width, self.char.height)
-            if attacking_rect.colliderect(target.char):
+            attacking_rect = pygame.Rect(self.char.centerx - (1/2 * self.char.width * self.flip), self.char.y,
+                                         1/2 * self.char.width, self.char.height)
+            center = (target.char.centerx, target.char.centery)
+           # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
+
+            if attacking_rect.collidepoint(center):
                 target.health -= 2
+                target.action = 8
+                if not self.flip:
+                    target.char.x += 5
+                else:
+                    target.char.x -= 5
+
 
         elif type == 2:  # ability 2 long range
             attacking_rect = pygame.Rect(0, 750 - self.char.y/3 + 10,
                                          1300, self.char.height/3)
             if attacking_rect.colliderect(target.char):
                 target.health -= 2
+                target.action = 8
+                if not self.flip:
+                    target.char.x += 5
+                else:
+                    target.char.x -= 5
 
 
             for i in range(1, 8):
-                img = pygame.image.load(f'lightning{i}.png')
+                img = pygame.image.load(f'Images/lightning{i}.png')
                 img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
                 attacking_rect_img = img
                 attacking_rect_img_scaled = pygame.transform.scale(attacking_rect_img, (1300, 60))
                 surface.blit(attacking_rect_img_scaled, (0, 600))
 
-
-
-
-
-
             #pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 
         elif type == 3: # ultimate (need to change)
-            attacking_rect = pygame.Rect(0, 750 - self.char.y/4 + 10,
-                                         1300, self.char.height/3)
-            if attacking_rect.colliderect(target.char):
-                target.health -= 2
-            pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
-            
-        #generic melee attack 
-        elif type == 4:
-            attacking_rect = pygame.Rect(self.char.centerx - (2 * self.char.width * self.flip), self.char.y, 1/4 * self.char.width, self.char.height)
-            pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
-            if attacking_rect.colliderect(target.char):
-                target.health -= Fighter.random_melee()
+            attacking_rect = pygame.Rect(self.char.centerx - (2.5 * self.char.width * self.flip), self.char.y,
+                                         1 / 4 * self.char.width, self.char.height)
+            #pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
+            center = (target.char.centerx, target.char.centery)
+            if attacking_rect.collidepoint(center):
+                # does damage ranging from 1 to 3
+                target.health -= Fighter.random_melee(self)
 
         self.attacking = False
-
-
-
-
-
-
-
-
-
