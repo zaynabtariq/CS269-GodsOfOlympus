@@ -1,6 +1,6 @@
 """
 Gods of Olympus
-Last Modified: 1/17/23
+Last Modified: 1/19/23
 Course: CS269
 File: zeus.py
 """
@@ -15,7 +15,8 @@ class Zeus(Fighter):
         self.animation_list = []
         self.frame_index = 0
         self.update_time = pygame.time.get_ticks()
-        #load images
+        
+        #loading images and adding them to animation list
         #  0 : idle right
         temp_list = []
         for i in range (1,3):
@@ -79,7 +80,7 @@ class Zeus(Fighter):
         self.char.y = y
         self.direction = True
 
-
+    # updates the position/action of players
     def update(self):
         if self.action == 0 or self.action == 1:
             animation_cooldown = 270
@@ -104,7 +105,7 @@ class Zeus(Fighter):
             self.idle()
 
 
-
+    # resets values if player is idle
     def idle(self):
         if self.player == 1:
             self.action = 0
@@ -115,7 +116,6 @@ class Zeus(Fighter):
 
     def draw(self, surface):
         surface.blit(self.image, self.char)
-
 
 
     def attack(self, surface,  target, type):
