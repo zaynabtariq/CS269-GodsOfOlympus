@@ -1,7 +1,7 @@
 """
 Gods of Olympus
 Last Modified: 1/6/23
-Course: CS269
+Course: CS26
 File: main.py
 """
 
