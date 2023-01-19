@@ -77,6 +77,17 @@ class Map():
         ground_scaled = pygame.transform.scale(ground, (self.WIDTH + 10, 110))
         self.screen.blit(ground_scaled, (0, self.HEIGHT -110))
 
+
+    # draw icons next to scoreboard
+
+    def draw_score_icons(self, screen):
+        fighter1_icon = pygame.image.load("Images/Icons_Zeus.png")
+        screen.blit(fighter1_icon, (30,30))
+
+        fighter2_icon = pygame.image.load("Images/Icons_Hades.png")
+        screen.blit(fighter2_icon, (1170,30))
+
+
     # draws health bars
 
     def draw_health_bars(self, health, screen, player):
