@@ -1,6 +1,6 @@
 """
 Gods of Olympus
-Last Modified: 1/17/23
+Last Modified: 1/19/23
 Course: CS269
 File: fighter.py
 """
