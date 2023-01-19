@@ -190,9 +190,9 @@ class Fighter():
                 # add a timer and make attacking false after 2 secs
             self.attacking = False
 
-
-
-
+    def random_melee():
+       attack_damage = random.randint(1,3) 
+       return attack_damage
 
 
     def update_action(self, new_action):
