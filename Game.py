@@ -9,7 +9,7 @@ import pygame
 from pygame import mixer
 from fighter import Fighter
 from Zeus import Zeus
-# from Hades import Hades
+from Hades import Hades
 from map import Map
 #from background import Background
 from pygame.locals import *
@@ -25,8 +25,8 @@ FRIC = -0.12
 FPS = 60
 FramePerSec = pygame.time.Clock()
 
-mixer.music.load('sound_1.wav')
-mixer.music.play(-1)
+#mixer.music.load('sound_1.wav')
+#mixer.music.play(-1)
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Gods of Olympus")
@@ -41,7 +41,7 @@ def main():
     ledges = map.draw_ledges()
     # starting location of fighters
     fighter_1 = Zeus(1, 0, HEIGHT-200, ledges, screen)
-    fighter_2 = Zeus(2, WIDTH - 400, HEIGHT-500, ledges, screen)
+    fighter_2 = Hades(2, WIDTH - 400, HEIGHT-500, ledges, screen)
 
 
     # game looper
@@ -71,6 +71,9 @@ def main():
         map.draw_health_bars(fighter_2.health, WIDTH - (400 + 20), 20, screen)'''
         map.draw_health_bars(fighter_1.health, screen, 'fighter_2')  # fighter, x cord., y cord., player
         map.draw_health_bars(fighter_2.health, screen, 'fighter_1')
+
+        # draw icons for fighters
+        map.draw_score_icons(screen)
 
         # allows player to exit
         key = pygame.key.get_pressed()

@@ -106,6 +106,20 @@ class Zeus(Fighter):
         self.char.y = y
         self.direction = True
 
+        # 10: melee
+        temp_list = []
+        for i in range(1, 6):
+            img = pygame.image.load(f'Images/zeus_melee_{i}.png')
+            img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
+            temp_list.append(img)
+        self.animation_list.append(temp_list)
+
+        self.image = self.animation_list[self.action][self.frame_index]
+        self.char = self.image.get_rect()
+        self.char.x = x
+        self.char.y = y
+        self.direction = True
+
 
     def update(self):
         if self.action == 0 or self.action == 1:
@@ -188,15 +202,19 @@ class Zeus(Fighter):
             #pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 
         elif type == 3: # ultimate (need to change)
-            attacking_rect = pygame.Rect(0, 750 - self.char.y/4 + 10,
-                                         1300, self.char.height/3)
-            if attacking_rect.colliderect(target.char):
-                target.health -= 2
-                target.action = 8
-                if not self.flip:
+            attacking_rect = pygame.Rect(self.char.centerx - (2.5 * self.char.width * self.flip), self.char.y,
+                                         1/4 * self.char.width, self.char.height)
+
+            center = (target.char.centerx, target.char.centery)
+
+            if attacking_rect.collidepoint(center):
+                # does damage ranging from 1 to 3
+                target.health -= Fighter.random_melee(self)
+
+                '''if not self.flip:
                     target.char.x += 5
                 else:
                     target.char.x -= 5
-            pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
+            pygame.draw.rect(surface, (0, 255, 0), attacking_rect)'''
 
         self.attacking = False
