@@ -9,7 +9,7 @@ import pygame
 from pygame import mixer
 from fighter import Fighter
 from Zeus import Zeus
-from Hades import Hades
+# from Hades import Hades
 from map import Map
 #from background import Background
 from pygame.locals import *
