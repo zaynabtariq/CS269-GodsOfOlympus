@@ -145,6 +145,8 @@ class Zeus(Fighter):
     def draw(self, surface):
         surface.blit(self.image, self.char)
 
+        #pygame.draw.rect(surface,(0,255,0), self.char)
+
 
 
     def attack(self, surface,  target, type):
@@ -158,9 +160,9 @@ class Zeus(Fighter):
                 target.health -= 2
                 target.action = 8
                 if not self.flip:
-                    target.char.x += 5
+                    target.char.x += 100
                 else:
-                    target.char.x -= 5
+                    target.char.x -= 100
 
 
         elif type == 2:  # ability 2 long range

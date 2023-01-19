@@ -39,7 +39,7 @@ map = Map(1, HEIGHT, WIDTH, ACC, FRIC, FPS, screen)
 ledges = map.draw_ledges()
 # starting location of fighters
 fighter_1 = Zeus(1, 0, HEIGHT-200, ledges, screen)
-fighter_2 = Zeus(2, WIDTH - 10, HEIGHT-500, ledges, screen)
+fighter_2 = Zeus(2, WIDTH - 400, HEIGHT-500, ledges, screen)
 
 
 # game looper

@@ -8,7 +8,6 @@ File: fighter.py
 import pygame
 
 
-
 class Fighter():
     def __init__(self, player, x, y, ledges, surface):
         self.flip = False  # used to make sure the character is always facing the opponent
@@ -31,22 +30,19 @@ class Fighter():
         # 0: idle right , 1: idle left , 2: left walk, 3: right walk, 4: ability1, 5: ability2, 6: ultimate, 7: hurt
         self.action = 0
 
-
     def move(self, WIDTH, HEIGHT, target, surface, ledges):
         SPEED = 10
         GRAVITY = 1.5
         dx = 0
         dy = 0
 
-
-        #get keypresses
+        # get keypresses
         key = pygame.key.get_pressed()
 
-
-        #movement
+        # movement
         if self.attacking == False and self.alive == True:
 
-            #check player 1 controls
+            # check player 1 controls
             if self.player == 1:
                 if key[pygame.K_a]:
                     dx = -SPEED
@@ -57,7 +53,7 @@ class Fighter():
                     dx = SPEED
                     self.running = True
                     self.action = 3
-                #jump
+                # jump
                 if key[pygame.K_w] and self.jump == False:
                     self.jump = True
                     self.vel_y = -30
@@ -82,11 +78,9 @@ class Fighter():
                         self.frame_index = 0
                         self.update_time = pygame.time.get_ticks()
                         self.attack_type = 3
-                        self.attack(surface,target, self.attack_type)
+                        self.attack(surface, target, self.attack_type)
 
-
-
-            #check player 2 controls
+            # check player 2 controls
 
             if self.player == 2:
                 self.action = 1
@@ -99,7 +93,7 @@ class Fighter():
                     self.running = True
                     self.action = 3
 
-                #jump
+                # jump
                 if key[pygame.K_UP] and self.jump == False:
                     self.jump = True
                     self.vel_y = -30
@@ -118,7 +112,7 @@ class Fighter():
                         self.action = 7
                         self.frame_index = 0
                         self.update_time = pygame.time.get_ticks()
-                        self.attack(surface,target, self.attack_type)
+                        self.attack(surface, target, self.attack_type)
                     if key[pygame.K_COMMA]:
                         self.attack_type = 3
                         self.action = 9
@@ -132,14 +126,14 @@ class Fighter():
                 dy += self.vel_y
 
             # ensures the player stays on screen
-            if self.char.left + dx < 0:
-                dx = -self.char.left
-            if self.char.right + dx > WIDTH:
-                dx = WIDTH - self.char.right
+            if self.char.centerx + dx < 0:
+                dx = -self.char.centerx
+            if self.char.centerx + dx > WIDTH:
+                dx = WIDTH - self.char.centerx
             if self.char.bottom + dy > HEIGHT - 100:  # write - X if there is a floor
                 self.vel_y = 0
                 self.jump = False
-                dy = HEIGHT - self.char.bottom - 100 # write - X if there is a floor
+                dy = HEIGHT - self.char.bottom - 100  # write - X if there is a floor
 
             # ensures players are facing each other
             if target.char.centerx > self.char.centerx:
@@ -162,10 +156,10 @@ class Fighter():
 
             # collision with ledges
             for ledge in ledges:
-                if self.char.x >= ledge[0] - 190 and self.char.x <= (ledge[0] + ledge[2]) - 190:
+                if ledge[0] - 190 <= self.char.x <= (ledge[0] + ledge[2]) - 190:
                     if self.char.bottom <= ledge[1]:
                         self.vel_y = 0
-                        #self.jump = False
+                        # self.jump = False
                         dy = HEIGHT - self.char.bottom + ledge[1] - HEIGHT
                         if self.player == 1:
                             if key[pygame.K_s]:
@@ -182,25 +176,20 @@ class Fighter():
             self.char.x += dx
             self.char.y += dy
 
-    #General attack function
-    def attack(self, surface,  target, type):
+    # General attack function
+    def attack(self, surface, target, curType):
         self.attacking = True
-        if type == 1:
+        if curType == 1:
             attacking_rect = pygame.Rect(self.char.centerx - (3.5 * self.char.width * self.flip), self.char.y,
                                          3.5 * self.char.width, self.char.height)
             if attacking_rect.colliderect(target.char):
                 target.health -= 2
-                if self.flip == False:
+                if not self.flip:
                     target.char.x += 5
                 else:
                     target.char.x -= 5
                 # add a timer and make attacking false after 2 secs
             self.attacking = False
-
-
-
-
-
 
     def update_action(self, new_action):
         # check if the new action is different to the previous one
