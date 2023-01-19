@@ -154,6 +154,13 @@ class Zeus(Fighter):
             if attacking_rect.colliderect(target.char):
                 target.health -= 2
             pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
+            
+        #generic melee attack 
+        elif type == 4:
+            attacking_rect = pygame.Rect(self.char.centerx - (2 * self.char.width * self.flip), self.char.y, 1/4 * self.char.width, self.char.height)
+            pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
+            if attacking_rect.colliderect(target.char):
+                target.health -= Fighter.random_melee()
 
         self.attacking = False
 
