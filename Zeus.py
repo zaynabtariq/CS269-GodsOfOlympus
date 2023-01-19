@@ -161,9 +161,9 @@ class Zeus(Fighter):
                 target.health -= 2
                 target.action = 8
                 if not self.flip:
-                    target.char.x += 100
+                    target.char.x += 150
                 else:
-                    target.char.x -= 100
+                    target.char.x -= 150
 
 
         elif type == 2:  # ability 2 long range
