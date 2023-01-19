@@ -9,7 +9,6 @@ import pygame
 from fighter import Fighter
 from Zeus import Zeus
 from map import Map
-#from background import Background
 from pygame.locals import *
 import sys
 
@@ -29,46 +28,57 @@ map = Map(1, HEIGHT, WIDTH, ACC, FRIC, FPS, screen)
 
 #define fighter variables
 
-ledges = map.draw_ledges()
-# starting location of fighters
-fighter_1 = Fighter(1, 100, HEIGHT-200, ledges)
-fighter_2 = Fighter(2, WIDTH - 100, HEIGHT-500, ledges)
+# ledges = map.draw_ledges()
+# # starting location of fighters
+# fighter_1 = Fighter(1, 100, HEIGHT-200, ledges)
+# fighter_2 = Fighter(2, WIDTH - 100, HEIGHT-500, ledges)
 
 
-# game looper
-while True:
-
-    # draw background
-    map.draw_bg()
+def main():
+    
     ledges = map.draw_ledges()
+    # starting location of fighters
+    fighter_1 = Fighter(1, 100, HEIGHT-200, ledges)
+    fighter_2 = Fighter(2, WIDTH - 100, HEIGHT-500, ledges)
+    
+    # game looper
+    while True:
+        #checks if a figher has no hp and restarts the game if that's the case
+        if fighter_1.health <= 0 or fighter_2.health <= 0:
+            pygame.time.wait(2000)
+            main()
+            
+        # draw background
+        map.draw_bg()
+        ledges = map.draw_ledges()
 
 
-    # move fighters
-    fighter_1.move(WIDTH, HEIGHT, fighter_2, screen, ledges)
-    fighter_2.move(WIDTH, HEIGHT, fighter_1, screen, ledges)
+        # move fighters
+        fighter_1.move(WIDTH, HEIGHT, fighter_2, screen, ledges)
+        fighter_2.move(WIDTH, HEIGHT, fighter_1, screen, ledges)
 
-    # draw fighters
-    fighter_1.draw(screen)
-    fighter_2.draw(screen)
+        # draw fighters
+        fighter_1.draw(screen)
+        fighter_2.draw(screen)
 
-    # draw hp bar for fighters
-    map.draw_health_bars(fighter_1.health, 20, 20, screen)  # fighter, x cord., y cord.
-    map.draw_health_bars(fighter_2.health, WIDTH - (400 + 20), 20, screen)
+        # draw hp bar for fighters
+        map.draw_health_bars(fighter_1.health, 20, 20, screen)  # fighter, x cord., y cord.
+        map.draw_health_bars(fighter_2.health, WIDTH - (400 + 20), 20, screen)
 
-    # allows player to exit
-    key = pygame.key.get_pressed()
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
+        # allows player to exit
+        key = pygame.key.get_pressed()
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
 
-        if key[pygame.K_ESCAPE]:
-            pygame.quit()
-            sys.exit()
+            if key[pygame.K_ESCAPE]:
+                pygame.quit()
+                sys.exit()
 
-    # sets max frame rate
-    pygame.display.update()
-    FramePerSec.tick(FPS)
+        # sets max frame rate
+        pygame.display.update()
+        FramePerSec.tick(FPS)
 
-
+main()
 
