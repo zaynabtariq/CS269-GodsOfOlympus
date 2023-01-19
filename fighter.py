@@ -197,11 +197,6 @@ class Fighter():
                 # add a timer and make attacking false after 2 secs
             self.attacking = False
 
-
-
-
-
-
     def update_action(self, new_action):
         # check if the new action is different to the previous one
         if new_action != self.action:
