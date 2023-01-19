@@ -114,10 +114,11 @@ class Zeus(Fighter):
         self.frame_index = 0
         self.update_time = pygame.time.get_ticks()
 
+    # draws Zeus onto the screen
     def draw(self, surface):
         surface.blit(self.image, self.char)
 
-
+    # attack moves for Zeus
     def attack(self, surface,  target, type):
         self.attacking = True
 
@@ -133,18 +134,13 @@ class Zeus(Fighter):
             if attacking_rect.colliderect(target.char):
                 target.health -= 2
 
-
+            # sprite images to make the animations fluid
             for i in range(1, 8):
                 img = pygame.image.load(f'lightning{i}.png')
                 img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
                 attacking_rect_img = img
                 attacking_rect_img_scaled = pygame.transform.scale(attacking_rect_img, (1300, 60))
                 surface.blit(attacking_rect_img_scaled, (0, 600))
-
-
-
-
-
 
             #pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 
@@ -160,15 +156,7 @@ class Zeus(Fighter):
             attacking_rect = pygame.Rect(self.char.centerx - (2 * self.char.width * self.flip), self.char.y, 1/4 * self.char.width, self.char.height)
             pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
             if attacking_rect.colliderect(target.char):
+                # does damage ranging from 1 to 3
                 target.health -= Fighter.random_melee()
 
         self.attacking = False
-
-
-
-
-
-
-
-
-
