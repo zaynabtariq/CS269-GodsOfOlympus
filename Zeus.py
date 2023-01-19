@@ -58,6 +58,7 @@ class Zeus(Fighter):
         self.animation_list.append(temp_list)
 
         # 5 : ability1 left
+        
         temp_list = []
         for i in range(2, 6):
             img = pygame.image.load(f'Images/left_ability1_{i}.png')
@@ -197,4 +198,3 @@ class Zeus(Fighter):
             pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 
         self.attacking = False
-
