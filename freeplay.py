@@ -1,6 +1,6 @@
 """
 Gods of Olympus
-Last Modified: 1/14/23
+Last Modified: 1/19/23
 Course: CS269
 File: freeplay.py
 """
@@ -69,4 +69,3 @@ while True:
     # sets max frame rate
     pygame.display.update()
     FramePerSec.tick(FPS)
-
