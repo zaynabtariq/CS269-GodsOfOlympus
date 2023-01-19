@@ -12,8 +12,8 @@ class Zeus(Fighter):
         super().__init__(player, x, y, ledges)
         self.x = x
         self.y = y
-        self.animation_list = []
-        self.frame_index = 0
+        self.animation_list = [] # will contain all sprites for Zeus
+        self.frame_index = 0 
         self.update_time = pygame.time.get_ticks()
         
         #loading images and adding them to animation list
