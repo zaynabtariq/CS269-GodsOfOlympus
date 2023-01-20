@@ -94,13 +94,13 @@ class Zeus(Fighter):
 
         # 9: attacked left
         temp_list = []
-        for i in range(1, 7):
-            img = pygame.image.load(f'Images/right_attacked_{i}.png')
-            img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
-            temp_list.append(img)
+        for i in range(6):
+            img = self.animation_list[8][i]
+            img_flipped = pygame.transform.flip(img, True, False)
+            temp_list.append(img_flipped)
         self.animation_list.append(temp_list)
 
-        # 10: melee
+        # 10: melee right
         temp_list = []
         for i in range(1, 6):
             img = pygame.image.load(f'Images/zeus_melee_{i}.png')
@@ -108,11 +108,20 @@ class Zeus(Fighter):
             temp_list.append(img)
         self.animation_list.append(temp_list)
 
+        # 11: melee left
+        temp_list = []
+        for i in range(5):
+            img = self.animation_list[10][i]
+            img_flipped = pygame.transform.flip(img, True, False)
+            temp_list.append(img_flipped)
+        self.animation_list.append(temp_list)
+
         self.image = self.animation_list[self.action][self.frame_index]
         self.char = self.image.get_rect()
         self.char.x = x
         self.char.y = y
         self.direction = True
+
 
 
     def update(self):
@@ -127,7 +136,7 @@ class Zeus(Fighter):
             animation_cooldown = 80
         elif self.action == 8:
             animation_cooldown = 50
-        elif self.action == 10:
+        elif self.action == 10 or self.action == 11:
             animation_cooldown = 60
 
 

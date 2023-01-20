@@ -122,7 +122,7 @@ class Fighter():
                         self.attack(surface,target, self.attack_type)
                     if key[pygame.K_COMMA]:
                         self.attack_type = 3
-                        self.action = 9
+                        self.action = 11
                         self.frame_index = 0
                         self.update_time = pygame.time.get_ticks()
                         self.attack(surface, target, self.attack_type)
@@ -152,6 +152,10 @@ class Fighter():
                         self.action = 4
                     if self.action == 7:
                         self.action = 6
+                    if self.action == 9:
+                        self.action = 8
+                    if self.action == 11:
+                        self.action = 10
 
             else:
                 self.flip = True
@@ -160,6 +164,12 @@ class Fighter():
                         self.action = 1
                     if self.action == 4:
                         self.action = 5
+                    if self.action == 6:
+                        self.action = 7
+                    if self.action == 8:
+                        self.action = 9
+                    if self.action == 10:
+                        self.action = 11
 
             # collision with ledges
             for ledge in ledges:
