@@ -25,6 +25,10 @@ FRIC = -0.12
 FPS = 60
 FramePerSec = pygame.time.Clock()
 
+#number of times each fighter has won
+f1 = 0 
+f2 = 0
+
 mixer.music.load('sound_1.wav')
 mixer.music.play(-1)
 
@@ -34,7 +38,7 @@ pygame.display.set_caption("Gods of Olympus")
 # load map
 map = Map(1, HEIGHT, WIDTH, ACC, FRIC, FPS, screen)
 
-def main():
+def main(f1, f2):
 
     #define fighter variables
 
@@ -48,6 +52,10 @@ def main():
 
         # checks if a fighter has no hp and restarts the game if that's the case
         if fighter_1.health <= 0 or fighter_2.health <= 0:
+            if (fighter_1.health <= 0):
+                f2 += 1 #fighter 2 earns a round
+            else:
+                f1 += 1 #fighter 1 earns a round
             pygame.time.wait(1500)
             main()
 
@@ -71,6 +79,9 @@ def main():
         map.draw_health_bars(fighter_1.health, screen, 'fighter_2')  # fighter, x cord., y cord., player
         map.draw_health_bars(fighter_2.health, screen, 'fighter_1')
         map.draw_score_icons(screen) # draw icons of idols
+        
+        #draws scoreboard    
+        map.draw_stats(screen, f1, f2)
 
         # allows player to exit
         key = pygame.key.get_pressed()
@@ -86,6 +97,6 @@ def main():
         # sets max frame rate
         pygame.display.update()
         FramePerSec.tick(FPS)
-main()
+main(f1, f2)
 
 
