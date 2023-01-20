@@ -111,3 +111,9 @@ class Map():
             right_purple_outer = pygame.image.load("Images/right_purple_outer.jpg").convert_alpha()
             scaled_osb2 = pygame.transform.scale(right_purple_outer, (400 * ratio, 50))
             screen.blit(scaled_osb2, (750, 60))
+            
+    #draws the current score between the two fighters
+    def draw_stats(self, screen, fighter_1_score, fighter_2_score): #screen, fighter_1 won rounds count, fighter_2 won rounds count
+        scoreboard = pygame.image.load(f'Images/scorecount{fighter_1_score}.{fighter_2_score}')
+        scoreboard = pygame.transform.scale(scoreboard, (125, 50))
+        screen.blit(scoreboard, (588, 60))
