@@ -90,7 +90,6 @@ class Fighter():
             #check player 2 controls
 
             if self.player == 2:
-                self.action = 1
                 if key[pygame.K_LEFT]:
                     dx = -SPEED
                     self.running = True
