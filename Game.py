@@ -1,12 +1,11 @@
 """
 Gods of Olympus
-Last Modified: 1/19/23 
+Last Modified: 1/19/23
 Course: CS269
 File: Game.py
 """
 
 import pygame
-
 from pygame import mixer
 from fighter import Fighter
 from Zeus import Zeus
@@ -15,77 +14,74 @@ from map import Map
 from pygame.locals import *
 import sys
 
-pygame.init()
+class Game():
+
+    # Constructor
+    def __init__(self, HEIGHT, WIDTH, ACC, FRIC, FPS):
+        self.HEIGHT = HEIGHT
+        self.WIDTH = WIDTH
+        self.ACC = ACC
+        self.FRIC = FRIC
+        self.FPS = FPS
+        self.FramePerSec = pygame.time.Clock()
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+
+        # load map
+        self.map = Map(1, HEIGHT, WIDTH, ACC, FRIC, FPS, self.screen)
+
+        #define fighter variables
+        self.ledges = self.map.draw_ledges()
+
+        # starting location of fighters
+        self.fighter_1 = Fighter(1, 100, self.HEIGHT-200, self.screen, self.ledges)
+        self.fighter_2 = Fighter(2, self.WIDTH - 100, self.HEIGHT-500, self.screen, self.ledges)
 
 
-HEIGHT = 750
-WIDTH = 1300
-ACC = 0.5
-FRIC = -0.12
-FPS = 60
-FramePerSec = pygame.time.Clock()
+    # Runs the game
+    def runGame(self):
 
-mixer.music.load('sound_1.wav')
-mixer.music.play(-1)
+        pygame.display.set_caption("Gods of Olympus")
 
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Gods of Olympus")
+        # Load music
+        mixer.music.load('sound_1.wav')
+        mixer.music.play(-1)
 
-# load map
-map = Map(1, HEIGHT, WIDTH, ACC, FRIC, FPS, screen)
+        # game looper
+        while True:
 
-def main():
+            # checks if a fighter has no hp and restarts the game if that's the case
+            if self.fighter_1.health <= 0 or self.fighter_2.health <= 0:
+                pygame.time.wait(1500)
+                self.runGame()
 
-    #define fighter variables
+            # draw background
+            self.map.draw_bg()
+            self.ledges = self.map.draw_ledges()
 
-    ledges = map.draw_ledges()
-    # starting location of fighters
-    fighter_1 = Zeus(1, 0, HEIGHT-200, ledges, screen)
-    fighter_2 = Zeus(2, WIDTH-400, HEIGHT-500, ledges, screen)
+            # move fighters
+            self.fighter_1.move(self.WIDTH, self.HEIGHT, self.fighter_2, self.screen, self.ledges)
+            self.fighter_2.move(self.WIDTH, self.HEIGHT, self.fighter_1, self.screen, self.ledges)
 
-    # game looper
-    while True:
+            # draw fighters
+            self.fighter_1.draw(self.screen)
+            self.fighter_2.draw(self.screen)
 
-        # checks if a fighter has no hp and restarts the game if that's the case
-        if fighter_1.health <= 0 or fighter_2.health <= 0:
-            pygame.time.wait(1500)
-            main()
+            # draw hp bar for fighters
+            self.map.draw_health_bars(self.fighter_1.health, 'fighter_2')
+            self.map.draw_health_bars(self.fighter_2.health, 'fighter_1')
+            self.map.draw_score_icons() # draw icons of idols
 
-        # draw background
-        map.draw_bg(screen)
-        ledges = map.draw_ledges()
+            # allows player to exit
+            key = pygame.key.get_pressed()
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    sys.exit()
 
+                if key[pygame.K_ESCAPE]:
+                    pygame.quit()
+                    sys.exit()
 
-        # move fighters
-        fighter_1.move(WIDTH, HEIGHT, fighter_2, screen, ledges)
-        fighter_2.move(WIDTH, HEIGHT, fighter_1, screen, ledges)
-
-        # draw fighters
-        fighter_1.update()
-        fighter_2.update()
-        fighter_1.draw(screen)
-        fighter_2.draw(screen)
-        # draw hp bar for fighters
-        '''map.draw_health_bars(fighter_1.health, 20, 20, screen)  # fighter, x cord., y cord.
-        map.draw_health_bars(fighter_2.health, WIDTH - (400 + 20), 20, screen)'''
-        map.draw_health_bars(fighter_1.health, screen, 'fighter_2')  # fighter, x cord., y cord., player
-        map.draw_health_bars(fighter_2.health, screen, 'fighter_1')
-        map.draw_score_icons(screen) # draw icons of idols
-
-        # allows player to exit
-        key = pygame.key.get_pressed()
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-
-            if key[pygame.K_ESCAPE]:
-                pygame.quit()
-                sys.exit()
-
-        # sets max frame rate
-        pygame.display.update()
-        FramePerSec.tick(FPS)
-main()
-
-
+            # sets max frame rate
+            pygame.display.update()
+            self.FramePerSec.tick(self.FPS)
