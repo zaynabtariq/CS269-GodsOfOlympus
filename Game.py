@@ -1,6 +1,6 @@
 """
 Gods of Olympus
-Last Modified: 1/15/23 by zaynab
+Last Modified: 1/19/23 
 Course: CS269
 File: Game.py
 """
@@ -10,9 +10,8 @@ import pygame
 from pygame import mixer
 from fighter import Fighter
 from Zeus import Zeus
-from Hades import Hades
+# from Hades import Hades
 from map import Map
-#from background import Background
 from pygame.locals import *
 import sys
 
@@ -88,6 +87,5 @@ def main():
         pygame.display.update()
         FramePerSec.tick(FPS)
 main()
-
 
 
