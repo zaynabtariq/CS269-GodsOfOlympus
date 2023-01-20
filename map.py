@@ -24,7 +24,7 @@ class Map():
 
         # Load background
         if self.num == 1:
-            self.bg_image = pygame.image.load("skybackground_2.png").convert_alpha()
+            self.bg_image = pygame.image.load("Images/skybackground_2.png").convert_alpha()
         elif self.num == 2:
             self.bg_image = pygame.image.load("sky.png").convert_alpha()
         elif self.num == 3:
