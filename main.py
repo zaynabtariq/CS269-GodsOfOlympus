@@ -1,77 +1,125 @@
 """
 Gods of Olympus
-Last Modified: 1/6/23
+Last Modified: 1/20/23
 Course: CS269
 File: main.py
 """
 
-import pygame
-from fighter import Fighter
-from pygame.locals import *
-import sys
- 
-pygame.init()
- 
-vec = pygame.math.Vector2 
+##################### Setup #####################
 
-#
+# Import relevant classes & initialize pygame 
+import pygame
+import pygame_gui
+from Game import Game
+from titleScreen import titleScreen
+from charSelect import charSelect
+from pygame.locals import *
+pygame.init()
+
+
+##################### Basic variable setups #####################
+
+# Game class variables
 HEIGHT = 750
 WIDTH = 1300
 ACC = 0.5
 FRIC = -0.12
 FPS = 60
-FramePerSec = pygame.time.Clock()
- 
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Gods of Olympus")
- 
-#def colors
-RED = (255, 0, 0)
-YELLOW = (255, 255, 0)
-WHITE = (255, 255, 255)
+game = Game(HEIGHT, WIDTH, ACC, FRIC, FPS)
 
-hp_width = 500
+# TitleScreen class variables
+x = 1300    # x-dimension (screen width)
+y = 750     # y-dimension (screen height)
+window_surface = pygame.display.set_mode((x, y))    # Creates screen surface & background
+tscreen = titleScreen(x, y, window_surface)
 
-#load background image
-bg_image = pygame.image.load("Images/olympus_background.jpg").convert_alpha()
+# charSelect class variables
+char_image_size = 500   # Size of character image on character select screen
+charSelectScreen = charSelect(x, y, window_surface, char_image_size)
 
-#function for drawing background
-def draw_bg():
-    scaled_bg = pygame.transform.scale(bg_image, (WIDTH, HEIGHT))
-    screen.blit(scaled_bg, (0,0))
+# Button GUI variables
+character_gui_enabled = False
+control_gui_enabled = False
+settings_gui_enabled = False
 
-def draw_health_bars(health, x, y):
-    pygame.draw.rect(screen, YELLOW, (x, y, hp_width, 30))
-
-#writes in the location of fighters
-fighter_1 = Fighter(1, 100, HEIGHT - 50)
-fighter_2 = Fighter(2, WIDTH - 100, HEIGHT - 50)
-
-#game looper
-while True:
-    
-    #draw background
-    draw_bg()
-
-    #move fighters 
-    fighter_1.move(WIDTH, HEIGHT, screen, fighter_2)
-    fighter_2.move(WIDTH, HEIGHT, screen, fighter_1)
-
-    #draw fighters
-    fighter_1.draw(screen)
-    fighter_2.draw(screen)
-
-    #draw fighter stats
-    draw_health_bars(fighter_1.health, 20, 20)
-    draw_health_bars(fighter_1.health, WIDTH - (hp_width + 20), 20)
+# Character variables
+p1_character = 1
+p2_character = 2
 
 
-    #allows player to exit
+##################### Methods #####################
+
+# Runs the main game after pressing "Play"
+def initiate_game():
+    game.runGame()
+
+# Brings up controls gui
+def initialize_controls_gui(gui_enabled):
+    if gui_enabled == False:
+        contr_surface_bg = pygame.Surface((x / 2, y / 2 + 30))
+        contr_surface_bg.fill("#21282D")
+
+        contr_surface = pygame.Surface((x / 2 - 6, y / 2 + 30 - 6))
+        contr_surface.fill("#4B5052")
+
+        ## Add control guis here!
+
+        window_surface.blit(contr_surface_bg, (x / 4, y / 32))
+        window_surface.blit(contr_surface, (x / 4 + 3, y / 32 + 3))
+
+        print("control gui enabled")
+        return True
+    else:
+        tscreen.initializeTitleScreen()
+        print("control gui disabled")
+        return False
+
+
+##################### Main method #####################
+
+# Start running the title screen
+tscreen.initializeTitleScreen()
+clock = pygame.time.Clock()
+is_running = True
+all_buttons, all_managers = tscreen.createAllButtons()
+
+# Constant updating while loop
+while is_running:
+    time_delta = clock.tick(60)/1000.0
     for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
+        if event.type == pygame.QUIT:
+            is_running = False
 
-    #sets max frame rate
+        # What to do if each button is pressed
+        if event.type == pygame_gui.UI_BUTTON_PRESSED:
+            if event.ui_element == all_buttons[0]:
+                print('Starting game...')
+                initiate_game()
+            elif event.ui_element == all_buttons[1]:
+                print('Selecting character...')
+                charSelectScreen.initialize_char_select()   # Character select background
+            elif event.ui_element == all_buttons[2]:
+                print('Entering freeplay...')
+            elif event.ui_element == all_buttons[3]:
+                print('Checking control panel...')
+                control_gui_enabled = initialize_controls_gui(control_gui_enabled)
+            elif event.ui_element == all_buttons[4]:
+                print('Opening settings...') 
+
+        # Update events (button hovering or clicking)
+        for manager in all_managers:
+            manager.process_events(event)
+            manager.update(time_delta)
+
+    
+    # Draw buttons
+    for manager in all_managers:
+        manager.draw_ui(window_surface)
+
+    # Add gear to settings button
+    gear = pygame.image.load("Images/gear.png").convert_alpha()
+    tscreen.color_surface(gear, 200, 200, 200)
+    gear_scaled = pygame.transform.scale(gear, (40, 40))
+    window_surface.blit(gear_scaled, (x - 50, 10))
+
     pygame.display.update()
-    FramePerSec.tick(FPS)
