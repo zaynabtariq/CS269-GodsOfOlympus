@@ -48,9 +48,6 @@ class Game():
         mixer.music.load('sound_1.wav')
         mixer.music.play(-1)
 
-        # Draws scoreboard
-
-
         # game looper
         while True:
 

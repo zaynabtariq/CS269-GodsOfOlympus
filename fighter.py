@@ -89,8 +89,7 @@ class Fighter():
                         self.attack_type = 4
                         self.update_time = pygame.time.get_ticks()
                         self.ultimate = True
-                        self.attack(surface,target, self.attack_type)
-
+                        self.attack(surface, target, self.attack_type)
 
 
             #check player 2 controls
