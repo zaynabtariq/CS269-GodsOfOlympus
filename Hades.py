@@ -1,6 +1,6 @@
 """
 Gods of Olympus
-Last Modified: 1/17/23
+Last Modified: 1/20/23
 Course: CS269
 File: Hades.py
 """
@@ -21,7 +21,8 @@ class Hades(Fighter):
         for i in range (1,3):
             img = pygame.image.load(f'Images/hades_idle_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() *1.5, img.get_height() *1.5))
-            temp_list.append(img)
+            img_flipped = pygame.transform.flip(img, True, False)
+            temp_list.append(img_flipped)
         self.animation_list.append(temp_list)
 
         #  1 : idle left
@@ -29,6 +30,7 @@ class Hades(Fighter):
         for i in range(1, 3):
             img = pygame.image.load(f'Images/hades_idle_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
+            img_flipped = pygame.transform.flip(img, True, False)
             temp_list.append(img)
         self.animation_list.append(temp_list)
 
@@ -45,7 +47,8 @@ class Hades(Fighter):
         for i in range(1, 3):
             img = pygame.image.load(f'Images/hades_walkright_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
-            temp_list.append(img)
+            img_flipped = pygame.transform.flip(img, True, False)
+            temp_list.append(img_flipped)
         self.animation_list.append(temp_list)
 
         # 4 : ability1
@@ -63,8 +66,6 @@ class Hades(Fighter):
             img_flipped = pygame.transform.flip(img, True, False)
             temp_list.append(img_flipped)
         self.animation_list.append(temp_list)
-
-
 
         # 6 : ability2
         temp_list = []
@@ -115,8 +116,6 @@ class Hades(Fighter):
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
             temp_list.append(img)
         self.animation_list.append(temp_list)
-
-
         self.image = self.animation_list[self.action][self.frame_index]
         self.char = self.image.get_rect()
         self.char.x = x
@@ -124,6 +123,7 @@ class Hades(Fighter):
         self.direction = True
 
     def update(self):
+        animation_cooldown = 0
         if self.action == 0 or self.action == 1:
             animation_cooldown = 270
         elif self.action == 2 or self.action == 3:
@@ -170,28 +170,34 @@ class Hades(Fighter):
         self.attacking = True
 
         if type == 1:  # ability 1 medium range
-            attacking_rect = pygame.Rect(self.char.centerx - (2 * self.char.width * self.flip), self.char.y,
-                                         2 * self.char.width, self.char.height)
-            if attacking_rect.colliderect(target.char):
+            attacking_rect = pygame.Rect(self.char.centerx - (1 / 2 * self.char.width * self.flip), self.char.y,
+                                         1 / 2 * self.char.width, self.char.height)
+            center = (target.char.centerx, target.char.centery)
+            # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
+
+            if attacking_rect.collidepoint(center):
                 target.health -= 2
-                target.action = 8
+
                 if not self.flip:
-                    target.char.x += 5
+                    target.char.x += 150
+                    target.action = 9
                 else:
-                    target.char.x -= 5
+                    target.char.x -= 150
+                    target.action = 8
 
 
         elif type == 2:  # ability 2 long range
-            attacking_rect = pygame.Rect(0, 750 - self.char.y/3 + 10,
-                                         1300, self.char.height/3)
+            attacking_rect = pygame.Rect(0, 750 - self.char.y / 3 + 10,
+                                         1300, self.char.height / 3)
             if attacking_rect.colliderect(target.char):
                 target.health -= 2
-                target.action = 8
+
                 if not self.flip:
                     target.char.x += 5
+                    target.action = 9
                 else:
                     target.char.x -= 5
-
+                    target.action = 8
 
             for i in range(1, 8):
                 img = pygame.image.load(f'Images/lightning{i}.png')
@@ -200,9 +206,9 @@ class Hades(Fighter):
                 attacking_rect_img_scaled = pygame.transform.scale(attacking_rect_img, (1300, 60))
                 surface.blit(attacking_rect_img_scaled, (0, 600))
 
-            #pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
+            # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 
-        elif type == 3: # ultimate (need to change)
+        elif type == 3: # melee
             attacking_rect = pygame.Rect(self.char.centerx - (2.5 * self.char.width * self.flip), self.char.y,
                                          1 / 4 * self.char.width, self.char.height)
             #pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
@@ -210,6 +216,11 @@ class Hades(Fighter):
             if attacking_rect.collidepoint(center):
                 # does damage ranging from 1 to 3
                 target.health -= Fighter.random_melee(self)
+                if not self.flip:
+                    target.char.x += 150
+                    target.action = 9
+                else:
+                    target.char.x -= 150
+                    target.action = 8
 
         self.attacking = False
-
