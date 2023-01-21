@@ -10,7 +10,7 @@ import pygame
 from pygame import mixer
 from fighter import Fighter
 from Zeus import Zeus
-# from Hades import Hades
+from Hades import Hades
 from map import Map
 from pygame.locals import *
 import sys
@@ -41,7 +41,7 @@ def main():
     ledges = map.draw_ledges()
     # starting location of fighters
     fighter_1 = Zeus(1, 0, HEIGHT-200, ledges, screen)
-    fighter_2 = Zeus(2, WIDTH-400, HEIGHT-500, ledges, screen)
+    fighter_2 = Hades(2, WIDTH-400, HEIGHT-500, ledges, screen)
 
     # game looper
     while True:

@@ -140,8 +140,10 @@ class Hades(Fighter):
 
         # handle animation
         # update image
-        self.image = self.animation_list[self.action][self.frame_index]
-
+        try:  # using try/except to fix the index out of range error
+            self.image = self.animation_list[self.action][self.frame_index]
+        except:
+            print("Try/Except")
 
         # check if enough time has been passed since last update
         if pygame.time.get_ticks() - self.update_time > animation_cooldown:
