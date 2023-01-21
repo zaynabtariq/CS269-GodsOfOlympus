@@ -45,7 +45,7 @@ class Game():
         pygame.display.set_caption("Gods of Olympus")
 
         # Load music
-        mixer.music.load('sound_1.wav')
+        mixer.music.load('Game_sounds/Background_music.mp3')
         mixer.music.play(-1)
 
         # Draws scoreboard    

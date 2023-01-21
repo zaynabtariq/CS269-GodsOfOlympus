@@ -31,6 +31,7 @@ class Fighter():
         self.frame_index = 0
         # 0: idle right , 1: idle left , 2: left walk, 3: right walk, 4: ability1, 5: ability2, 6: ultimate, 7: hurt
         self.action = 0
+        self.ultimate = False
 
 
     def move(self, WIDTH, HEIGHT, target, surface, ledges):
