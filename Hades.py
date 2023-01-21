@@ -53,7 +53,7 @@ class Hades(Fighter):
 
         # 4 : ability1 right
         temp_list = []
-        for i in range(2, 6):
+        for i in range(1, 10):
             img = pygame.image.load(f'Images/hades_ability1_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
             temp_list.append(img)
@@ -61,7 +61,7 @@ class Hades(Fighter):
 
         # 5 : ability1 left
         temp_list = []
-        for i in range (4):
+        for i in range(9):
             img = self.animation_list[4][i]
             img_flipped = pygame.transform.flip(img, True, False)
             temp_list.append(img_flipped)
@@ -140,8 +140,11 @@ class Hades(Fighter):
 
         # handle animation
         # update image
-        self.image = self.animation_list[self.action][self.frame_index]
 
+        try: # using try/except to fix the index out of range error
+            self.image = self.animation_list[self.action][self.frame_index]
+        except:
+            pass
 
         # check if enough time has been passed since last update
         if pygame.time.get_ticks() - self.update_time > animation_cooldown:

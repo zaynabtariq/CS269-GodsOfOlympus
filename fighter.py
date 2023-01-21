@@ -25,6 +25,7 @@ class Fighter():
         self.attacking = False
         self.hit = False
         self.alive = True
+        self.ultimate = False
         self.health = 100
         self.direction = True
         self.update_time = pygame.time.get_ticks()
@@ -64,7 +65,7 @@ class Fighter():
                     self.vel_y = -30
 
                 # attack
-                if key[pygame.K_c] or key[pygame.K_v] or key[pygame.K_q]:
+                if key[pygame.K_c] or key[pygame.K_v] or key[pygame.K_b] or key[pygame.K_q]:
                     self.attacking = True
                     if key[pygame.K_c]:
                         self.attack_type = 1
@@ -78,11 +79,16 @@ class Fighter():
                         self.frame_index = 0
                         self.update_time = pygame.time.get_ticks()
                         self.attack(surface, target, self.attack_type)
-                    if key[pygame.K_q]:
+                    if key[pygame.K_b]:
                         self.action = 10
                         self.frame_index = 0
                         self.update_time = pygame.time.get_ticks()
                         self.attack_type = 3
+                        self.attack(surface,target, self.attack_type)
+                    if key[pygame.K_q]:
+                        self.attack_type = 4
+                        self.update_time = pygame.time.get_ticks()
+                        self.ultimate = True
                         self.attack(surface,target, self.attack_type)
 
 

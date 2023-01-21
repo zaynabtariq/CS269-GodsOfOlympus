@@ -1,14 +1,14 @@
 """
 Gods of Olympus
-Last Modified: 1/19/23 
+Last Modified: 1/20/23
 Course: CS269
 File: map.py
 """
 
 import pygame
 
-
 class Map():
+
     # Constructor
     def __init__(self, num, HEIGHT, WIDTH, ACC, FRIC, FPS, screen):
         self.HEIGHT = HEIGHT
@@ -58,7 +58,7 @@ class Map():
             return ledge_1_rect, ledge_2_rect
 
     # Methods
-    def draw_bg(self, screen):
+    def draw_bg(self):
 
         scaled_bg = pygame.transform.scale(self.bg_image, (self.WIDTH, self.HEIGHT))
 
@@ -79,18 +79,16 @@ class Map():
 
 
     # draw icons next to scoreboard
-
-    def draw_score_icons(self, screen):
+    def draw_score_icons(self):
         fighter1_icon = pygame.image.load("Images/Icons_Zeus.png")
-        screen.blit(fighter1_icon, (30,30))
+        self.screen.blit(fighter1_icon, (30,30))
 
         fighter2_icon = pygame.image.load("Images/Icons_Hades.png")
-        screen.blit(fighter2_icon, (1170,30))
+        self.screen.blit(fighter2_icon, (1170,30))
 
 
     # draws health bars
-
-    def draw_health_bars(self, health, screen, player):
+    def draw_health_bars(self, health, player):
         ratio = health / 100
         '''pygame.draw.rect(screen, (255, 255, 255), (x -2, y-2, 404, 34))
         pygame.draw.rect(screen, (255, 0, 0), (x, y, 400, 30))
@@ -99,15 +97,25 @@ class Map():
         if player == 'fighter_2':
             left_blue_inner = pygame.image.load("Images/left_blue_inner.jpg").convert_alpha()
             scaled_isb2 = pygame.transform.scale(left_blue_inner, (400, 50))
-            screen.blit(scaled_isb2, (150,60))
+            self.screen.blit(scaled_isb2, (150,60))
             left_green_outer = pygame.image.load("Images/left_green_outer.jpg").convert_alpha()
             scaled_osb = pygame.transform.scale(left_green_outer, (400 * ratio, 50))
-            screen.blit(scaled_osb, (150 + (400 - 400 * ratio),60))
+            self.screen.blit(scaled_osb, (150 + (400 - 400 * ratio),60))
 
         if player == 'fighter_1':
             right_red_inner = pygame.image.load("Images/right_red_inner.jpg").convert_alpha()
             scaled_isb = pygame.transform.scale(right_red_inner, (400, 50))
-            screen.blit(scaled_isb, (750,60))
+            self.screen.blit(scaled_isb, (750,60))
             right_purple_outer = pygame.image.load("Images/right_purple_outer.jpg").convert_alpha()
             scaled_osb2 = pygame.transform.scale(right_purple_outer, (400 * ratio, 50))
-            screen.blit(scaled_osb2, (750, 60))
+            self.screen.blit(scaled_osb2, (750, 60))
+
+
+    # draws the current score between the two fighters
+    def draw_stats(self, fighter_1_score, fighter_2_score):
+        # screen, fighter_1 rounds won, fighter_2 rounds won
+        scoreboard = pygame.image.load(f'Images/scorecount{fighter_1_score}_{fighter_2_score}.png')
+        scoreboard = pygame.transform.scale(scoreboard, (125, 50))
+        self.screen.blit(scoreboard, (588, 60))
+
+        #print('Stats shown here')   # NOTE: Function works, just needs the Image/scorecount to be uploaded!

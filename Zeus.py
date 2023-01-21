@@ -14,6 +14,7 @@ class Zeus(Fighter):
         self.y = y
         self.animation_list = []
         self.frame_index = 0
+        self.index = 0
         self.update_time = pygame.time.get_ticks()
         #load images
         #  0 : idle right
@@ -43,15 +44,15 @@ class Zeus(Fighter):
 
         # 3 : walking right
         temp_list = []
-        for i in range(1, 3):
-            img = pygame.image.load(f'Images/rightwalk_redo_{i}.png')
-            img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
-            temp_list.append(img)
+        for i in range(2):
+            img = self.animation_list[2][i]
+            img_flipped = pygame.transform.flip(img, True, False)
+            temp_list.append(img_flipped)
         self.animation_list.append(temp_list)
 
         # 4 : ability1
         temp_list = []
-        for i in range(2, 6):
+        for i in range(1, 6):
             img = pygame.image.load(f'Images/ability1_redo_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
             temp_list.append(img)
@@ -116,6 +117,14 @@ class Zeus(Fighter):
             temp_list.append(img_flipped)
         self.animation_list.append(temp_list)
 
+        # ultimate
+        self.ultimateList = []
+        for i in range(1,5):
+            img = pygame.image.load(f'Images/ultimate{i}.png')
+            img = pygame.transform.scale(img, (200,250))
+            self.ultimateList.append(img)
+
+        self.ultimate_img = self.ultimateList[self.index]
         self.image = self.animation_list[self.action][self.frame_index]
         self.char = self.image.get_rect()
         self.char.x = x
@@ -139,10 +148,26 @@ class Zeus(Fighter):
         elif self.action == 10 or self.action == 11:
             animation_cooldown = 60
 
+        if self.ultimate:
+            animation_cooldown = 80
+            self.index = 0
+            self.ultimate_img = self.ultimateList[self.index]
+            if pygame.time.get_ticks() - self.update_time > animation_cooldown:
+                self.update_time = pygame.time.get_ticks()
+                self.index += 1
+
+            if self.index >= len(self.ultimateList):
+                self.index = 0
+                self.ultimate = False
+
 
         # handle animation
         # update image
-        self.image = self.animation_list[self.action][self.frame_index]
+
+        try: # solving error (for now)
+            self.image = self.animation_list[self.action][self.frame_index]
+        except:
+            pass
 
 
         # check if enough time has been passed since last update
@@ -184,8 +209,10 @@ class Zeus(Fighter):
                 target.action = 8
                 if not self.flip:
                     target.char.x += 150
+                    target.action = 9
                 else:
                     target.char.x -= 150
+                    target.action = 8
 
 
         elif type == 2:  # ability 2 long range
@@ -196,8 +223,10 @@ class Zeus(Fighter):
                 target.action = 8
                 if not self.flip:
                     target.char.x += 5
+                    target.action = 9
                 else:
                     target.char.x -= 5
+                    target.action = 8
 
 
             for i in range(1, 8):
@@ -209,7 +238,7 @@ class Zeus(Fighter):
 
             #pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 
-        elif type == 3: # ultimate (need to change)
+        elif type == 3: # melee
             attacking_rect = pygame.Rect(self.char.centerx - (2.5 * self.char.width * self.flip), self.char.y,
                                          1 / 4 * self.char.width, self.char.height)
             #pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
@@ -217,5 +246,27 @@ class Zeus(Fighter):
             if attacking_rect.collidepoint(center):
                 # does damage ranging from 1 to 3
                 target.health -= Fighter.random_melee(self)
+
+                if not self.flip:
+                    target.char.x += 150
+                    target.action = 9
+                else:
+                    target.char.x -= 150
+                    target.action = 8
+
+        elif type == 4:  # ultimate
+            attacking_rect = pygame.Rect(self.char.centerx - 100, self.char.y, 200, 250)
+            center = (target.char.centerx, target.char.centery)
+            if attacking_rect.collidepoint(center):
+                target.health -= 2
+
+                if not self.flip:
+                    target.char.x += 5
+                    target.action = 9
+                else:
+                    target.char.x -= 5
+                    target.action = 8
+
+
 
         self.attacking = False
