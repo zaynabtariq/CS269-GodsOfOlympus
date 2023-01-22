@@ -33,14 +33,14 @@ class Game():
         #define fighter variables
         self.ledges = self.map.draw_ledges()
 
-        # starting location of fighters
-        self.fighter_1 = Zeus(1, 0, HEIGHT - 200, self.ledges, self.screen)
-        self.fighter_2 = Zeus(2, WIDTH - 400, HEIGHT-500, self.ledges, self.screen)
-
 
     # Runs the game
     def runGame(self):
-
+        
+        # starting location of fighters
+        self.fighter_1 = Zeus(1, 0, HEIGHT - 200, self.ledges, self.screen)
+        self.fighter_2 = Zeus(2, WIDTH - 400, HEIGHT-500, self.ledges, self.screen)
+        
         # Sets screen header
         pygame.display.set_caption("Gods of Olympus")
 
