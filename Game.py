@@ -33,23 +33,20 @@ class Game():
         #define fighter variables
         self.ledges = self.map.draw_ledges()
 
-        # starting location of fighters
-        self.fighter_1 = Zeus(1, 0, HEIGHT - 200, self.ledges, self.screen)
-        self.fighter_2 = Hades(2, WIDTH - 400, HEIGHT-500, self.ledges, self.screen)
-
 
     # Runs the game
     def runGame(self):
-
+        
+        # starting location of fighters
+        self.fighter_1 = Zeus(1, 0, HEIGHT - 200, self.ledges, self.screen)
+        self.fighter_2 = Zeus(2, WIDTH - 400, HEIGHT-500, self.ledges, self.screen)
+        
         # Sets screen header
         pygame.display.set_caption("Gods of Olympus")
 
         # Load music
         mixer.music.load('Game_sounds/Background_music.mp3')
         mixer.music.play(-1)
-
-        # Draws scoreboard    
-        self.map.draw_stats(self.f1_wins, self.f2_wins)
 
         # game looper
         while True:
@@ -81,7 +78,11 @@ class Game():
             self.map.draw_health_bars(self.fighter_1.health, 'fighter_2')
             self.map.draw_health_bars(self.fighter_2.health, 'fighter_1')
             self.map.draw_score_icons() # draw icons of idols
-
+            
+            # Draws scoreboard    
+            self.map.draw_stats(self.f1_wins, self.f2_wins)
+            
+            
             # allows player to exit
             key = pygame.key.get_pressed()
             for event in pygame.event.get():
