@@ -215,6 +215,12 @@ class Zeus(Fighter):
                 else:
                     target.health -= 4  # ultimate doubles the damage
 
+                # knockback animation
+                if not self.flip:
+                    target.char.x += 10
+                else:
+                    target.char.x -= 10
+
         elif type == 2:  # ability 2 long range
             attacking_rect = pygame.Rect(0, 750 - self.char.y/3 + 10,
                                          1300, self.char.height/3)
@@ -226,10 +232,10 @@ class Zeus(Fighter):
 
                 # knockback animation
                 if not self.flip:
-                    target.char.x += 100
+                    target.char.x += 70
                     target.action = 9
                 else:
-                    target.char.x -= 100
+                    target.char.x -= 70
                     target.action = 8
 
             for i in range(1, 8):
@@ -254,10 +260,10 @@ class Zeus(Fighter):
                     target.health -= 2*(Fighter.random_melee(self)) # ultimate doubles the damage
                 # knockback animation
                 if not self.flip:
-                    target.char.x += 150
+                    target.char.x += 5
                     target.action = 9
                 else:
-                    target.char.x -= 150
+                    target.char.x -= 5
                     target.action = 8
 
         self.attacking = False

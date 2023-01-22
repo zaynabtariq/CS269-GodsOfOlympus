@@ -8,7 +8,7 @@ File: Game.py
 import pygame
 from pygame import mixer
 from Zeus import Zeus
-# from Hades import Hades
+from Hades import Hades
 from map import Map
 from pygame.locals import *
 import sys
@@ -35,7 +35,7 @@ class Game():
 
         # starting location of fighters
         self.fighter_1 = Zeus(1, 0, HEIGHT - 200, self.ledges, self.screen)
-        self.fighter_2 = Zeus(2, WIDTH - 400, HEIGHT-500, self.ledges, self.screen)
+        self.fighter_2 = Hades(2, WIDTH - 400, HEIGHT-500, self.ledges, self.screen)
 
 
     # Runs the game
