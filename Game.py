@@ -48,9 +48,6 @@ class Game():
         mixer.music.load('Game_sounds/Background_music.mp3')
         mixer.music.play(-1)
 
-        # Draws scoreboard    
-        self.map.draw_stats(self.f1_wins, self.f2_wins)
-
         # game looper
         while True:
 
@@ -81,7 +78,11 @@ class Game():
             self.map.draw_health_bars(self.fighter_1.health, 'fighter_2')
             self.map.draw_health_bars(self.fighter_2.health, 'fighter_1')
             self.map.draw_score_icons() # draw icons of idols
-
+            
+            # Draws scoreboard    
+            self.map.draw_stats(self.f1_wins, self.f2_wins)
+            
+            
             # allows player to exit
             key = pygame.key.get_pressed()
             for event in pygame.event.get():
