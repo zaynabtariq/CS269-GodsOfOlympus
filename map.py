@@ -113,8 +113,8 @@ class Map():
 
     # draws the current score between the two fighters
     def draw_stats(self, fighter_1_score, fighter_2_score): # screen, fighter_1 rounds won, fighter_2 rounds won
-        #scoreboard = pygame.image.load(f'Images/scorecount{fighter_1_score}_{fighter_2_score}.png')
-        #scoreboard = pygame.transform.scale(scoreboard, (125, 50))
-        #self.screen.blit(scoreboard, (588, 60))
+        scoreboard = pygame.image.load(f'Images/scorecount{fighter_1_score}_{fighter_2_score}.png')
+        scoreboard = pygame.transform.scale(scoreboard, (125, 50))
+        self.screen.blit(scoreboard, (588, 60))
 
-        print('Stats shown here')   # NOTE: Function works, just needs the Image/scorecount to be uploaded!
+        # print('Stats shown here')

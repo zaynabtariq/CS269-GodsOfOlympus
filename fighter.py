@@ -11,12 +11,16 @@ import random
 
 
 class Fighter():
-    def __init__(self, player, x, y, ledges, surface):
+    def __init__(self, player, x, y, ledges, surface, target):
+        self.flash_time = 0
+        self.ultimate_time = 0
         self.attack_clock = pygame.time.Clock()
         self.ultimateAnimation = pygame.time.get_ticks()
         self.flip = False  # used to make sure the character is always facing the opponent
         self.player = player
         self.surface = surface
+        self.name = None
+        self.target = target
         self.x = x
         self.y = y
         self.char = pygame.Rect((x, y, 50, 100))
@@ -36,7 +40,7 @@ class Fighter():
         # 0: idle right , 1: idle left , 2: left walk, 3: right walk, 4: ability1 left, 5: ability1 right,
         # 6: ability2 left, 7: ability2 right, 8: knock back right, 9: knock back left, 10: melee right, 11: melee left
         self.action = 0
-        self.cooldown_time = 50 # cannot attack again within 0.5 sections
+        self.cooldown_time = 100 # cannot attack again within 0.1 seconds
 
 
     def move(self, WIDTH, HEIGHT, target, surface, ledges):
@@ -92,10 +96,11 @@ class Fighter():
                             self.update_time = pygame.time.get_ticks()
                             self.startUltimate = pygame.time.get_ticks()
                             self.ultimateAnimation = pygame.time.get_ticks()
+                            self.ultimate_time = pygame.time.get_ticks()
+                            self.flash_time = pygame.time.get_ticks()
                             self.ultimate = True
                             self.attack_type = 0
                             self.attack(surface, target, self.attack_type)
-
 
             #check player 2 controls
 
@@ -140,6 +145,8 @@ class Fighter():
                             self.update_time = pygame.time.get_ticks()
                             self.startUltimate = pygame.time.get_ticks()
                             self.ultimateAnimation = pygame.time.get_ticks()
+                            self.ultimate_time = pygame.time.get_ticks()
+                            self.flash_time = pygame.time.get_ticks()
                             self.ultimate = True
                             self.attack_type = 0
                             self.attack(surface, target, self.attack_type)
@@ -231,3 +238,5 @@ class Fighter():
 
     def draw(self, surface):
         pygame.draw.rect(surface, (255, 0, 0), self.char)
+
+

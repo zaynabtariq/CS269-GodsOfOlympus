@@ -8,8 +8,8 @@ import pygame
 from fighter import Fighter
 
 class Zeus(Fighter):
-    def __init__(self, player, x, y, ledges, surface):
-        super().__init__(player, x, y, ledges, surface)
+    def __init__(self, player, x, y, ledges, surface, target):
+        super().__init__(player, x, y, ledges, surface, target)
         self.lightning = pygame.image.load('Images/lightning7.png')
         self.x = x
         self.y = y
@@ -17,6 +17,7 @@ class Zeus(Fighter):
         self.frame_index = 0
         self.index = 0
         self.update_time = pygame.time.get_ticks()
+        self.name = 'Zeus'
         #load images
         #  0 : idle right
         temp_list = []
@@ -51,7 +52,7 @@ class Zeus(Fighter):
             temp_list.append(img_flipped)
         self.animation_list.append(temp_list)
 
-        # 4 : ability1
+        # 4 : ability1 right
         temp_list = []
         for i in range(1, 6):
             img = pygame.image.load(f'Images/ability1_redo_{i}.png')
@@ -68,7 +69,7 @@ class Zeus(Fighter):
             temp_list.append(img)
         self.animation_list.append(temp_list)
 
-        # 6 : ability2
+        # 6 : ability2 right
         temp_list = []
         for i in range(1, 12):
             img = pygame.image.load(f'Images/right_ability2_redo_{i}.png')

@@ -26,6 +26,8 @@ class Game():
         self.f2_wins = 0
         self.FramePerSec = pygame.time.Clock()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        self.fighter_1 = None
+        self.fighter_2 = None
 
         # load map
         self.map = Map(1, HEIGHT, WIDTH, ACC, FRIC, FPS, self.screen)
@@ -38,8 +40,8 @@ class Game():
     def runGame(self):
         
         # starting location of fighters
-        self.fighter_1 = Zeus(1, 0, HEIGHT - 200, self.ledges, self.screen)
-        self.fighter_2 = Zeus(2, WIDTH - 400, HEIGHT-500, self.ledges, self.screen)
+        self.fighter_1 = Zeus(1, 0, self.HEIGHT - 200, self.ledges, self.screen, self.fighter_2)
+        self.fighter_2 = Hades(2, self.WIDTH - 400, self.HEIGHT-500, self.ledges, self.screen, self.fighter_1)
         
         # Sets screen header
         pygame.display.set_caption("Gods of Olympus")

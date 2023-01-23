@@ -8,13 +8,17 @@ import pygame
 from fighter import Fighter
 
 class Hades(Fighter):
-    def __init__(self, player, x, y, ledges, surface):
-        super().__init__(player, x, y, ledges, surface)
+    def __init__(self, player, x, y, ledges, surface, target):
+        super().__init__(player, x, y, ledges, surface, target)
         self.x = x
         self.y = y
         self.animation_list = []
         self.frame_index = 0
         self.update_time = pygame.time.get_ticks()
+        self.ultimate_time = 0
+        self.flash_time = 0
+        self.num_fireballs = 0
+        self.name = 'Hades'
         # load images
         #  0 : idle right
         temp_list = []
@@ -67,26 +71,28 @@ class Hades(Fighter):
             temp_list.append(img_flipped)
         self.animation_list.append(temp_list)
 
-        # 6 : ability2
+        # 6 : ability2 right
         temp_list = []
-        for i in range(1, 7):
-            img = pygame.image.load(f'Images/hades_melee_{i}.png')
+        for i in range(1, 6):
+            img = pygame.image.load(f'Images/hades_ability2_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
-            temp_list.append(img)
-        self.animation_list.append(temp_list)
-
-        # 7 : ability2 left
-        temp_list = []
-        for i in range(6):
-            img = self.animation_list[6][i]
             img_flipped = pygame.transform.flip(img, True, False)
             temp_list.append(img_flipped)
         self.animation_list.append(temp_list)
 
+        # 7 : ability2 left
+        temp_list = []
+        for i in range(5):
+            img = self.animation_list[6][i]
+            img_flipped = pygame.transform.flip(img, True, False)
+            temp_list.append(img_flipped)
+
+        self.animation_list.append(temp_list)
+
         # 8 : attacked right
         temp_list = []
-        for i in range(1, 7):
-            img = pygame.image.load(f'Images/knockback_redo_{i}.png')
+        for i in range(1, 5):
+            img = pygame.image.load(f'Images/hades_knockback_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
             temp_list.append(img)
         self.animation_list.append(temp_list)
@@ -94,7 +100,7 @@ class Hades(Fighter):
 
         # 9: attacked left
         temp_list = []
-        for i in range(6):
+        for i in range(4):
             img = self.animation_list[8][i]
             img_flipped = pygame.transform.flip(img, True, False)
             temp_list.append(img_flipped)
@@ -121,6 +127,8 @@ class Hades(Fighter):
         self.char.x = x
         self.char.y = y
         self.direction = True
+        self.fireballs = []
+        self.last_attack_time = 0
 
     def update(self):
         animation_cooldown = 0
@@ -131,9 +139,17 @@ class Hades(Fighter):
         elif self.action == 4 or self.action == 5:
             animation_cooldown = 100
         elif self.action == 6 or self.action == 7:
-            animation_cooldown = 80
-        elif self.action == 8:
-            animation_cooldown = 50
+            animation_cooldown = 150
+            target_rect = (self.target.char.centerx - 10, self.target.char.y, 20, 220)
+            for fireball in self.fireballs:
+                fireball.update()
+                # pygame.draw.rect(surface, (0, 255, 0), target_rect)
+                if fireball.rect.colliderect(target_rect):
+                    self.target.health -= 2
+                    self.fireballs.remove(fireball)
+
+        elif self.action == 8 or self.action == 9:
+            animation_cooldown = 100
         elif self.action == 10 or self.action == 11:
             animation_cooldown = 60
 
@@ -164,9 +180,25 @@ class Hades(Fighter):
         self.update_time = pygame.time.get_ticks()
 
     def draw(self, surface):
-        surface.blit(self.image, self.char)
+        if not self.ultimate:
+            surface.blit(self.image, self.char)
+        if self.ultimate:
+            current_time = pygame.time.get_ticks()
+            if current_time - self.ultimate_time > 9000:
+                self.ultimate = False
+                self.ultimate_time = 0
+            elif current_time - self.flash_time > 3000:
+                # Flash the player here
+                surface.blit(self.image, self.char)
+                # reset flash time
+                self.flash_time = current_time
 
-
+        if self.action == 6 or self.action == 7:
+            for fireball in self.fireballs:
+                surface.blit(fireball.image, fireball.pos)
+                if fireball.pos[0] > 1300 or fireball.pos[0] < 0 or fireball.pos[1] > 750 or fireball.pos[1] < 0:
+                    self.fireballs.remove(fireball)
+                    self.num_fireballs -= 1
 
     def attack(self, surface,  target, type):
         self.attacking = True
@@ -178,35 +210,32 @@ class Hades(Fighter):
             # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 
             if attacking_rect.collidepoint(center):
-                target.health -= 2
+                target.health -= 5
+                if self.ultimate:
+                    if self.health < 100:
+                        self.health += 3
 
                 if not self.flip:
-                    target.char.x += 150
+                    target.char.x += 70
                     target.action = 9
                 else:
-                    target.char.x -= 150
+                    target.char.x -= 70
                     target.action = 8
 
 
         elif type == 2:  # ability 2 long range
-            attacking_rect = pygame.Rect(0, 750 - self.char.y / 3 + 10,
-                                         1300, self.char.height / 3)
-            if attacking_rect.colliderect(target.char):
-                target.health -= 2
 
-                if not self.flip:
-                    target.char.x += 5
-                    target.action = 9
-                else:
-                    target.char.x -= 5
-                    target.action = 8
+            if self.update_time - self.last_attack_time > 1500:
+                # create fireball in 3 directions
+                self.last_attack_time = self.update_time
+                fireball = Fireball((self.char.centerx - (50 * self.flip), self.char.centery), (0, -1), 20)
+                self.fireballs.append(fireball)
+                fireball = Fireball((self.char.centerx - (50 * self.flip), self.char.centery), (1, 0), 20)
+                self.fireballs.append(fireball)
+                fireball = Fireball((self.char.centerx - (50 * self.flip), self.char.centery), (-1, 0), 20)
+                self.fireballs.append(fireball)
+                self.num_fireballs += 1
 
-            for i in range(1, 8):
-                img = pygame.image.load(f'Images/lightning{i}.png')
-                img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
-                attacking_rect_img = img
-                attacking_rect_img_scaled = pygame.transform.scale(attacking_rect_img, (1300, 60))
-                surface.blit(attacking_rect_img_scaled, (0, 600))
 
             # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 
@@ -219,10 +248,34 @@ class Hades(Fighter):
                 # does damage ranging from 1 to 3
                 target.health -= Fighter.random_melee(self)
                 if not self.flip:
-                    target.char.x += 150
+                    target.char.x += 5
                     target.action = 9
                 else:
-                    target.char.x -= 150
+                    target.char.x -= 5
                     target.action = 8
 
         self.attacking = False
+
+class Fireball:
+    def __init__(self, player_pos, fireball_direction, speed):
+        self.pos = list(player_pos)
+        self.speed = speed
+        self.direction = fireball_direction
+        if self.direction == (1, 0):
+            self.image = pygame.image.load("Images/hades_fireball.png")
+            self.image = pygame.transform.scale(self.image, (50, 50))
+        elif self.direction == (-1, 0):
+            self.image = pygame.image.load("Images/hades_fireball.png")
+            self.image = pygame.transform.scale(self.image, (50, 50))
+            self.image = pygame.transform.flip(self.image, True, False)
+        else:
+            self.image = pygame.image.load("Images/hades_fireball.png")
+            self.image = pygame.transform.scale(self.image, (50, 50))
+            self.image = pygame.transform.rotate(self.image, 90)
+        self.rect = self.image.get_rect()
+
+
+    def update(self):
+        self.pos[0] += self.direction[0] * self.speed
+        self.pos[1] += self.direction[1] * self.speed
+        self.rect.center = self.pos

@@ -111,7 +111,6 @@ while is_running:
             manager.process_events(event)
             manager.update(time_delta)
 
-    
     # Draw buttons
     for manager in all_managers:
         manager.draw_ui(window_surface)
