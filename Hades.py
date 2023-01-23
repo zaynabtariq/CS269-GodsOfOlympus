@@ -211,6 +211,7 @@ class Hades(Fighter):
 
             if attacking_rect.collidepoint(center):
                 target.health -= 5
+                
                 if self.health < 100:
                     self.health += 3
 

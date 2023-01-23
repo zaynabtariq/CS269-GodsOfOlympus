@@ -142,7 +142,7 @@ class Zeus(Fighter):
         elif self.action == 4 or self.action == 5:
             animation_cooldown = 80
         elif self.action == 6 or self.action == 7:
-            animation_cooldown = 80
+            animation_cooldown = 50
         elif self.action == 8 or self.action == 9:
             animation_cooldown = 50
         elif self.action == 10 or self.action == 11:
