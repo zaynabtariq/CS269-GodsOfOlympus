@@ -11,7 +11,7 @@ import random
 
 
 class Fighter():
-    def __init__(self, player, x, y, ledges, surface, target):
+    def __init__(self, player, x, y, ledges, surface):
         self.flash_time = 0
         self.ultimate_time = 0
         self.attack_clock = pygame.time.Clock()
@@ -20,7 +20,6 @@ class Fighter():
         self.player = player
         self.surface = surface
         self.name = None
-        self.target = target
         self.x = x
         self.y = y
         self.char = pygame.Rect((x, y, 50, 100))
@@ -198,20 +197,21 @@ class Fighter():
             # collision with ledges
             for ledge in ledges:
                 if self.char.x >= ledge[0] - 190 and self.char.x <= (ledge[0] + ledge[2]) - 190:
-                    if self.char.bottom <= ledge[1]:
+                    if (self.char.colliderect(ledge) == True) and self.char.bottom <= ledge[1] + ledge[3]:
                         self.vel_y = 0
-                        #self.jump = False
-                        dy = HEIGHT - self.char.bottom + ledge[1] - HEIGHT
+                        self.jump = False
+                        if key[pygame.K_w] or key[pygame.K_UP]:
+                            continue
+                        else:
+                            dy = - self.char.bottom + ledge[1]
                         if self.player == 1:
                             if key[pygame.K_s]:
                                 self.vel_y = 30
                                 dy = HEIGHT - self.char.bottom - 100
-                                self.jump = False
                         elif self.player == 2:
                             if key[pygame.K_DOWN]:
                                 self.vel_y = 30
                                 dy = HEIGHT - self.char.bottom - 100
-                                self.jump = False
 
             # update player position
             self.char.x += dx
@@ -238,5 +238,4 @@ class Fighter():
 
     def draw(self, surface):
         pygame.draw.rect(surface, (255, 0, 0), self.char)
-
 

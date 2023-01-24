@@ -8,8 +8,8 @@ import pygame
 from fighter import Fighter
 
 class Hades(Fighter):
-    def __init__(self, player, x, y, ledges, surface, target):
-        super().__init__(player, x, y, ledges, surface, target)
+    def __init__(self, player, x, y, ledges, surface):
+        super().__init__(player, x, y, ledges, surface)
         self.x = x
         self.y = y
         self.animation_list = []
@@ -130,7 +130,7 @@ class Hades(Fighter):
         self.fireballs = []
         self.last_attack_time = 0
 
-    def update(self):
+    def update(self, target):
         animation_cooldown = 0
         if self.action == 0 or self.action == 1:
             animation_cooldown = 270
@@ -140,12 +140,12 @@ class Hades(Fighter):
             animation_cooldown = 100
         elif self.action == 6 or self.action == 7:
             animation_cooldown = 150
-            target_rect = (self.target.char.centerx - 10, self.target.char.y, 20, 220)
+            target_rect = (target.char.centerx - 10, target.char.y, 20, 220)
             for fireball in self.fireballs:
                 fireball.update()
                 # pygame.draw.rect(surface, (0, 255, 0), target_rect)
                 if fireball.rect.colliderect(target_rect):
-                    self.target.health -= 2
+                    target.health -= 2
                     self.fireballs.remove(fireball)
 
         elif self.action == 8 or self.action == 9:
@@ -211,7 +211,7 @@ class Hades(Fighter):
 
             if attacking_rect.collidepoint(center):
                 target.health -= 5
-                
+
                 if self.health < 100:
                     self.health += 3
 

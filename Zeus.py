@@ -8,8 +8,8 @@ import pygame
 from fighter import Fighter
 
 class Zeus(Fighter):
-    def __init__(self, player, x, y, ledges, surface, target):
-        super().__init__(player, x, y, ledges, surface, target)
+    def __init__(self, player, x, y, ledges, surface):
+        super().__init__(player, x, y, ledges, surface)
         self.lightning = pygame.image.load('Images/lightning7.png')
         self.x = x
         self.y = y
@@ -133,7 +133,7 @@ class Zeus(Fighter):
 
 
 
-    def update(self):
+    def update(self, target):
         animation_cooldown = 0
         if self.action == 0 or self.action == 1:
             animation_cooldown = 270
