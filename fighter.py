@@ -11,7 +11,7 @@ import random
 
 
 class Fighter():
-    def __init__(self, player, x, y, ledges, surface, target):
+    def __init__(self, player, x, y, ledges, surface):
         self.flash_time = 0
         self.ultimate_time = 0
         self.attack_clock = pygame.time.Clock()
@@ -20,7 +20,6 @@ class Fighter():
         self.player = player
         self.surface = surface
         self.name = None
-        self.target = target
         self.x = x
         self.y = y
         self.char = pygame.Rect((x, y, 50, 100))
@@ -86,6 +85,7 @@ class Fighter():
                             self.frame_index = 0
                             self.update_time = pygame.time.get_ticks()
                             self.attack(surface, target, self.attack_type)
+
                         if key[pygame.K_b]:
                             self.action = 10
                             self.frame_index = 0
