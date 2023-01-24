@@ -92,9 +92,8 @@ class Game():
                     pygame.quit()
                     sys.exit()
 
-                if key[pygame.K_ESCAPE]:
-                    pygame.quit()
-                    sys.exit()
+#                 if key[pygame.K_ESCAPE] or key[pygame.K_p]:
+#                     pause()
 
             # sets max frame rate
             pygame.display.update()

@@ -204,7 +204,7 @@ class Fighter():
                         if key[pygame.K_w] or key[pygame.K_UP]:
                             continue
                         else:
-                            dy = - self.char.bottom + ledge[1]
+                            dy = - self.char.bottom + ledge[1]                        
                         if self.player == 1:
                             if key[pygame.K_s]:
                                 self.vel_y = 30
