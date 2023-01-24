@@ -155,6 +155,12 @@ class charSelect():
         self.background.blit(sky_image, (0, 0))
         self.background.blit(cloud, (0, self.y - 115))
 
+        # Set music
+        pygame.mixer.music.unload()
+        pygame.mixer.music.load('Game_sounds/Player_select.wav')
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(0.3)
+
         self.add_maps()
         self.add_characters()
 
@@ -220,7 +226,7 @@ class charSelect():
                         map_num = 3
                     
                     print('Returning', p1_character_num, ',', p2_character_num, ',', map_num)
-                    return p1_character_num, p2_character_num   # Returns number for characters & maps selected
+                    return p1_character_num, p2_character_num, map_num   # Returns number for characters & maps selected
 
                 if event.type == pygame_gui.UI_BUTTON_PRESSED:  # If a button is pressed
                     if event.ui_element == self.all_buttons[0]: # P1 button

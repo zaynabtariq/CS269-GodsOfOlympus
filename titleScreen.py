@@ -81,6 +81,10 @@ class titleScreen():
     # Initializes the title screen
     def initializeTitleScreen(self):
         pygame.display.set_caption('Title Screen')
+        pygame.mixer.music.unload()
+        pygame.mixer.music.load('Game_sounds/Title_music.wav')
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(0.3)
 
         # Initialize background
         background = pygame.Surface((self.x, self.y))
