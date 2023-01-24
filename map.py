@@ -26,9 +26,9 @@ class Map():
         if self.num == 1:
             self.bg_image = pygame.image.load("Images/skybackground_2.png").convert_alpha()
         elif self.num == 2:
-            self.bg_image = pygame.image.load("Images/sky.png").convert_alpha()
+            self.bg_image = pygame.image.load("Images/underworld.png").convert_alpha()
         elif self.num == 3:
-            self.bg_image = pygame.image.load("Images/sky.png").convert_alpha()
+            self.bg_image = pygame.image.load("Images/underthesea_bg.png").convert_alpha()
 
     # colors
     RED = (255, 0, 0)
@@ -57,29 +57,93 @@ class Map():
 
             return ledge_1_rect, ledge_2_rect
 
+         if self.num == 2:
+            ledge_1_rect = pygame.Rect((155, self.HEIGHT - 300, 260, 40))  # (left, top), (width, height)
+            ledge_1 = pygame.image.load("Images/underworld_platform.png").convert_alpha()
+            ledge_1_scaled = pygame.transform.scale(ledge_1, (300, 81))
+            self.screen.blit(ledge_1_scaled, (150, 410))
+
+            ledge_2_rect = pygame.Rect((self.WIDTH - 485, self.HEIGHT - 350, 255, 40))  # (left, top), (width, height)
+            ledge_2 = pygame.image.load("Images/underworld_platform.png").convert_alpha()
+            ledge_2_scaled = pygame.transform.scale(ledge_2, (300, 81))
+            self.screen.blit(ledge_2_scaled, (self.WIDTH - 500, 360))
+
+            return ledge_1_rect, ledge_2_rect
+
+         if self.num == 3:
+            ledge_1_rect = pygame.Rect((155, self.HEIGHT - 300, 260, 40))  # (left, top), (width, height)
+            ledge_1 = pygame.image.load("Images/underthesea_platform.png").convert_alpha()
+            ledge_1_scaled = pygame.transform.scale(ledge_1, (300, 81))
+            self.screen.blit(ledge_1_scaled, (150, 410))
+
+            ledge_2_rect = pygame.Rect((self.WIDTH - 485, self.HEIGHT - 350, 255, 40))  # (left, top), (width, height)
+            ledge_2 = pygame.image.load("Images/underthesea_platform.png").convert_alpha()
+            ledge_2_scaled = pygame.transform.scale(ledge_2, (300, 81))
+            self.screen.blit(ledge_2_scaled, (self.WIDTH - 500, 360))
+
+            return ledge_1_rect, ledge_2_rect
+
     # Methods
     def draw_bg(self):
 
-        scaled_bg = pygame.transform.scale(self.bg_image, (self.WIDTH, self.HEIGHT))
+        if self.num == 1:
 
-        self.screen.fill((0, 0, 0))
-        self.screen.blit(scaled_bg, (self.scroll, 0))
-
-        self.screen.blit(scaled_bg, (self.WIDTH + self.scroll, 0))
-
-        if self.scroll == -self.WIDTH:
+            scaled_bg = pygame.transform.scale(self.bg_image, (self.WIDTH, self.HEIGHT))
+            # making the background a scrolling/moving background
+            self.screen.fill((0, 0, 0))
+            self.screen.blit(scaled_bg, (self.scroll, 0))
             self.screen.blit(scaled_bg, (self.WIDTH + self.scroll, 0))
-            self.scroll = 0
 
-        self.scroll -= 1
+            if self.scroll == -self.WIDTH:
+                self.screen.blit(scaled_bg, (self.WIDTH + self.scroll, 0))
+                self.scroll = 0
 
-        ground = pygame.image.load("Images/sky_floor.png").convert_alpha()
-        ground_scaled = pygame.transform.scale(ground, (self.WIDTH + 10, 110))
-        self.screen.blit(ground_scaled, (0, self.HEIGHT -110))
+            self.scroll -= 1
+
+            ground = pygame.image.load("Images/sky_floor.png").convert_alpha()
+            ground_scaled = pygame.transform.scale(ground, (self.WIDTH + 10, 110))
+            self.screen.blit(ground_scaled, (0, self.HEIGHT -110))
+
+        if self.num == 2:
+
+            scaled_bg = pygame.transform.scale(self.bg_image, (self.WIDTH, self.HEIGHT))
+            # making the background a scrolling/moving background
+            self.screen.fill((0, 0, 0))
+            self.screen.blit(scaled_bg, (self.scroll, 0))
+            self.screen.blit(scaled_bg, (self.WIDTH + self.scroll, 0))
+
+            if self.scroll == -self.WIDTH:
+                self.screen.blit(scaled_bg, (self.WIDTH + self.scroll, 0))
+                self.scroll = 0
+
+            self.scroll -= 1
+
+            ground = pygame.image.load("Images/underworld_floor.png").convert_alpha()
+            ground_scaled = pygame.transform.scale(ground, (self.WIDTH + 10, 110))
+            self.screen.blit(ground_scaled, (0, self.HEIGHT - 110))
+
+        if self.num == 3:
+
+            scaled_bg = pygame.transform.scale(self.bg_image, (self.WIDTH, self.HEIGHT))
+            # making the background a scrolling/moving background
+            self.screen.fill((0, 0, 0))
+            self.screen.blit(scaled_bg, (self.scroll, 0))
+            self.screen.blit(scaled_bg, (self.WIDTH + self.scroll, 0))
+
+            if self.scroll == -self.WIDTH:
+                self.screen.blit(scaled_bg, (self.WIDTH + self.scroll, 0))
+                self.scroll = 0
+
+            self.scroll -= 1
+
+            ground = pygame.image.load("Images/underthesea_floor.png").convert_alpha()
+            ground_scaled = pygame.transform.scale(ground, (self.WIDTH + 10, 110))
+            self.screen.blit(ground_scaled, (0, self.HEIGHT - 110))
 
 
     # draw icons next to scoreboard
     def draw_score_icons(self):
+
         fighter1_icon = pygame.image.load("Images/Icons_Zeus.png")
         self.screen.blit(fighter1_icon, (30,30))
 
