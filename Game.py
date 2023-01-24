@@ -1,14 +1,16 @@
 """
 Gods of Olympus
-Last Modified: 1/20/23
+Last Modified: 1/24/23
 Course: CS269
 File: Game.py
 """
 
 import pygame
+import pygame_gui
 from pygame import mixer
 from Zeus import Zeus
 from Hades import Hades
+from helperUI import helperUI
 from map import Map
 from pygame.locals import *
 import sys
@@ -28,6 +30,15 @@ class Game():
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         self.fighter_1 = None
         self.fighter_2 = None
+        self.is_running = True
+        self.return_to_menu = False
+
+        # Settings button
+        self.paused = False
+        self.settings_manager = pygame_gui.UIManager((self.WIDTH, self.HEIGHT), 'sky_theme.json')
+        self.settings_button = pygame_gui.elements.UIButton(pygame.Rect((self.WIDTH - 50, 10), (40, 40)), text = '', manager = self.settings_manager)        
+        self.settings_gui_enabled = False                                           
+        self.helper_ui = helperUI(self.WIDTH, self.HEIGHT, self.screen)
 
         # load map
         self.map = Map(1, HEIGHT, WIDTH, ACC, FRIC, FPS, self.screen)
@@ -35,7 +46,79 @@ class Game():
         #define fighter variables
         self.ledges = self.map.draw_ledges()
 
+    # Colors all visible pixels of an image
+    def color_surface(self, surface, red, green, blue):
+        arr = pygame.surfarray.pixels3d(surface)
+        arr[:,:,0] = red
+        arr[:,:,1] = green
+        arr[:,:,2] = blue
 
+    # Resumes the game
+    def resumeGame(self, buttons, managers):
+        print('Resuming game...')
+        self.helper_ui.remove_access_buttons(buttons, managers)
+        self.is_running = False
+        #pygame.time.delay(100)
+
+    # Pauses the game
+    def pauseGame(self):
+
+        print('GAME PAUSED!')
+        clock = pygame.time.Clock()
+        self.is_running = True
+
+        # Make background semi-transparent
+        transparent_surface = pygame.Surface((self.WIDTH, self.HEIGHT))
+        transparent_surface.set_alpha(128)
+        dark_screen = pygame.Rect(0, 0, self.WIDTH, self.HEIGHT)
+        pygame.draw.rect(transparent_surface, (0, 0, 0), dark_screen)
+        self.screen.blit(transparent_surface, (0, 0))
+        
+        # Initialize Settings GUI
+        buttons = []
+        managers = []
+        self.helper_ui.initialize_settings_gui(True, buttons, managers)
+
+        # Update display
+        pygame.display.update()
+        
+        while self.is_running:
+            time_delta = clock.tick(60)/1000.0
+            key = pygame.key.get_pressed()
+            for event in pygame.event.get():  
+                if key[pygame.K_ESCAPE] or key[pygame.K_p]:
+                    self.is_running = False
+                    #pygame.time.delay(100)
+                elif event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                
+                if event.type == pygame_gui.UI_BUTTON_PRESSED:  # What to do if each button is pressed
+                    if event.ui_element == buttons[0]:      # Resume button
+                        print('Resuming game...')
+                        self.resumeGame(buttons, managers)
+                        #self.is_running = False
+                        break
+                        
+                    elif event.ui_element == buttons[1]:    # Exit button
+                        print('Exiting game...')
+                        self.return_to_menu = True  # Return to menu
+                        return
+                    
+                # Update events (button hovering or clicking)
+                for manager in managers:
+                    manager.process_events(event)
+                    manager.update(time_delta)
+            
+            # Update screen
+            self.helper_ui.initialize_settings_gui(True, buttons, managers)
+
+            # Draw buttons
+            for manager in managers:
+                manager.draw_ui(self.screen)
+
+            pygame.display.update()
+            
     # Runs the game
     def runGame(self):
         
@@ -49,9 +132,13 @@ class Game():
         # Load music
         mixer.music.load('Game_sounds/Background_music.wav')
         mixer.music.play(-1)
+        mixer.music.set_volume(0.3)
 
         # game looper
         while True:
+
+            if self.return_to_menu:
+                return
 
             # checks if a fighter has no hp and restarts the game if that's the case
             if self.fighter_1.health <= 0 or self.fighter_2.health <= 0:
@@ -83,18 +170,16 @@ class Game():
             
             # Draws scoreboard    
             self.map.draw_stats(self.f1_wins, self.f2_wins)
-            
-            
+
             # allows player to exit
-            key = pygame.key.get_pressed()
+            key = pygame.key.get_pressed() 
             for event in pygame.event.get():
-                if event.type == QUIT:
+                if event.type == QUIT:  # Quits game
                     pygame.quit()
                     sys.exit()
-
-#                 if key[pygame.K_ESCAPE] or key[pygame.K_p]:
-#                     pause()
-
-            # sets max frame rate
+                if key[pygame.K_ESCAPE] or key[pygame.K_p]:     # Pauses game
+                    self.pauseGame()
+                    
+            # Update display
             pygame.display.update()
             self.FramePerSec.tick(self.FPS)
