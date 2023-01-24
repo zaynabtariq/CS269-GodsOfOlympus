@@ -1,6 +1,6 @@
 """
 Gods of Olympus
-Last Modified: 1/19/23
+Last Modified: 1/24/23
 Course: CS269
 File: titleScreen.py
 """
@@ -29,14 +29,12 @@ class titleScreen():
             settings_button = pygame_gui.elements.UIButton(pygame.Rect((settings_location_x, settings_location_y), (settings_size, settings_size)), text = '', manager = the_manager)
             return settings_button
 
-
         # Standard button variables
         size_x = 200
         size_y = 50
         location_x = (self.x / 2) - (size_x / 2)
         location_y = (self.y / 2) + (size_y / 2) + 55    # 55 is changeable pixel amount for the height of the buttons
         space_inbetween_buttons = size_y + (size_y / 2)
-        border_size = 1
 
         # Settings button variables
         settings_size = 40
@@ -84,6 +82,7 @@ class titleScreen():
     def initializeTitleScreen(self):
         pygame.display.set_caption('Title Screen')
 
+        # Initialize background
         background = pygame.Surface((self.x, self.y))
         sky_image = pygame.image.load("Images/sky.png").convert_alpha()
         background.blit(sky_image, (0, 0))
@@ -99,11 +98,10 @@ class titleScreen():
         fighter_1_image = pygame.image.load("Images/zeusmain.png").convert_alpha()
         fighter_1_art = pygame.transform.scale(fighter_1_image, (fighter_image_size, fighter_image_size))
         fighter_2_image = pygame.image.load("Images/hadesmain.png").convert_alpha()
-        #fighter_2_image = pygame.transform.flip(fighter_2_image, True, False)   # Flip surface horizontally
         fighter_2_art = pygame.transform.scale(fighter_2_image, (fighter_image_size, fighter_image_size))
 
-        background.blit(fighter_1_art, (-100, self.y / 5 + 70))     # Adding 70 to land on cloud, can be removed if want to add platform
-        background.blit(fighter_2_art, (self.x - fighter_image_size + 100, self.y / 5 + 70))
+        background.blit(fighter_1_art, (-55, self.y / 4 + 35))
+        background.blit(fighter_2_art, (self.x - fighter_image_size + 80, self.y / 4 + 35))
 
         # Add logo/text/image
         image_size_x = 700
@@ -115,3 +113,4 @@ class titleScreen():
 
         # Update background
         self.window_surface.blit(background, (0, 0))
+        return background
