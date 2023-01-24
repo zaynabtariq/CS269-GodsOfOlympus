@@ -155,6 +155,15 @@ class Fighter():
             if self.char.y < HEIGHT - 50:
                 self.vel_y += GRAVITY
                 dy += self.vel_y
+                
+            # Zeus passive
+            if self.name == "Zeus" and self.jump == True:
+                if self.player == 1:
+                    if key[pygame.K_s]:
+                        dy /= 7     # slows Zeus down
+                elif self.player == 2:
+                    if key[pygame.K_DOWN]:
+                        dy /= 7     # slows Zeus down
 
             # ensures the player stays on screen
             if self.char.centerx + dx < 0:
