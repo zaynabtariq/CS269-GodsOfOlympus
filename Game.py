@@ -18,7 +18,7 @@ import sys
 class Game():
 
     # Constructor
-    def __init__(self, HEIGHT, WIDTH, ACC, FRIC, FPS):
+    def __init__(self, HEIGHT, WIDTH, ACC, FRIC, FPS, p1_character, p2_character, map_type):
         self.HEIGHT = HEIGHT
         self.WIDTH = WIDTH
         self.ACC = ACC
@@ -30,6 +30,8 @@ class Game():
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         self.fighter_1 = None
         self.fighter_2 = None
+        self.p1_character = p1_character
+        self.p2_character = p2_character
         self.is_running = True
         self.return_to_menu = False
 
@@ -41,7 +43,7 @@ class Game():
         self.helper_ui = helperUI(self.WIDTH, self.HEIGHT, self.screen)
 
         # load map
-        self.map = Map(1, HEIGHT, WIDTH, ACC, FRIC, FPS, self.screen)
+        self.map = Map(map_type, HEIGHT, WIDTH, ACC, FRIC, FPS, self.screen)
 
         #define fighter variables
         self.ledges = self.map.draw_ledges()
@@ -88,7 +90,7 @@ class Game():
             for event in pygame.event.get():  
                 if key[pygame.K_ESCAPE] or key[pygame.K_p]:
                     self.is_running = False
-                    #pygame.time.delay(100)
+
                 elif event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
@@ -130,9 +132,10 @@ class Game():
         pygame.display.set_caption("Gods of Olympus")
 
         # Load music
-        mixer.music.load('Game_sounds/Background_music.wav')
-        mixer.music.play(-1)
-        mixer.music.set_volume(0.3)
+        pygame.mixer.music.unload()
+        pygame.mixer.music.load('Game_sounds/Background_music.wav')
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(0.3)
 
         # game looper
         while True:

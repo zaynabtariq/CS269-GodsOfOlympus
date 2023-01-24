@@ -21,13 +21,18 @@ pygame.init()
 
 ##################### Basic variable setups #####################
 
+# Character variables (determines which character the game should start with)
+p1_character = 1
+p2_character = 2
+map_type = 1
+
 # Game class variables
 HEIGHT = 750
 WIDTH = 1300
 ACC = 0.5
 FRIC = -0.12
 FPS = 60
-game = Game(HEIGHT, WIDTH, ACC, FRIC, FPS)
+game = Game(HEIGHT, WIDTH, ACC, FRIC, FPS, p1_character, p2_character, map_type)
 
 # TitleScreen class variables
 x = WIDTH    # x-dimension (screen width)
@@ -44,10 +49,6 @@ helper_ui = helperUI(x, y, window_surface)
 character_gui_enabled = False
 control_gui_enabled = False
 settings_gui_enabled = False
-
-# Character variables
-p1_character = 1
-p2_character = 2
 
 
 ##################### Methods #####################
@@ -72,8 +73,8 @@ while is_running:
         if event.type == pygame.QUIT:
             is_running = False
 
+        #print('event.type =', event.type)  # Prints event type —- helpful for testing
         # What to do if each button is pressed
-        print('event.type =', event.type)
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element == all_buttons[0]:      # Play button
                 print('Starting game...')
@@ -83,13 +84,14 @@ while is_running:
                 background = tscreen.initializeTitleScreen()
                 clock = pygame.time.Clock()
                 all_buttons, all_managers = tscreen.createAllButtons() 
-                game = Game(HEIGHT, WIDTH, ACC, FRIC, FPS)
+                game = Game(HEIGHT, WIDTH, ACC, FRIC, FPS, p1_character, p2_character, map_type)
 
             elif event.ui_element == all_buttons[1]:    # Character select button
                 print('Selecting character...')
                 charSelectScreen.initialize_char_select()   # Character select background
-                p1_character, p2_character = charSelectScreen.loop_for_characters() # Loop until characters are selected and screen is closed
+                p1_character, p2_character, map_type = charSelectScreen.loop_for_characters() # Loop until characters are selected and screen is closed
                 tscreen.initializeTitleScreen()
+                game = Game(HEIGHT, WIDTH, ACC, FRIC, FPS, p1_character, p2_character, map_type)
                 break   
 
             elif event.ui_element == all_buttons[2]:    # Freeplay button
