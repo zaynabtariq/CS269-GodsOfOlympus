@@ -5,6 +5,7 @@ Course: CS269
 File: Hades.py
 """
 import pygame
+from pygame import mixer
 from fighter import Fighter
 
 class Hades(Fighter):
@@ -235,6 +236,8 @@ class Hades(Fighter):
                 fireball = Fireball((self.char.centerx - (50 * self.flip), self.char.centery), (-1, 0), 20)
                 self.fireballs.append(fireball)
                 self.num_fireballs += 1
+                mixer.music.load('Game_sounds/Hades/Fireball.wav')
+                mixer.music.play()
 
 
             # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
@@ -242,6 +245,8 @@ class Hades(Fighter):
         elif type == 3: # melee
             attacking_rect = pygame.Rect(self.char.centerx - (2.5 * self.char.width * self.flip), self.char.y,
                                          1 / 4 * self.char.width, self.char.height)
+            mixer.music.load('Game_sounds/Hades/Melee.wav')
+            mixer.music.play()
             #pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
             center = (target.char.centerx, target.char.centery)
             if attacking_rect.collidepoint(center):

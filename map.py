@@ -94,6 +94,11 @@ class Map():
         pygame.draw.rect(screen, (255, 0, 0), (x, y, 400, 30))
         pygame.draw.rect(screen, (255, 255, 0), (x, y, 400 * ratio, 30))'''
         #scoreboards
+        
+        #guarantees ratio won't be negative/zero to avoid error when adding scoreboard
+        if ratio <= 0:
+            ratio = 1
+            
         if player == 'fighter_2':
             left_blue_inner = pygame.image.load("Images/left_blue_inner.jpg").convert_alpha()
             scaled_isb2 = pygame.transform.scale(left_blue_inner, (400, 50))
