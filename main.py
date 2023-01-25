@@ -61,7 +61,7 @@ all_buttons, all_managers = tscreen.createAllButtons()
 
 # Runs the main game after pressing "Play"
 def initiate_game():
-    game.runGame()
+    game.runGame(1)
 
 # Resets the titleScreen after game is returned to menu
 def reset_screen():

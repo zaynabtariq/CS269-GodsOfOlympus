@@ -59,28 +59,33 @@ class Map():
             return ledge_1_rect, ledge_2_rect
 
          if self.num == 2:
-            ledge_1_rect = pygame.Rect((155, self.HEIGHT - 300, 260, 40))  # (left, top), (width, height)
+            ledge_1_rect = pygame.Rect((150, 435, 260, 40))  # (left, top), (width, height)
             ledge_1 = pygame.image.load("Images/underworld_platform.png").convert_alpha()
             ledge_1_scaled = pygame.transform.scale(ledge_1, (300, 81))
             self.screen.blit(ledge_1_scaled, (150, 410))
 
-            ledge_2_rect = pygame.Rect((self.WIDTH - 485, self.HEIGHT - 350, 255, 40))  # (left, top), (width, height)
+            ledge_2_rect = pygame.Rect((850, 435, 260, 40))  # (left, top), (width, height)
             ledge_2 = pygame.image.load("Images/underworld_platform.png").convert_alpha()
             ledge_2_scaled = pygame.transform.scale(ledge_2, (300, 81))
-            self.screen.blit(ledge_2_scaled, (self.WIDTH - 500, 360))
+            self.screen.blit(ledge_2_scaled, (850, 410))
 
-            return ledge_1_rect, ledge_2_rect
+            ledge_3_rect = pygame.Rect((500, 275, 260, 40))  # (left, top), (width, height)
+            ledge_3 = pygame.image.load("Images/underworld_platform.png").convert_alpha()
+            ledge_3_scaled = pygame.transform.scale(ledge_3, (300, 81))
+            self.screen.blit(ledge_3_scaled, (500, 250))  # 850
+
+            return ledge_1_rect, ledge_2_rect, ledge_3_rect
 
          if self.num == 3:
-            ledge_1_rect = pygame.Rect((155, self.HEIGHT - 300, 260, 40))  # (left, top), (width, height)
+            ledge_1_rect = pygame.Rect((155, self.HEIGHT - 350 - 30, 255, 40))  # (left, top), (width, height) # adjustment
             ledge_1 = pygame.image.load("Images/underthesea_platform.png").convert_alpha()
             ledge_1_scaled = pygame.transform.scale(ledge_1, (300, 81))
-            self.screen.blit(ledge_1_scaled, (150, 410))
+            self.screen.blit(ledge_1_scaled, (150, 360))
 
-            ledge_2_rect = pygame.Rect((self.WIDTH - 485, self.HEIGHT - 350, 255, 40))  # (left, top), (width, height)
+            ledge_2_rect = pygame.Rect((self.WIDTH - 485, self.HEIGHT - 300 - 30, 260, 40))  # (left, top), (width, height)
             ledge_2 = pygame.image.load("Images/underthesea_platform.png").convert_alpha()
             ledge_2_scaled = pygame.transform.scale(ledge_2, (300, 81))
-            self.screen.blit(ledge_2_scaled, (self.WIDTH - 500, 360))
+            self.screen.blit(ledge_2_scaled, (self.WIDTH - 500, 410))
 
             return ledge_1_rect, ledge_2_rect
 
@@ -154,7 +159,7 @@ class Map():
         elif p1_character == 2:     # Hades
             image_icon_1 = "Images/Icons_Hades.png"
         else:                       # Poseidon
-            image_icon_1 = "Images/Icons_Poseidon.png"  # Set to Poseidon once icon is made
+            image_icon_1 = "Images/Icons_Poseidon.png"
 
         # Player 2 icon
         if p2_character == 1:       # Zeus
@@ -162,7 +167,7 @@ class Map():
         elif p2_character == 2:     # Hades
             image_icon_2 = "Images/Icons_Hades.png"
         else:                       # Poseidon
-            image_icon_2 = "Images/Icons_Poseidon.png"  # Set to Poseidon once icon is made
+            image_icon_2 = "Images/Icons_Poseidon.png"
 
         fighter1_icon = pygame.image.load(image_icon_1)
         self.screen.blit(fighter1_icon, (30,30))
