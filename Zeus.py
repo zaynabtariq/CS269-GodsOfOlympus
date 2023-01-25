@@ -208,8 +208,8 @@ class Zeus(Fighter):
         if type == 1:  # ability 1 medium range
             attacking_rect = pygame.Rect(self.char.centerx - (1/2 * self.char.width * self.flip), self.char.y,
                                          1/2 * self.char.width, self.char.height)
-            mixer.music.load('Game_sounds/Zeus/Ability1.wav')
-            mixer.music.play()
+            ability1 = pygame.mixer.Sound('Game_sounds/Zeus/Ability1.wav')
+            ability1.play()
             center = (target.char.centerx, target.char.centery)
             # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 
@@ -228,8 +228,8 @@ class Zeus(Fighter):
         elif type == 2:  # ability 2 long range
             attacking_rect = pygame.Rect(0, 750 - self.char.y/3 + 10,
                                          1300, self.char.height/3)
-            mixer.music.load('Game_sounds/Zeus/Ultimate.wav')
-            mixer.music.play()
+            ultimate = pygame.mixer.Sound('Game_sounds/Zeus/Ultimate.wav')
+            ultimate.play()
             if attacking_rect.colliderect(target.char):
                 if not self.ultimate:
                     target.health -= 2
@@ -256,8 +256,8 @@ class Zeus(Fighter):
         elif type == 3: # melee
             attacking_rect = pygame.Rect(self.char.centerx - (2.5 * self.char.width * self.flip), self.char.y,
                                          1 / 4 * self.char.width, self.char.height)
-            mixer.music.load('Game_sounds/Zeus/Melee.wav')
-            mixer.music.play()
+            melee = pygame.mixer.Sound('Game_sounds/Zeus/Melee.wav')
+            melee.play()
             # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
             center = (target.char.centerx, target.char.centery)
             if attacking_rect.collidepoint(center):
@@ -275,7 +275,7 @@ class Zeus(Fighter):
                     target.action = 8
 
         elif type == 4:
-            mixer.music.load('Game_sounds/Zeus/Stomp.wav')
-            mixer.music.play()
+            stomp = pygame.mixer.Sound('Game_sounds/Zeus/Stomp.wav')
+            stomp.play()
 
         self.attacking = False
