@@ -10,6 +10,7 @@ import pygame_gui
 from pygame import mixer
 from Zeus import Zeus
 from Hades import Hades
+from Poseidon import Poseidon
 from helperUI import helperUI
 from map import Map
 from pygame.locals import *
