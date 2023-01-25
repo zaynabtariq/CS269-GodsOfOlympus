@@ -236,17 +236,16 @@ class Hades(Fighter):
                 fireball = Fireball((self.char.centerx - (50 * self.flip), self.char.centery), (-1, 0), 20)
                 self.fireballs.append(fireball)
                 self.num_fireballs += 1
-                mixer.music.load('Game_sounds/Hades/Fireball.wav')
-                mixer.music.play()
-
+                fireball = pygame.mixer.Sound('Game_sounds/Hades/Fireball.wav')
+                fireball.play()
 
             # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 
         elif type == 3: # melee
-            attacking_rect = pygame.Rect(self.char.centerx - (2.5 * self.char.width * self.flip), self.char.y,
+            attacking_rect = pygame.Rect(self.char.centerx - (1 / 4 * self.char.width * self.flip), self.char.y,
                                          1 / 4 * self.char.width, self.char.height)
-            mixer.music.load('Game_sounds/Hades/Melee.wav')
-            mixer.music.play()
+            melee = pygame.mixer.Sound('Game_sounds/Hades/Melee.wav')
+            melee.play()
             #pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
             center = (target.char.centerx, target.char.centery)
             if attacking_rect.collidepoint(center):
