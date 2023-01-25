@@ -108,19 +108,19 @@ class Poseidon(Fighter):
 
         # 10: melee right
         temp_list = []
-        for i in range(1,7):
-            img = pygame.image.load(f'Images/hades_melee_{i}.png')
-            img_flipped = pygame.transform.flip(img, True, False)
-            img_flipped = pygame.transform.scale(img_flipped, (img_flipped.get_width() * 1.5, img_flipped.get_height() * 1.5))
-            temp_list.append(img_flipped)
+        for i in range(1,6):
+            img = pygame.image.load(f'Images/poseidon_melee_{i}.png')
+            img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
+            temp_list.append(img)
         self.animation_list.append(temp_list)
 
         # 11: melee left
         temp_list = []
-        for i in range(1,7):
-            img = pygame.image.load(f'Images/hades_melee_{i}.png')
+        for i in range(1,6):
+            img = pygame.image.load(f'Images/poseidon_melee_{i}.png')
             img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
-            temp_list.append(img)
+            img_flipped = pygame.transform.flip(img, True, False)
+            temp_list.append(img_flipped)
         self.animation_list.append(temp_list)
         self.image = self.animation_list[self.action][self.frame_index]
         self.char = self.image.get_rect()
