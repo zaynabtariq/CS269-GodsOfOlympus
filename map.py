@@ -73,7 +73,6 @@ class Map():
             ledge_3 = pygame.image.load("Images/underworld_platform.png").convert_alpha()
             ledge_3_scaled = pygame.transform.scale(ledge_3, (300, 81))
             self.screen.blit(ledge_3_scaled, (500, 250))  # 850
-
             return ledge_1_rect, ledge_2_rect, ledge_3_rect
 
          if self.num == 3:

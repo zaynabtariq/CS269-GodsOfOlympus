@@ -240,7 +240,7 @@ class Game():
         font = pygame.font.Font(None, 36)
         self.screen.fill((0, 0, 0))
 
-        # Draw the semi-transparent screen with the round number text
+        # Draw the background screen with the round number text TODO tomorrow
         overlay = pygame.Surface((self.WIDTH, self.HEIGHT), pygame.SRCALPHA)
         overlay.fill((0, 0, 0, 128))
         img_bg = pygame.image.load('Images/sky_palace.jpg')
