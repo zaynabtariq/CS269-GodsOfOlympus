@@ -106,6 +106,11 @@ class Game():
                     elif event.ui_element == buttons[1]:    # Exit button
                         print('Exiting game...')
                         self.return_to_menu = True  # Return to menu
+                        # TODO music
+                        pygame.mixer.music.unload()
+                        pygame.mixer.music.load('Game_sounds/Title_music.wav')
+                        pygame.mixer.music.play(-1)
+                        pygame.mixer.music.set_volume(0.3)
                         return
                     
                 # Update events (button hovering or clicking)
@@ -149,9 +154,9 @@ class Game():
 
         # Load music
         pygame.mixer.music.unload()
-        #pygame.mixer.music.load('Game_sounds/Background_music.wav')
-        #pygame.mixer.music.play(-1)
-        #pygame.mixer.music.set_volume(0.3)
+        pygame.mixer.music.load('Game_sounds/Background_music.wav')
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(0.3)
 
         # game looper
         while True:
