@@ -125,8 +125,8 @@ class Game():
     def runGame(self):
         
         # starting location of fighters
-        self.fighter_1 = Zeus(1, 0, self.HEIGHT - 200, self.ledges, self.screen, self.fighter_2)
-        self.fighter_2 = Hades(2, self.WIDTH - 400, self.HEIGHT-500, self.ledges, self.screen, self.fighter_1)
+        self.fighter_1 = Zeus(1, 0, self.HEIGHT - 200, self.ledges, self.screen)
+        self.fighter_2 = Hades(2, self.WIDTH - 400, self.HEIGHT-500, self.ledges, self.screen)
         
         # Sets screen header
         pygame.display.set_caption("Gods of Olympus")
@@ -161,8 +161,8 @@ class Game():
             self.fighter_2.move(self.WIDTH, self.HEIGHT, self.fighter_1, self.screen, self.ledges)
 
             # draw fighters
-            self.fighter_1.update()
-            self.fighter_2.update()
+            self.fighter_1.update(self.fighter_2)
+            self.fighter_2.update(self.fighter_1)
             self.fighter_1.draw(self.screen)
             self.fighter_2.draw(self.screen)
 
