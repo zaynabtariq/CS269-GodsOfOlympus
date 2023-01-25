@@ -119,7 +119,7 @@ class Fighter():
                     self.vel_y = -30
 
                 # attack
-                if key[pygame.K_PERIOD] or key[pygame.K_SLASH] or key[pygame.K_COMMA] or key[pygame.K_SEMICOLON] :
+                if key[pygame.K_PERIOD] or key[pygame.K_SLASH] or key[pygame.K_COMMA] or key[pygame.K_m] :
                     if self.attack_clock.tick() > self.cooldown_time:
                         self.attacking = True
                         if key[pygame.K_PERIOD]:
@@ -128,19 +128,19 @@ class Fighter():
                             self.frame_index = 0
                             self.update_time = pygame.time.get_ticks()
                             self.attack(surface, target, self.attack_type)
-                        if key[pygame.K_SLASH]:
+                        if key[pygame.K_COMMA]:
                             self.attack_type = 2
                             self.action = 7
                             self.frame_index = 0
                             self.update_time = pygame.time.get_ticks()
                             self.attack(surface,target, self.attack_type)
-                        if key[pygame.K_COMMA]:
+                        if key[pygame.K_SLASH]:
                             self.attack_type = 3
                             self.action = 11
                             self.frame_index = 0
                             self.update_time = pygame.time.get_ticks()
                             self.attack(surface, target, self.attack_type)
-                        if key[pygame.K_SEMICOLON]:
+                        if key[pygame.K_m]:
                             self.update_time = pygame.time.get_ticks()
                             self.startUltimate = pygame.time.get_ticks()
                             self.ultimateAnimation = pygame.time.get_ticks()
