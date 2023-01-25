@@ -129,8 +129,6 @@ class Game():
 
     def win_screen(self, winner):
 
-        clock = pygame.time.Clock()
-
         # Stop the game loop
         self.is_running = False
 
@@ -154,8 +152,6 @@ class Game():
         text = font.render(winning_character.capitalize() + " wins!", True, (255, 255, 255))
         text_rect = text.get_rect(center=(self.WIDTH / 2, self.HEIGHT / 2))
         self.screen.blit(text, text_rect)
-
-
 
         winner_img = pygame.image.load(f'Images/{winning_character}main.png')
         winner_img = pygame.transform.scale(winner_img, (winner_img.get_width() * 2, winner_img.get_height() * 2))
@@ -203,7 +199,34 @@ class Game():
                         pygame.mixer.music.play(-1)
                         pygame.mixer.music.set_volume(0.3)
 
+    # Loads the "rounds" screen
+    def loadRounds(self, round_num):
+        # Font settings
+        font = pygame.font.Font(None, 36)
+        self.screen.fill((0, 0, 0))
 
+        # Draw the background screen with the round number text TODO tomorrow
+        overlay = pygame.Surface((self.WIDTH, self.HEIGHT), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 128))
+        img_bg = pygame.image.load('Images/sky_palace.jpg')
+        img_bg = pygame.transform.scale(img_bg, (self.WIDTH, self.HEIGHT))
+
+        img_round = pygame.image.load(f'Images/round_{round_num}.png')
+        img_round = pygame.transform.scale(img_round, (img_round.get_width() * 3, img_round.get_height() * 3))
+
+        img_center = (self.WIDTH/2-550, self.HEIGHT/2-330)
+
+        self.screen.blit(img_bg, (0, 0))
+        self.screen.blit(img_round, img_center)
+
+        # Update the display
+        pygame.display.flip()
+
+        # Wait 2 seconds before continuing
+        pygame.time.wait(2000)
+
+        # Remove the semi-transparent screen
+        self.screen.fill((0, 0, 0))
 
     # Runs the game
     def runGame(self, round_num):
@@ -237,31 +260,8 @@ class Game():
         pygame.mixer.music.set_volume(0.3)
 
         # Font settings
-        font = pygame.font.Font(None, 36)
-        self.screen.fill((0, 0, 0))
-
-        # Draw the background screen with the round number text TODO tomorrow
-        overlay = pygame.Surface((self.WIDTH, self.HEIGHT), pygame.SRCALPHA)
-        overlay.fill((0, 0, 0, 128))
-        img_bg = pygame.image.load('Images/sky_palace.jpg')
-        img_bg = pygame.transform.scale(img_bg, (self.WIDTH, self.HEIGHT))
-
-        img_round = pygame.image.load(f'Images/round_{round_num}.png')
-        img_round = pygame.transform.scale(img_round, (img_round.get_width() * 3, img_round.get_height() * 3))
-
-        img_center = (self.WIDTH/2-550, self.HEIGHT/2-330)
-
-        self.screen.blit(img_bg, (0, 0))
-        self.screen.blit(img_round, img_center)
-
-        # Update the display
-        pygame.display.flip()
-
-        # Wait 2 seconds before continuing
-        pygame.time.wait(2000)
-
-        # Remove the semi-transparent screen
-        self.screen.fill((0, 0, 0))
+        if self.is_freeplay == False:   
+            self.loadRounds(round_num)
 
         # game looper
         while True:
@@ -290,8 +290,6 @@ class Game():
                 pygame.time.wait(1500)
                 self.runGame(round_num)
 
-
-
             # draw background
             self.map.draw_bg()
             self.ledges = self.map.draw_ledges()
@@ -312,7 +310,8 @@ class Game():
             self.map.draw_score_icons(self.p1_character, self.p2_character) # draw icons of idols
 
             # Draws scoreboard
-            self.map.draw_stats(self.f1_wins, self.f2_wins)
+            if self.is_freeplay == False:   
+                self.map.draw_stats(self.f1_wins, self.f2_wins)
 
             # allows player to exit
             key = pygame.key.get_pressed() 

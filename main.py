@@ -68,7 +68,6 @@ def reset_screen():
     background = tscreen.initializeTitleScreen()
     clock = pygame.time.Clock()
     all_buttons, all_managers = tscreen.createAllButtons() 
-    game = Game(False, HEIGHT, WIDTH, ACC, FRIC, FPS, p1_character, p2_character, map_type)
 
 
 ##################### Main method #####################
@@ -86,7 +85,8 @@ while is_running:
             if event.ui_element == all_buttons[0]:      # Play button
                 print('Starting game...')
                 initiate_game()
-                #reset_screen()      # If returned, reset title screen
+                reset_screen()      # If returned, reset title screen
+                game = Game(False, HEIGHT, WIDTH, ACC, FRIC, FPS, p1_character, p2_character, map_type)
 
             elif event.ui_element == all_buttons[1]:    # Character select button
                 print('Selecting character...')
@@ -100,7 +100,8 @@ while is_running:
                 print('Entering freeplay...')
                 game = Game(True, HEIGHT, WIDTH, ACC, FRIC, FPS, p1_character, p2_character, map_type)
                 initiate_game()
-                #reset_screen()
+                reset_screen()
+                game = Game(False, HEIGHT, WIDTH, ACC, FRIC, FPS, p1_character, p2_character, map_type)
 
             elif event.ui_element == all_buttons[3]:    # Controls button
                 print('Checking control panel...')
