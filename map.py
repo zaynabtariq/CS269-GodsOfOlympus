@@ -142,12 +142,27 @@ class Map():
 
 
     # draw icons next to scoreboard
-    def draw_score_icons(self):
+    def draw_score_icons(self, fighter_1, fighter_2):
 
-        fighter1_icon = pygame.image.load("Images/Icons_Zeus.png")
+        if fighter_1 == 1:
+            fighter1_icon = pygame.image.load("Images/Icons_Zeus.png")
+        elif fighter_1 == 2:
+            fighter1_icon = pygame.image.load("Images/Icons_Hades.png")
+        elif fighter_1 == 3:
+            fighter1_icon = pygame.image.load("Images/Icons_Poseidon.png")
+        else:
+            fighter1_icon = pygame.image.load("Images/Icons_Poseidon.png")
         self.screen.blit(fighter1_icon, (30,30))
 
-        fighter2_icon = pygame.image.load("Images/Icons_Hades.png")
+        if fighter_2 == 1:
+            fighter2_icon = pygame.image.load("Images/Icons_Zeus.png")
+        elif fighter_2 == 2:
+            fighter2_icon = pygame.image.load("Images/Icons_Hades.png")
+        elif fighter_2 == 3:
+            fighter2_icon = pygame.image.load("Images/Icons_Poseidon.png")
+        else:
+            fighter2_icon = pygame.image.load("Images/Icons_Hades.png")
+
         self.screen.blit(fighter2_icon, (1170,30))
 
 

@@ -29,8 +29,6 @@ class Game():
         self.f2_wins = 0
         self.FramePerSec = pygame.time.Clock()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        self.fighter_1 = None
-        self.fighter_2 = None
         self.p1_character = p1_character
         self.p2_character = p2_character
         self.is_running = True
@@ -48,6 +46,8 @@ class Game():
 
         #define fighter variables
         self.ledges = self.map.draw_ledges()
+
+        #test
 
     # Colors all visible pixels of an image
     def color_surface(self, surface, red, green, blue):
@@ -126,17 +126,32 @@ class Game():
     def runGame(self):
 
         # starting location of fighters
-        self.fighter_1 = Hades(1, 0, self.HEIGHT - 200, self.ledges, self.screen)
-        self.fighter_2 = Poseidon(2, self.WIDTH - 400, self.HEIGHT-500, self.ledges, self.screen)
+        if self.p1_character == 1:
+            fighter_1 = Zeus(1, 0, self.HEIGHT - 200, self.ledges, self.screen)
+        elif self.p1_character == 2:
+            fighter_1 = Hades(1, 0, self.HEIGHT - 200, self.ledges, self.screen)
+        elif self.p1_character == 3:
+            fighter_1 = Poseidon(1, 0, self.HEIGHT - 200, self.ledges, self.screen)
+        else:
+            fighter_1 = Zeus(1, 0, self.HEIGHT - 200, self.ledges, self.screen)
+
+        if self.p2_character == 1:
+            fighter_2 = Zeus(2, self.WIDTH - 400, self.HEIGHT-500, self.ledges, self.screen)
+        elif self.p2_character == 2:
+            fighter_2 = Hades(2, self.WIDTH - 400, self.HEIGHT-500, self.ledges, self.screen)
+        elif self.p2_character == 3:
+            fighter_2 = Poseidon(2, self.WIDTH - 400, self.HEIGHT-500, self.ledges, self.screen)
+        else:
+            fighter_2 = Hades(2, self.WIDTH - 400, self.HEIGHT - 500, self.ledges, self.screen)
 
         # Sets screen header
         pygame.display.set_caption("Gods of Olympus")
 
         # Load music
         pygame.mixer.music.unload()
-        pygame.mixer.music.load('Game_sounds/Background_music.wav')
-        pygame.mixer.music.play(-1)
-        pygame.mixer.music.set_volume(0.3)
+        #pygame.mixer.music.load('Game_sounds/Background_music.wav')
+        #pygame.mixer.music.play(-1)
+        #pygame.mixer.music.set_volume(0.3)
 
         # game looper
         while True:
@@ -145,8 +160,8 @@ class Game():
                 return
 
             # checks if a fighter has no hp and restarts the game if that's the case
-            if self.fighter_1.health <= 0 or self.fighter_2.health <= 0:
-                if self.fighter_1.health <= 0:
+            if fighter_1.health <= 0 or fighter_2.health <= 0:
+                if fighter_1.health <= 0:
                     self.f2_wins += 1     # fighter 2 earns a round
                 else:
                     self.f1_wins += 1     # fighter 1 earns a round
@@ -158,19 +173,19 @@ class Game():
             self.ledges = self.map.draw_ledges()
 
             # move fighters
-            self.fighter_1.move(self.WIDTH, self.HEIGHT, self.fighter_2, self.screen, self.ledges)
-            self.fighter_2.move(self.WIDTH, self.HEIGHT, self.fighter_1, self.screen, self.ledges)
+            fighter_1.move(self.WIDTH, self.HEIGHT, fighter_2, self.screen, self.ledges)
+            fighter_2.move(self.WIDTH, self.HEIGHT, fighter_1, self.screen, self.ledges)
 
             # draw fighters
-            self.fighter_1.update(self.fighter_2)
-            self.fighter_2.update(self.fighter_1)
-            self.fighter_1.draw(self.screen)
-            self.fighter_2.draw(self.screen)
+            fighter_1.update(fighter_2)
+            fighter_2.update(fighter_1)
+            fighter_1.draw(self.screen)
+            fighter_2.draw(self.screen)
 
             # draw hp bar for fighters
-            self.map.draw_health_bars(self.fighter_1.health, 'fighter_2')
-            self.map.draw_health_bars(self.fighter_2.health, 'fighter_1')
-            self.map.draw_score_icons() # draw icons of idols
+            self.map.draw_health_bars(fighter_1.health, 'fighter_2')
+            self.map.draw_health_bars(fighter_2.health, 'fighter_1')
+            self.map.draw_score_icons(self.p1_character, self.p2_character) # draw icons of idols
 
             # Draws scoreboard
             self.map.draw_stats(self.f1_wins, self.f2_wins)
