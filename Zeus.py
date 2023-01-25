@@ -254,11 +254,10 @@ class Zeus(Fighter):
             # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 
         elif type == 3: # melee
-            attacking_rect = pygame.Rect(self.char.centerx - (2.5 * self.char.width * self.flip), self.char.y,
-                                         1 / 4 * self.char.width, self.char.height)
+            attacking_rect = pygame.Rect(self.char.centerx - (1/4 * self.char.width * self.flip), self.char.y,
+                                         1/4 * self.char.width, self.char.height)
             melee = pygame.mixer.Sound('Game_sounds/Zeus/Melee.wav')
             melee.play()
-            # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
             center = (target.char.centerx, target.char.centery)
             if attacking_rect.collidepoint(center):
                 # does damage ranging from 1 to 3
