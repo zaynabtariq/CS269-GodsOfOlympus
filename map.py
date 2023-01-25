@@ -41,6 +41,7 @@ class Map():
     # scroll indicator
     scroll = 0
 
+    # Draws map ledges
     def draw_ledges(self):
          if self.num == 1:
             ledge_1_rect = pygame.Rect((155, self.HEIGHT - 300, 260, 40))  # (left, top), (width, height)
@@ -141,28 +142,32 @@ class Map():
             self.screen.blit(ground_scaled, (0, self.HEIGHT - 110))
 
 
-    # draw icons next to scoreboard
-    def draw_score_icons(self, fighter_1, fighter_2):
+    # Draws character icon next to scoreboard
+    def draw_score_icons(self, p1_character, p2_character):
 
-        if fighter_1 == 1:
-            fighter1_icon = pygame.image.load("Images/Icons_Zeus.png")
-        elif fighter_1 == 2:
-            fighter1_icon = pygame.image.load("Images/Icons_Hades.png")
-        elif fighter_1 == 3:
-            fighter1_icon = pygame.image.load("Images/Icons_Poseidon.png")
-        else:
-            fighter1_icon = pygame.image.load("Images/Icons_Poseidon.png")
+        image_icon_1 = ""
+        image_icon_2 = ""
+
+        # Player 1 icon
+        if p1_character == 1:       # Zeus
+            image_icon_1 = "Images/Icons_Zeus.png"
+        elif p1_character == 2:     # Hades
+            image_icon_1 = "Images/Icons_Hades.png"
+        else:                       # Poseidon
+            image_icon_1 = "Images/Icons_Poseidon.png"  # Set to Poseidon once icon is made
+
+        # Player 2 icon
+        if p2_character == 1:       # Zeus
+            image_icon_2 = "Images/Icons_Zeus.png"
+        elif p2_character == 2:     # Hades
+            image_icon_2 = "Images/Icons_Hades.png"
+        else:                       # Poseidon
+            image_icon_2 = "Images/Icons_Poseidon.png"  # Set to Poseidon once icon is made
+
+        fighter1_icon = pygame.image.load(image_icon_1)
         self.screen.blit(fighter1_icon, (30,30))
 
-        if fighter_2 == 1:
-            fighter2_icon = pygame.image.load("Images/Icons_Zeus.png")
-        elif fighter_2 == 2:
-            fighter2_icon = pygame.image.load("Images/Icons_Hades.png")
-        elif fighter_2 == 3:
-            fighter2_icon = pygame.image.load("Images/Icons_Poseidon.png")
-        else:
-            fighter2_icon = pygame.image.load("Images/Icons_Hades.png")
-
+        fighter2_icon = pygame.image.load(image_icon_2)
         self.screen.blit(fighter2_icon, (1170,30))
 
 
