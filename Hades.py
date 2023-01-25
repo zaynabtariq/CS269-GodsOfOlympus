@@ -243,8 +243,8 @@ class Hades(Fighter):
             # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 
         elif type == 3: # melee
-            attacking_rect = pygame.Rect(self.char.centerx - (2.5 * self.char.width * self.flip), self.char.y,
-                                         1 / 4 * self.char.width, self.char.height)
+            attacking_rect = pygame.Rect(self.char.centerx - (1/4 * self.char.width * self.flip), self.char.y,
+                                         1/4 * self.char.width, self.char.height)
             melee = pygame.mixer.Sound('Game_sounds/Hades/Melee.wav')
             melee.play()
             #pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
