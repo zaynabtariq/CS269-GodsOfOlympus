@@ -59,28 +59,33 @@ class Map():
             return ledge_1_rect, ledge_2_rect
 
          if self.num == 2:
-            ledge_1_rect = pygame.Rect((155, self.HEIGHT - 300, 260, 40))  # (left, top), (width, height)
+            ledge_1_rect = pygame.Rect((150, 435, 260, 40))  # (left, top), (width, height)
             ledge_1 = pygame.image.load("Images/underworld_platform.png").convert_alpha()
             ledge_1_scaled = pygame.transform.scale(ledge_1, (300, 81))
             self.screen.blit(ledge_1_scaled, (150, 410))
 
-            ledge_2_rect = pygame.Rect((self.WIDTH - 485, self.HEIGHT - 350, 255, 40))  # (left, top), (width, height)
+            ledge_2_rect = pygame.Rect((850, 435, 260, 40))  # (left, top), (width, height)
             ledge_2 = pygame.image.load("Images/underworld_platform.png").convert_alpha()
             ledge_2_scaled = pygame.transform.scale(ledge_2, (300, 81))
-            self.screen.blit(ledge_2_scaled, (self.WIDTH - 500, 360))
+            self.screen.blit(ledge_2_scaled, (850, 410))
 
-            return ledge_1_rect, ledge_2_rect
+            ledge_3_rect = pygame.Rect((500, 275, 260, 40))  # (left, top), (width, height)
+            ledge_3 = pygame.image.load("Images/underworld_platform.png").convert_alpha()
+            ledge_3_scaled = pygame.transform.scale(ledge_3, (300, 81))
+            self.screen.blit(ledge_3_scaled, (500, 250)) #850
+
+            return ledge_1_rect, ledge_2_rect, ledge_3_rect
 
          if self.num == 3:
-            ledge_1_rect = pygame.Rect((155, self.HEIGHT - 300, 260, 40))  # (left, top), (width, height)
+            ledge_1_rect = pygame.Rect((155, self.HEIGHT - 350 - 30, 255, 40))  # (left, top), (width, height) # adjustment
             ledge_1 = pygame.image.load("Images/underthesea_platform.png").convert_alpha()
             ledge_1_scaled = pygame.transform.scale(ledge_1, (300, 81))
-            self.screen.blit(ledge_1_scaled, (150, 410))
+            self.screen.blit(ledge_1_scaled, (150, 360))
 
-            ledge_2_rect = pygame.Rect((self.WIDTH - 485, self.HEIGHT - 350, 255, 40))  # (left, top), (width, height)
+            ledge_2_rect = pygame.Rect((self.WIDTH - 485, self.HEIGHT - 300 - 30, 260, 40))  # (left, top), (width, height)
             ledge_2 = pygame.image.load("Images/underthesea_platform.png").convert_alpha()
             ledge_2_scaled = pygame.transform.scale(ledge_2, (300, 81))
-            self.screen.blit(ledge_2_scaled, (self.WIDTH - 500, 360))
+            self.screen.blit(ledge_2_scaled, (self.WIDTH - 500, 410))
 
             return ledge_1_rect, ledge_2_rect
 
