@@ -29,6 +29,8 @@ class Fighter():
         self.running = False
         self.attack_type = 0
         self.attacking = False
+        self.ability1_time = 0
+        self.ability2_time = 0
         self.hit = False
         self.alive = True
         self.ultimate = False
@@ -48,7 +50,7 @@ class Fighter():
         GRAVITY = 1.5
         dx = 0
         dy = 0
-        #get keypresses
+        # get key presses
         key = pygame.key.get_pressed()
 
         #movement
@@ -81,6 +83,7 @@ class Fighter():
                             self.update_time = pygame.time.get_ticks()
                             self.attack_timer = pygame.time.get_ticks()
                             self.attack(surface, target, self.attack_type)
+
                         if key[pygame.K_v]:
                             self.attack_type = 2
                             self.action = 6
