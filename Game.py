@@ -210,7 +210,8 @@ class Game():
                         pygame.mixer.music.set_volume(0.3)
 
                     elif exit_rect.collidepoint(event.pos):
-                        return
+                        pygame.quit()
+                        sys.exit()
 
     # Loads the "rounds" screen
     def loadRounds(self, round_num):
