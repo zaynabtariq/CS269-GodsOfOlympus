@@ -32,6 +32,7 @@ class Game():
         self.is_running = True
         self.is_freeplay = is_freeplay
         self.return_to_menu = False
+        self.idk = False
 
         # Settings button
         self.paused = False
@@ -199,6 +200,8 @@ class Game():
                         # reset the number of rounds won for each player
                         self.f1_wins = 0
                         self.f2_wins = 0
+                        self.idk = True
+                        
                         # restart the game loop
                         self.is_running = True
                         waiting = False
@@ -281,6 +284,11 @@ class Game():
         while True:
             fighter_1.change_multiplier()
             fighter_2.change_multiplier()
+            
+            if self.idk:
+                fighter_1.health = 100
+                fighter_2.health = 100
+                self.idk = False
 
 
 
