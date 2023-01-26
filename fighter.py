@@ -46,7 +46,7 @@ class Fighter():
         self.damage_multiplier = 1
 
     def change_multiplier(self):
-        if self.get_time() - self.total_time >= 10000 and self.get_time() - self.total_time < 80000:
+        if self.get_time() - self.total_time >= 60000 and self.get_time() - self.total_time < 80000:
             self.damage_multiplier = 2
         elif self.get_time() - self.total_time >= 80000:
             self.damage_multiplier = 3
