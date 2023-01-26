@@ -43,6 +43,20 @@ class Fighter():
         self.cooldown_time = 100 # cannot attack again within 0.1 seconds
 
 
+        self.damage_multiplier = 1
+
+    def change_multiplier(self):
+        if self.get_time() >= 60000 and self.get_time() < 80000:
+            self.damage_multiplier = 2
+        elif self.get_time() >= 80000:
+            self.damage_multiplier = 3
+
+    def get_time(self):
+        return self.update_time
+
+    def reset_time(self):
+        self.update_time = pygame.time.get_ticks()
+
     def move(self, WIDTH, HEIGHT, target, surface, ledges):
         SPEED = 10
         GRAVITY = 1.5
