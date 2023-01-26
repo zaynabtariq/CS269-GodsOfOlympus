@@ -130,7 +130,6 @@ class Zeus(Fighter):
         self.char = self.image.get_rect()
         self.char.x = x
         self.char.y = y
-        self.ground_stomp = y
         self.direction = True
 
 
@@ -168,7 +167,7 @@ class Zeus(Fighter):
                     self.index = 0
 
             # adds lightning if ability 2 is used
-            if (self.action == 6 or self.action == 7) and self.char.y > 500:
+            if (self.action == 6 or self.action == 7) and self.char.centery > 500:
                 img = pygame.image.load(f'Images/lightning7.png')
                 img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
                 img = pygame.transform.scale(img, (1300, 70))
@@ -202,7 +201,7 @@ class Zeus(Fighter):
         surface.blit(self.image, self.char)
         if self.ultimate:
             surface.blit(self.ultimate_img, (self.char.centerx - 100, self.char.y))
-        if self.action == 6 or self.action == 7:
+        if (self.action == 6 or self.action == 7) and self.char.centery > 400:
             surface.blit(self.lightning, (0, 600))
 
     def attack(self, surface,  target, type):
@@ -228,32 +227,24 @@ class Zeus(Fighter):
                     target.char.x -= 10
 
         elif type == 2:  # ability 2 long range
-            attacking_rect = pygame.Rect(0, 750 - self.char.y/3 + 10,
-                                        1300, self.char.height/3)
-            ultimate = pygame.mixer.Sound('Game_sounds/Zeus/Ultimate.wav')
-            ultimate.play()
-            if attacking_rect.colliderect(target.char):
-                if not self.ultimate:
-                    target.health -= 5 * self.damage_multiplier
-                else:
-                    target.health -= 10  * self.damage_multiplier # ultimate doubles the damage
+            if self.char.centery > 400:
+                attacking_rect = pygame.Rect(0, 750 - self.char.y/3 + 10,
+                                            1300, self.char.height/3)
+                ultimate = pygame.mixer.Sound('Game_sounds/Zeus/Ultimate.wav')
+                ultimate.play()
+                if attacking_rect.colliderect(target.char):
+                    if not self.ultimate:
+                        target.health -= 5 * self.damage_multiplier
+                    else:
+                        target.health -= 10  * self.damage_multiplier # ultimate doubles the damage
 
-                # knockback animation
-                if not self.flip:
-                    target.char.x += 70
-                    target.action = 9
-                else:
-                    target.char.x -= 70
-                    target.action = 8
-
-            for i in range(1, 8):
-                # loads lightening images
-                img = pygame.image.load(f'Images/lightning{i}.png')
-                img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
-                attacking_rect_img = img
-                attacking_rect_img_scaled = pygame.transform.scale(attacking_rect_img, (1300, 70))
-                surface.blit(attacking_rect_img_scaled, (0, 600))
-            # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
+                    # knockback animation
+                    if not self.flip:
+                        target.char.x += 70
+                        target.action = 9
+                    else:
+                        target.char.x -= 70
+                        target.action = 8
 
                     # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 
