@@ -215,16 +215,10 @@ class Zeus(Fighter):
             center = (target.char.centerx, target.char.centery)
 
             if attacking_rect.collidepoint(center):
-                if not self.ultimate:
-                    target.health -= 7 * self.damage_multiplier
-                else:
-                    target.health -= 12  * self.damage_multiplier
 
-                # knockback animation
-                if not self.flip:
-                    target.char.x += 10
-                else:
-                    target.char.x -= 10
+                target.health -= 5 * self.damage_multiplier
+                pygame.time.wait(100)
+
 
         elif type == 2:  # ability 2 long range
             if self.char.centery > 400:
@@ -233,18 +227,15 @@ class Zeus(Fighter):
                 ultimate = pygame.mixer.Sound('Game_sounds/Zeus/Ultimate.wav')
                 ultimate.play()
                 if attacking_rect.colliderect(target.char):
-                    if not self.ultimate:
-                        target.health -= 5 * self.damage_multiplier
-                    else:
-                        target.health -= 10  * self.damage_multiplier # ultimate doubles the damage
+                        target.health -= 4 * self.damage_multiplier
 
-                    # knockback animation
-                    if not self.flip:
-                        target.char.x += 70
-                        target.action = 9
-                    else:
-                        target.char.x -= 70
-                        target.action = 8
+                        # knockback animation
+                        if not self.flip:
+                            target.char.x += 70
+                            target.action = 9
+                        else:
+                            target.char.x -= 70
+                            target.action = 8
 
                     # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 

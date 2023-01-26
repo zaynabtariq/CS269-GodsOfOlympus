@@ -291,6 +291,9 @@ class Game():
             if fighter_1.health <= 0 or fighter_2.health <= 0:
                 if self.is_freeplay == False: 
                     round_num += 1
+                    if round_num > 3:
+                        round_num = 1
+
                     if fighter_1.health <= 0:
                         self.f2_wins += 1     # fighter 2 earns a round
 
@@ -303,9 +306,10 @@ class Game():
                         self.f1_wins += 1     # fighter 1 earns a round
 
                         if self.f1_wins == 3:
-                            round_num = 3
+                            round_num = 1
                             self.win_screen(self.p1_character) # if fighter 1 wins three rounds, end game
                             return
+
                 fighter_1.reset_time()
                 fighter_2.reset_time()
                 pygame.time.wait(1500)
