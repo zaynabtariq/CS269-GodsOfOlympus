@@ -138,69 +138,69 @@ class Poseidon(Fighter):
         self.last_attack_time = 0
 
     def update(self, target):
-            animation_cooldown = 0
-            if self.action == 0 or self.action == 1:
-                animation_cooldown = 270
-            elif self.action == 2 or self.action == 3:
-                animation_cooldown = 300
-            elif self.action == 4 or self.action == 5:
-                animation_cooldown = 300
-                #bubble animation
-                if self.bubble and pygame.time.get_ticks() - self.attack_timer < 2000:
-                        self.bubble.radius += 5
-                        if self.bubble.radius >= 165:
-                            self.bubble.radius = 160
-                        self.bubble.rect.center = self.char.center
-                        self.bubble.image = pygame.transform.scale(self.bubble.image, (int(self.bubble.radius*2), int(self.bubble.radius*2)))
-            elif self.action == 6 or self.action == 7:
-                # ability 2 long range (wave) animation
-                animation_cooldown = 300
-                target_rect = (target.char.centerx - 50, target.char.y, 10, 220)
-                for wave in self.waves:
-                    # pygame.draw.rect(surface, (0, 255, 0), target_rect)
-                    if wave.rect.colliderect(target_rect):
-                        target.health -= 2 * self.damage_multiplier
-                        self.waves.remove(wave)
-                    wave.update()
+        animation_cooldown = 0
+        if self.action == 0 or self.action == 1:
+            animation_cooldown = 270
+        elif self.action == 2 or self.action == 3:
+            animation_cooldown = 300
+        elif self.action == 4 or self.action == 5:
+            animation_cooldown = 300
+            #bubble animation
+            if self.bubble and pygame.time.get_ticks() - self.attack_timer < 2000:
+                    self.bubble.radius += 5
+                    if self.bubble.radius >= 165:
+                        self.bubble.radius = 160
+                    self.bubble.rect.center = self.char.center
+                    self.bubble.image = pygame.transform.scale(self.bubble.image, (int(self.bubble.radius*2), int(self.bubble.radius*2)))
+        elif self.action == 6 or self.action == 7:
+            # ability 2 long range (wave) animation
+            animation_cooldown = 300
+            target_rect = (target.char.centerx - 50, target.char.y, 10, 220)
+            for wave in self.waves:
+                # pygame.draw.rect(surface, (0, 255, 0), target_rect)
+                if wave.rect.colliderect(target_rect):
+                    target.health -= 5 * self.damage_multiplier
+                    self.waves.remove(wave)
+                wave.update()
 
-            elif self.action == 8 or self.action == 9:
-                animation_cooldown = 100
-            elif self.action == 10 or self.action == 11:
-                animation_cooldown = 60
+        elif self.action == 8 or self.action == 9:
+            animation_cooldown = 100
+        elif self.action == 10 or self.action == 11:
+            animation_cooldown = 60
 
-            # handle animation
-            # update image
-            try: # using try/except to fix the index out of range error
-                self.image = self.animation_list[self.action][self.frame_index]
-                # ultimate animation
-                if self.ultimate:
-                    if self.flood_height > 530:
-                        current_time = pygame.time.get_ticks()
-                        if current_time - self.startUltimate >= 30:
-                            self.flood_height -= 1.5
-                            attacking_rect = self.flood_image.get_rect()
-                            attacking_rect.x = 0
-                            attacking_rect.y = self.flood_height
-                            self.startUltimate = current_time
-                            if attacking_rect.colliderect(target.char):
-                                target.health -= 0.25 * self.damage_multiplier
+        # handle animation
+        # update image
+        try: # using try/except to fix the index out of range error
+            self.image = self.animation_list[self.action][self.frame_index]
+            # ultimate animation
+            if self.ultimate:
+                if self.flood_height > 530:
+                    current_time = pygame.time.get_ticks()
+                    if current_time - self.startUltimate >= 30:
+                        self.flood_height -= 1.5
+                        attacking_rect = self.flood_image.get_rect()
+                        attacking_rect.x = 0
+                        attacking_rect.y = self.flood_height
+                        self.startUltimate = current_time
+                        if attacking_rect.colliderect(target.char):
+                            target.health -= 0.3 * self.damage_multiplier
 
-                    if pygame.time.get_ticks() - self.attack_timer > 6000:
-                        self.ultimate = False
-                        self.flood_height = 700
+                if pygame.time.get_ticks() - self.attack_timer > 6000:
+                    self.ultimate = False
+                    self.flood_height = 700
 
 
 
-            except:
-                print("Try/Except")
+        except:
+            print("Try/Except")
 
-            # check if enough time has been passed since last update
-            if pygame.time.get_ticks() - self.update_time > animation_cooldown:
-                self.update_time = pygame.time.get_ticks()
-                self.frame_index += 1
-            # if the animation has run out then reset to the start
-            if self.frame_index >= len(self.animation_list[self.action]):
-                self.idle()
+        # check if enough time has been passed since last update
+        if pygame.time.get_ticks() - self.update_time > animation_cooldown:
+            self.update_time = pygame.time.get_ticks()
+            self.frame_index += 1
+        # if the animation has run out then reset to the start
+        if self.frame_index >= len(self.animation_list[self.action]):
+            self.idle()
 
 
 
@@ -247,13 +247,11 @@ class Poseidon(Fighter):
                 center = (target.char.centerx, target.char.centery)
 
                 if attacking_rect.collidepoint(center):
-                    target.health -= 5 * self.damage_multiplier
+                    target.health -= 6 * self.damage_multiplier
                     if not self.flip:
                         target.action = 9
-                        target.char.x += 70
                     else:
                         target.action = 8
-                        target.char.x -= 70
 
 
 
@@ -288,10 +286,10 @@ class Poseidon(Fighter):
                 # does damage ranging from 1 to 3
                 target.health -= Fighter.random_melee(self) * self.damage_multiplier
                 if not self.flip:
-                    target.char.x += 20
+                    target.char.x += 5
                     target.action = 9
                 else:
-                    target.char.x -= 20
+                    target.char.x -= 5
                     target.action = 8
 
         elif type == 4:
@@ -331,4 +329,3 @@ class Wave:
         self.pos[0] += self.direction[0] * self.speed
         self.pos[1] += self.direction[1] * self.speed
         self.rect.center = self.pos
-

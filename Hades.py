@@ -146,7 +146,7 @@ class Hades(Fighter):
                 fireball.update()
                 # pygame.draw.rect(surface, (0, 255, 0), target_rect)
                 if fireball.rect.colliderect(target_rect):
-                    target.health -= 8 * self.damage_multiplier
+                    target.health -= 2 * self.damage_multiplier
                     self.fireballs.remove(fireball)
 
         elif self.action == 8 or self.action == 9:
@@ -214,10 +214,10 @@ class Hades(Fighter):
             # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 
             if attacking_rect.collidepoint(center):
-                target.health -= 5 * self.damage_multiplier
+                target.health -= 2 * self.damage_multiplier
 
                 if self.health < 100:
-                    self.health += 3
+                    self.health += 2
 
                 if not self.flip:
                     target.char.x += 70
