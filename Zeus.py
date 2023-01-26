@@ -216,7 +216,7 @@ class Zeus(Fighter):
 
             if attacking_rect.collidepoint(center):
 
-                target.health -= 5 * self.damage_multiplier
+                target.health -= 3 * self.damage_multiplier
                 pygame.time.wait(100)
 
 
@@ -227,7 +227,7 @@ class Zeus(Fighter):
                 ultimate = pygame.mixer.Sound('Game_sounds/Zeus/Ultimate.wav')
                 ultimate.play()
                 if attacking_rect.colliderect(target.char):
-                        target.health -= 4 * self.damage_multiplier
+                        target.health -= 3 * self.damage_multiplier
 
                         # knockback animation
                         if not self.flip:
