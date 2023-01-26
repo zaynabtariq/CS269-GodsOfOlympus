@@ -201,7 +201,8 @@ class Game():
                         self.f1_wins = 0
                         self.f2_wins = 0
                         self.idk = True
-                        
+
+
                         # restart the game loop
                         self.is_running = True
                         waiting = False
@@ -308,6 +309,8 @@ class Game():
                         if self.f2_wins == 3:
                             round_num = 1
                             self.win_screen(self.p2_character) # if fighter 2 wins three rounds, end game
+                            if self.is_freeplay == False:
+                                self.loadRounds(round_num)
                             return
 
                     else:
@@ -316,6 +319,8 @@ class Game():
                         if self.f1_wins == 3:
                             round_num = 1
                             self.win_screen(self.p1_character) # if fighter 1 wins three rounds, end game
+                            if self.is_freeplay == False:
+                                self.loadRounds(round_num)
                             return
 
                 fighter_1.reset_time()

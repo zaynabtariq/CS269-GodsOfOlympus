@@ -195,6 +195,7 @@ class Hades(Fighter):
                 self.flash_time = current_time
 
         if self.action == 6 or self.action == 7:
+
             for fireball in self.fireballs:
                 surface.blit(fireball.image, fireball.pos)
                 if fireball.pos[0] > 1300 or fireball.pos[0] < 0 or fireball.pos[1] > 750 or fireball.pos[1] < 0:
