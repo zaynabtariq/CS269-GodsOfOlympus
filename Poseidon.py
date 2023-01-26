@@ -308,7 +308,7 @@ class Wave:
         self.speed = speed
         self.direction = wave_direction
         self.wave_bottom = pygame.image.load('Images/wave_bottom.png')
-        self.wave_bottom = pygame.transform.scale(self.wave_bottom, (1300, 100))
+        self.wave_bottom = pygame.transform.scale(self.wave_bottom, (1300, 120))
         if self.direction == (1, 0):
             self.image = pygame.image.load("Images/wave_top.png")
             self.image = pygame.transform.scale(self.image, (160, 150))
