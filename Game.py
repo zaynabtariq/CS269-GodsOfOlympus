@@ -255,8 +255,6 @@ class Game():
             fighter_1 = Hades(1, 0, self.HEIGHT - 200, self.ledges, self.screen)
         elif self.p1_character == 3:
             fighter_1 = Poseidon(1, 0, self.HEIGHT - 200, self.ledges, self.screen)
-        else:
-            fighter_1 = Zeus(1, 0, self.HEIGHT - 200, self.ledges, self.screen)
 
         if self.p2_character == 1:
             fighter_2 = Zeus(2, self.WIDTH - 400, self.HEIGHT-500, self.ledges, self.screen)
@@ -264,8 +262,6 @@ class Game():
             fighter_2 = Hades(2, self.WIDTH - 400, self.HEIGHT-500, self.ledges, self.screen)
         elif self.p2_character == 3:
             fighter_2 = Poseidon(2, self.WIDTH - 400, self.HEIGHT-500, self.ledges, self.screen)
-        else:
-            fighter_2 = Hades(2, self.WIDTH - 400, self.HEIGHT - 500, self.ledges, self.screen)
 
         # Sets screen header
         pygame.display.set_caption("Gods of Olympus")
@@ -320,8 +316,13 @@ class Game():
             # draw fighters
             fighter_1.update(fighter_2)
             fighter_2.update(fighter_1)
-            fighter_1.draw(self.screen)
-            fighter_2.draw(self.screen)
+
+            if self.p1_character == 3:
+                fighter_2.draw(self.screen)
+                fighter_1.draw(self.screen)
+            else:
+                fighter_1.draw(self.screen)
+                fighter_2.draw(self.screen)
 
             # draw hp bar for fighters
             self.map.draw_health_bars(fighter_1.health, 'fighter_2')
