@@ -12,6 +12,7 @@ import random
 
 class Fighter():
     def __init__(self, player, x, y, ledges, surface):
+        self.attack_timer = 0
         self.flash_time = 0
         self.ultimate_time = 0
         self.attack_clock = pygame.time.Clock()
@@ -78,11 +79,13 @@ class Fighter():
                             self.action = 4
                             self.frame_index = 0
                             self.update_time = pygame.time.get_ticks()
+                            self.attack_timer = pygame.time.get_ticks()
                             self.attack(surface, target, self.attack_type)
                         if key[pygame.K_v]:
                             self.attack_type = 2
                             self.action = 6
                             self.frame_index = 0
+                            self.attack_timer = pygame.time.get_ticks()
                             self.update_time = pygame.time.get_ticks()
                             self.attack(surface, target, self.attack_type)
                         if key[pygame.K_b]:
@@ -98,7 +101,7 @@ class Fighter():
                             self.ultimate_time = pygame.time.get_ticks()
                             self.flash_time = pygame.time.get_ticks()
                             self.ultimate = True
-                            self.attack_type = 0
+                            self.attack_type = 4
                             self.attack(surface, target, self.attack_type)
 
             #check player 2 controls
@@ -123,15 +126,18 @@ class Fighter():
                     if self.attack_clock.tick() > self.cooldown_time:
                         self.attacking = True
                         if key[pygame.K_PERIOD]:
+                            self.update_time = pygame.time.get_ticks()
                             self.attack_type = 1
                             self.action = 5
                             self.frame_index = 0
                             self.update_time = pygame.time.get_ticks()
+                            self.attack_timer = pygame.time.get_ticks()
                             self.attack(surface, target, self.attack_type)
                         if key[pygame.K_COMMA]:
                             self.attack_type = 2
                             self.action = 7
                             self.frame_index = 0
+                            self.attack_timer = pygame.time.get_ticks()
                             self.update_time = pygame.time.get_ticks()
                             self.attack(surface,target, self.attack_type)
                         if key[pygame.K_SLASH]:
@@ -147,7 +153,7 @@ class Fighter():
                             self.ultimate_time = pygame.time.get_ticks()
                             self.flash_time = pygame.time.get_ticks()
                             self.ultimate = True
-                            self.attack_type = 0
+                            self.attack_type = 4
                             self.attack(surface, target, self.attack_type)
 
             # apply gravity
