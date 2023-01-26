@@ -300,7 +300,7 @@ class Bubble:
         self.radius = radius
         self.image = pygame.image.load("Images/bubble_attack.png")
         self.image = pygame.transform.scale(self.image, (int(self.radius * 2), int(self.radius * 2)))
-        self.rect = pygame.Rect(character_pos[0] - 10 ,character_pos[1],int(self.radius * 2) + 60 , int(self.radius * 2) + 50)
+        self.rect = pygame.Rect(character_pos[0] - 10 ,character_pos[1],int(self.radius * 2) + 60, int(self.radius * 2) + 50)
 
 class Wave:
     def __init__(self, player_pos, wave_direction, speed):
