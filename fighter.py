@@ -74,21 +74,21 @@ class Fighter():
                 if key[pygame.K_c] or key[pygame.K_v] or key[pygame.K_b] or key[pygame.K_q]:
                     if self.attack_clock.tick() > self.cooldown_time:
                         self.attacking = True
-                        if key[pygame.K_c]:
+                        if key[pygame.K_v]:
                             self.attack_type = 1
                             self.action = 4
                             self.frame_index = 0
                             self.update_time = pygame.time.get_ticks()
                             self.attack_timer = pygame.time.get_ticks()
                             self.attack(surface, target, self.attack_type)
-                        if key[pygame.K_v]:
+                        if key[pygame.K_b]:
                             self.attack_type = 2
                             self.action = 6
                             self.frame_index = 0
                             self.attack_timer = pygame.time.get_ticks()
                             self.update_time = pygame.time.get_ticks()
                             self.attack(surface, target, self.attack_type)
-                        if key[pygame.K_b]:
+                        if key[pygame.K_c]:
                             self.action = 10
                             self.frame_index = 0
                             self.update_time = pygame.time.get_ticks()
