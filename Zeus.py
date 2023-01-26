@@ -64,7 +64,6 @@ class Zeus(Fighter):
         self.animation_list.append(temp_list)
 
         # 5 : ability1 left
-
         temp_list = []
         for i in range(2, 6):
             img = pygame.image.load(f'Images/left_ability1_{i}.png')
@@ -132,6 +131,7 @@ class Zeus(Fighter):
         self.char = self.image.get_rect()
         self.char.x = x
         self.char.y = y
+        self.ground_stomp = y
         self.direction = True
 
 
@@ -156,6 +156,7 @@ class Zeus(Fighter):
         # update image
 
         try:  # using the try/except to fix index out of range error
+
             self.image = self.animation_list[self.action][self.frame_index]
             # adds the animation for ultimate
             if self.ultimate:
@@ -168,7 +169,7 @@ class Zeus(Fighter):
                     self.index = 0
 
             # adds lightning if ability 2 is used
-            if self.action == 6 or self.action == 7:
+            if (self.action == 6 or self.action == 7) and self.char.y > 500:
                 img = pygame.image.load(f'Images/lightning7.png')
                 img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
                 img = pygame.transform.scale(img, (1300, 70))
@@ -208,10 +209,9 @@ class Zeus(Fighter):
         self.attacking = True
 
         if type == 1:  # ability 1 medium range
-            if self.update_time - self.last_ability1_time > 5000:
+            if self.update_time - self.last_ability1_time > 2000:
                 self.last_ability1_time = self.update_time
-                attacking_rect = pygame.Rect(self.char.centerx - (1/2 * self.char.width * self.flip), self.char.y,
-                                            1/2 * self.char.width, self.char.height)
+                attacking_rect = pygame.Rect(self.char.centerx - (1/2 * self.char.width * self.flip), self.char.y, 1/2 * self.char.width, self.char.height)
                 ability1 = pygame.mixer.Sound('Game_sounds/Zeus/Ability1.wav')
                 ability1.play()
                 center = (target.char.centerx, target.char.centery)
@@ -229,34 +229,37 @@ class Zeus(Fighter):
                         target.char.x -= 10
 
         elif type == 2:  # ability 2 long range
-            if self.update_time - self.last_ability2_time > 7000:
-                self.last_ability2_time = self.update_time
-                attacking_rect = pygame.Rect(0, 750 - self.char.y/3 + 10,
-                                            1300, self.char.height/3)
-                ultimate = pygame.mixer.Sound('Game_sounds/Zeus/Ultimate.wav')
-                ultimate.play()
-                if attacking_rect.colliderect(target.char):
-                    if not self.ultimate:
-                        target.health -= 5
-                    else:
-                        target.health -= 10  # ultimate doubles the damage
+            if self.update_time - self.last_ability2_time > 2000:
+                if self.char.y >= self.ground_stomp:
+                    self.last_ability2_time = self.update_time
+                    attacking_rect = pygame.Rect(0, 750 - self.char.y/3 + 10,
+                                                1300, self.char.height/3)
+                    ultimate = pygame.mixer.Sound('Game_sounds/Zeus/Ultimate.wav')
+                    ultimate.play()
+                    if attacking_rect.colliderect(target.char):
+                        if not self.ultimate:
+                            target.health -= 5
+                        else:
+                            target.health -= 10  # ultimate doubles the damage
 
-                    # knockback animation
-                    if not self.flip:
-                        target.char.x += 70
-                        target.action = 9
-                    else:
-                        target.char.x -= 70
-                        target.action = 8
+                        # knockback animation
+                        if not self.flip:
+                            target.char.x += 70
+                            target.action = 9
+                        else:
+                            target.char.x -= 70
+                            target.action = 8
 
-                for i in range(1, 8):
-                    # loads lightening images
-                    img = pygame.image.load(f'Images/lightning{i}.png')
-                    img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
-                    attacking_rect_img = img
-                    attacking_rect_img_scaled = pygame.transform.scale(attacking_rect_img, (1300, 70))
-                    surface.blit(attacking_rect_img_scaled, (0, 600))
+                    for i in range(1, 8):
+                        # loads lightening images
+                        img = pygame.image.load(f'Images/lightning{i}.png')
+                        img = pygame.transform.scale(img, (img.get_width() * 1.5, img.get_height() * 1.5))
+                        attacking_rect_img = img
+                        attacking_rect_img_scaled = pygame.transform.scale(attacking_rect_img, (1300, 70))
+                        surface.blit(attacking_rect_img_scaled, (0, 600))
                 # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
+
+                    # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 
         elif type == 3: # melee
             attacking_rect = pygame.Rect(self.char.centerx - (1 / 4 * self.char.width * self.flip), self.char.y,

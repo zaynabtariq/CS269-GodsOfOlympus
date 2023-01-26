@@ -174,7 +174,7 @@ class Poseidon(Fighter):
             self.image = self.animation_list[self.action][self.frame_index]
             # ultimate animation
             if self.ultimate:
-                if self.flood_height > 500:
+                if self.flood_height > 530:
                     current_time = pygame.time.get_ticks()
                     if current_time - self.startUltimate >= 30:
                         self.flood_height -= 1.5
@@ -185,7 +185,7 @@ class Poseidon(Fighter):
                         if attacking_rect.colliderect(target.char):
                             target.health -= 0.25
 
-                if pygame.time.get_ticks() - self.attack_timer > 10000:
+                if pygame.time.get_ticks() - self.attack_timer > 6000:
                     self.ultimate = False
                     self.flood_height = 700
 
@@ -216,11 +216,8 @@ class Poseidon(Fighter):
         surface.blit(self.image, self.char)
         if self.action == 4 or self.action == 5:
             # bubble
-            if self.update_time - self.last_attack_time > 1500:
+            if self.bubble and self.update_time - self.last_attack_time > 1500:
                 surface.blit(self.bubble.image, self.bubble.pos)
-        # ultimate
-        if self.ultimate:
-            surface.blit(self.flood_image, (0, self.flood_height))
 
         # wave ability
         if self.action == 6 or self.action == 7:
@@ -231,15 +228,21 @@ class Poseidon(Fighter):
                     self.waves.remove(wave)
                     self.num_waves -= 1
 
+        # ultimate
+        if self.ultimate:
+            surface.blit(self.flood_image, (0, self.flood_height))
+
 
     def attack(self, surface,  target, type):
         self.attacking = True
 
         if type == 1:  # ability 1 medium range
             #attacking rectangle for bubble ability
-            if self.update_time - self.last_attack_time > 1500:
+            if self.update_time - self.last_attack_time > 1400:
                 self.bubble = Bubble((self.char.centerx - 150, self.char.centery - 150), 100)
                 self.attack_timer = pygame.time.get_ticks()
+                ability1 = pygame.mixer.Sound('Game_sounds/Poseidon/poseidon_ability1.wav')
+                ability1.play()
                 attacking_rect = self.bubble.rect
                 center = (target.char.centerx, target.char.centery)
 
@@ -256,6 +259,8 @@ class Poseidon(Fighter):
             # making wave object
             if self.update_time - self.last_attack_time > 1500:
                 self.last_attack_time = self.update_time
+                ability2 = pygame.mixer.Sound('Game_sounds/Poseidon/wave.wav')
+                ability2.play(0, 1000, 15)
                 if target.char.centerx > self.char.centerx:
                     wave = Wave((self.char.centerx - (30 * self.flip), 500), (1, 0), 20)
                     self.wave_bottom = wave.wave_bottom
@@ -275,6 +280,8 @@ class Poseidon(Fighter):
                                          1 / 4 * self.char.width, self.char.height)
             #pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
             center = (target.char.centerx, target.char.centery)
+            melee = pygame.mixer.Sound('Game_sounds/Poseidon/Metallic_hit.wav')
+            melee.play()
             if attacking_rect.collidepoint(center):
                 # does damage ranging from 1 to 3
                 target.health -= Fighter.random_melee(self)
@@ -288,9 +295,8 @@ class Poseidon(Fighter):
         elif type == 4:
             # starts the timer for ultimate
             self.attack_timer = pygame.time.get_ticks()
-
-
-
+            ultimate = pygame.mixer.Sound('Game_sounds/Poseidon/Bubbly_sound.wav')
+            ultimate.play(3)
 
         self.attacking = False
 
@@ -308,7 +314,7 @@ class Wave:
         self.speed = speed
         self.direction = wave_direction
         self.wave_bottom = pygame.image.load('Images/wave_bottom.png')
-        self.wave_bottom = pygame.transform.scale(self.wave_bottom, (1300, 100))
+        self.wave_bottom = pygame.transform.scale(self.wave_bottom, (1300, 120))
         if self.direction == (1, 0):
             self.image = pygame.image.load("Images/wave_top.png")
             self.image = pygame.transform.scale(self.image, (160, 150))
