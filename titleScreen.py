@@ -1,6 +1,6 @@
 """
 Gods of Olympus
-Last Modified: 1/24/23
+Last Modified: 1/25/23
 Course: CS269
 File: titleScreen.py
 """
@@ -11,17 +11,29 @@ import pygame_gui
 class titleScreen():
 
     # Constructor
-    def __init__(self, x, y, window_surface):
+    def __init__(self, x, y, window_surface, helperUI):
         self.x = x
         self.y = y
         self.window_surface = window_surface
+
+        # Button text holders
+        self.all_text = []
+        self.all_text_rect = []
+        self.helper_ui = helperUI
 
     # Creates all main buttons
     def createAllButtons(self):
 
         # Method to make a standard button
         def makeStandardButton(location_y, the_text, the_manager):
-            button = pygame_gui.elements.UIButton(pygame.Rect((location_x, location_y), (size_x, size_y)), text = the_text, manager = the_manager)
+            button = pygame_gui.elements.UIButton(pygame.Rect((location_x, location_y), (size_x, size_y)), text = '', manager = the_manager)
+            button_surface = pygame.Surface((self.x, self.y))
+
+            # Make text
+            new_text = self.helper_ui.create_text(button_surface, the_text, 20, 0, 0)
+            new_text_rect = new_text.get_rect(center = (location_x + (size_x / 2), location_y + (size_y / 2)))
+            self.all_text.append(new_text)
+            self.all_text_rect.append(new_text_rect)
             return button
 
         # Method to make the settings button
@@ -71,6 +83,10 @@ class titleScreen():
 
         return all_buttons, all_managers
 
+    # Returns the main button text
+    def return_text(self):
+        return self.all_text, self.all_text_rect
+
     # Colors all visible pixels of an image
     def color_surface(self, surface, red, green, blue):
         arr = pygame.surfarray.pixels3d(surface)
@@ -117,4 +133,5 @@ class titleScreen():
 
         # Update background
         self.window_surface.blit(background, (0, 0))
+
         return background

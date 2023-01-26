@@ -1,6 +1,6 @@
 """
 Gods of Olympus
-Last Modified: 1/24/23
+Last Modified: 1/25/23
 Course: CS269
 File: titleScreen.py
 """
@@ -12,7 +12,7 @@ from pygame.locals import *
 class charSelect():
 
     # Constructor
-    def __init__(self, x, y, window_surface, char_image_size):
+    def __init__(self, x, y, window_surface, helperUI, char_image_size):
         self.x = x
         self.y = y
         self.window_surface = window_surface
@@ -25,10 +25,13 @@ class charSelect():
 
         self.background = pygame.Surface((self.x, self.y))
         self.bg_and_characters = pygame.Surface((self.x, self.y))
+        self.helper_ui = helperUI
 
         # Button arrays
         self.all_buttons = []
         self.all_managers = []   # Holds button managers
+        self.all_text = []
+        self.all_text_rect = []
 
     # Colors all visible pixels of an image
     def color_surface(self, surface, red, green, blue):
@@ -141,7 +144,15 @@ class charSelect():
 
     # Method to make the arrow button
     def makeButton(self, manager, text, size_x, size_y, location_x, location_y):
-        button = pygame_gui.elements.UIButton(pygame.Rect((location_x, location_y), (size_x, size_y)), text = text, manager = manager)
+        button = pygame_gui.elements.UIButton(pygame.Rect((location_x, location_y), (size_x, size_y)), text = '', manager = manager)
+        button_surface = pygame.Surface((self.x, self.y))
+
+        # Make text
+        new_text = self.helper_ui.create_text(button_surface, text, 24, 0, 0)
+        new_text_rect = new_text.get_rect(center = (location_x + (size_x / 2), location_y + (size_y / 2)))
+        self.all_text.append(new_text)
+        self.all_text_rect.append(new_text_rect)
+
         return button
 
     # Initialize character select
@@ -269,5 +280,9 @@ class charSelect():
             # Draw buttons
             for manager in self.all_managers:
                 manager.draw_ui(self.window_surface)
+
+            # Draw button text
+            for i in range(len(self.all_text)):
+                self.window_surface.blit(self.all_text[i], self.all_text_rect[i])
 
             pygame.display.update()

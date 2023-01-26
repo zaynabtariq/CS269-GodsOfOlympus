@@ -1,6 +1,6 @@
 """
 Gods of Olympus
-Last Modified: 1/24/23
+Last Modified: 1/25/23
 Course: CS269
 File: main.py
 """
@@ -38,14 +38,14 @@ game = Game(False, HEIGHT, WIDTH, ACC, FRIC, FPS, p1_character, p2_character, ma
 x = WIDTH    # x-dimension (screen width)
 y = HEIGHT     # y-dimension (screen height)
 window_surface = pygame.display.set_mode((x, y))    # Creates screen surface & background
-tscreen = titleScreen(x, y, window_surface)
+helper_ui = helperUI(x, y, window_surface)
+tscreen = titleScreen(x, y, window_surface, helper_ui)
 
 # charSelect class variables
 char_image_size = 500   # Size of character image on character select screen
-charSelectScreen = charSelect(x, y, window_surface, char_image_size)
+charSelectScreen = charSelect(x, y, window_surface, helper_ui, char_image_size)
 
 # Button GUI variables
-helper_ui = helperUI(x, y, window_surface)
 character_gui_enabled = False
 control_gui_enabled = False
 settings_gui_enabled = False
@@ -55,6 +55,9 @@ background = tscreen.initializeTitleScreen()
 clock = pygame.time.Clock()
 is_running = True
 all_buttons, all_managers = tscreen.createAllButtons() 
+all_text, all_text_rect = tscreen.return_text()
+all_settings_text = []
+all_settings_text_rect = []
 
 
 ##################### Methods #####################
@@ -138,11 +141,18 @@ while is_running:
     if control_gui_enabled:
         helper_ui.initialize_control_gui()
     elif settings_gui_enabled:
-        helper_ui.initialize_settings_gui(False, all_buttons, all_managers)
+        helper_ui.initialize_settings_gui(False, all_buttons, all_managers, all_settings_text, all_settings_text_rect)
 
     # Draw buttons
     for manager in all_managers:
         manager.draw_ui(window_surface)
+
+    # Draw button text
+    for i in range(len(all_text)):  # Main button text
+        window_surface.blit(all_text[i], all_text_rect[i])
+    if len(all_managers) > 5 and len(all_settings_text) > 0:     # If Settings gui is open (Setting button text)
+        for i in range(len(all_settings_text)):
+            window_surface.blit(all_settings_text[i], all_settings_text_rect[i])
 
     # Add gear to settings button
     gear = pygame.image.load("Images/gear.png").convert_alpha()
