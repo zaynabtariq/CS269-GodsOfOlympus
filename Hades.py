@@ -130,8 +130,6 @@ class Hades(Fighter):
         self.char.y = y
         self.direction = True
         self.fireballs = []
-        self.last_ability1_time = 0
-        self.last_ability2_time = 0
 
     def update(self, target):
         animation_cooldown = 0
@@ -183,7 +181,6 @@ class Hades(Fighter):
         self.update_time = pygame.time.get_ticks()
 
     def draw(self, surface):
-        print(self.damage_multiplier)
         if not self.ultimate:
             surface.blit(self.image, self.char)
         if self.ultimate:
@@ -208,43 +205,39 @@ class Hades(Fighter):
         self.attacking = True
 
         if type == 1:  # ability 2 medium range (mist)
-            if self.update_time - self.last_ability1_time > 5000:
-                self.last_ability1_time = self.update_time
-                ability2 = pygame.mixer.Sound('Game_sounds/Hades/misty_sound.wav')
-                ability2.play()
-                attacking_rect = pygame.Rect(self.char.centerx - (1 / 2 * self.char.width * self.flip), self.char.y,
-                                            1 / 2 * self.char.width, self.char.height)
-                center = (target.char.centerx, target.char.centery)
-                # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
+            ability2 = pygame.mixer.Sound('Game_sounds/Hades/misty_sound.wav')
+            ability2.play()
+            attacking_rect = pygame.Rect(self.char.centerx - (1 / 2 * self.char.width * self.flip), self.char.y,
+                                        1 / 2 * self.char.width, self.char.height)
+            center = (target.char.centerx, target.char.centery)
+            # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 
-                if attacking_rect.collidepoint(center):
-                    target.health -= 5 * self.damage_multiplier
+            if attacking_rect.collidepoint(center):
+                target.health -= 5 * self.damage_multiplier
 
-                    if self.health < 100:
-                        self.health += 3
+                if self.health < 100:
+                    self.health += 3
 
-                    if not self.flip:
-                        target.char.x += 70
-                        target.action = 9
-                    else:
-                        target.char.x -= 70
-                        target.action = 8
+                if not self.flip:
+                    target.char.x += 70
+                    target.action = 9
+                else:
+                    target.char.x -= 70
+                    target.action = 8
 
 
         elif type == 2:  # ability 1 long range
 
-            if self.update_time - self.last_ability2_time > 4000:
-                # create fireball in 3 directions
-                self.last_ability2_time = self.update_time
-                fireball = Fireball((self.char.centerx - (50 * self.flip), self.char.centery), (0, -1), 20)
-                self.fireballs.append(fireball)
-                fireball = Fireball((self.char.centerx - (50 * self.flip), self.char.centery), (1, 0), 20)
-                self.fireballs.append(fireball)
-                fireball = Fireball((self.char.centerx - (50 * self.flip), self.char.centery), (-1, 0), 20)
-                self.fireballs.append(fireball)
-                self.num_fireballs += 1
-                fireball = pygame.mixer.Sound('Game_sounds/Hades/Fireball.wav')
-                fireball.play()
+            # create fireball in 3 directions
+            fireball = Fireball((self.char.centerx - (50 * self.flip), self.char.centery), (0, -1), 20)
+            self.fireballs.append(fireball)
+            fireball = Fireball((self.char.centerx - (50 * self.flip), self.char.centery), (1, 0), 20)
+            self.fireballs.append(fireball)
+            fireball = Fireball((self.char.centerx - (50 * self.flip), self.char.centery), (-1, 0), 20)
+            self.fireballs.append(fireball)
+            self.num_fireballs += 1
+            fireball = pygame.mixer.Sound('Game_sounds/Hades/Fireball.wav')
+            fireball.play()
 
             # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 

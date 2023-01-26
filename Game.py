@@ -16,7 +16,6 @@ from pygame.locals import *
 import sys
 
 class Game():
-
     # Constructor
     def __init__(self, is_freeplay, HEIGHT, WIDTH, ACC, FRIC, FPS, p1_character, p2_character, map_type):
         self.HEIGHT = HEIGHT
@@ -247,7 +246,6 @@ class Game():
 
     # Runs the game
     def runGame(self, round_num):
-        
         # starting location of fighters
         if self.p1_character == 1:
             fighter_1 = Zeus(1, 0, self.HEIGHT - 200, self.ledges, self.screen)
@@ -262,6 +260,9 @@ class Game():
             fighter_2 = Hades(2, self.WIDTH - 400, self.HEIGHT-500, self.ledges, self.screen)
         elif self.p2_character == 3:
             fighter_2 = Poseidon(2, self.WIDTH - 400, self.HEIGHT-500, self.ledges, self.screen)
+
+        fighter_1.reset_time()
+        fighter_2.reset_time()
 
         # Sets screen header
         pygame.display.set_caption("Gods of Olympus")
@@ -278,6 +279,10 @@ class Game():
 
         # game looper
         while True:
+            fighter_1.change_multiplier()
+            fighter_2.change_multiplier()
+
+
 
             if self.return_to_menu:
                 return
@@ -301,7 +306,8 @@ class Game():
                             round_num = 3
                             self.win_screen(self.p1_character) # if fighter 1 wins three rounds, end game
                             return
-
+                fighter_1.reset_time()
+                fighter_2.reset_time()
                 pygame.time.wait(1500)
                 self.runGame(round_num)
 
