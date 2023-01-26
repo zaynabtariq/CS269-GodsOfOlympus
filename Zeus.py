@@ -21,6 +21,7 @@ class Zeus(Fighter):
         self.name = 'Zeus'
         self.last_ability1_time = 0
         self.last_ability2_time = 0
+
         #load images
         #  0 : idle right
         temp_list = []
@@ -198,6 +199,7 @@ class Zeus(Fighter):
         self.update_time = pygame.time.get_ticks()
 
     def draw(self, surface):
+        print(self.damage_multiplier)
         surface.blit(self.image, self.char)
         if self.ultimate:
             surface.blit(self.ultimate_img, (self.char.centerx - 100, self.char.y))
@@ -218,9 +220,9 @@ class Zeus(Fighter):
 
                 if attacking_rect.collidepoint(center):
                     if not self.ultimate:
-                        target.health -= 7
+                        target.health -= 7 * self.damage_multiplier
                     else:
-                        target.health -= 12  # ultimate doubles the damage
+                        target.health -= 12  * self.damage_multiplier
 
                     # knockback animation
                     if not self.flip:
@@ -237,9 +239,9 @@ class Zeus(Fighter):
                 ultimate.play()
                 if attacking_rect.colliderect(target.char):
                     if not self.ultimate:
-                        target.health -= 5
+                        target.health -= 5 * self.damage_multiplier
                     else:
-                        target.health -= 10  # ultimate doubles the damage
+                        target.health -= 10  * self.damage_multiplier # ultimate doubles the damage
 
                     # knockback animation
                     if not self.flip:
@@ -267,9 +269,9 @@ class Zeus(Fighter):
             if attacking_rect.collidepoint(center):
                 # does damage ranging from 1 to 3
                 if not self.ultimate:
-                    target.health -= Fighter.random_melee(self)
+                    target.health -= Fighter.random_melee(self) * self.damage_multiplier
                 else:
-                    target.health -= 2 * (Fighter.random_melee(self)) # ultimate doubles the damage
+                    target.health -= 2 * (Fighter.random_melee(self)) * self.damage_multiplier # ultimate doubles the damage
                 # knockback animation
                 if not self.flip:
                     target.char.x += 5
