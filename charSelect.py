@@ -1,6 +1,6 @@
 """
 Gods of Olympus
-Last Modified: 1/24/23
+Last Modified: 1/25/23
 Course: CS269
 File: titleScreen.py
 """
@@ -12,7 +12,7 @@ from pygame.locals import *
 class charSelect():
 
     # Constructor
-    def __init__(self, x, y, window_surface, char_image_size):
+    def __init__(self, x, y, window_surface, helperUI, char_image_size):
         self.x = x
         self.y = y
         self.window_surface = window_surface
@@ -25,10 +25,13 @@ class charSelect():
 
         self.background = pygame.Surface((self.x, self.y))
         self.bg_and_characters = pygame.Surface((self.x, self.y))
+        self.helper_ui = helperUI
 
         # Button arrays
         self.all_buttons = []
         self.all_managers = []   # Holds button managers
+        self.all_text = []
+        self.all_text_rect = []
 
     # Colors all visible pixels of an image
     def color_surface(self, surface, red, green, blue):
@@ -53,7 +56,7 @@ class charSelect():
             map_file = "Images/hades_palace.jpg"
         elif self.map == "Poseidon":
             map_file = "Images/water_palace.jpg"
-        else:   # If Character Select screen is first called
+        else:   # If Character Select screen is called for the first time
             self.map = "Zeus"
             map_file = "Images/sky_palace.jpg"
 
@@ -114,7 +117,7 @@ class charSelect():
             elif self.p1_character == "Hades":
                 p1_location = -70
             else:
-                p1_location = -55   # May need to be adjusted
+                p1_location = -70   # May need to be adjusted
 
             # Player 2
             if self.p2_character == "Zeus":
@@ -122,7 +125,7 @@ class charSelect():
             elif self.p2_character == "Hades":
                 p2_location = self.x - self.char_image_size + 80
             else:
-                p2_location = self.x - self.char_image_size + 98    # May need to be adjusted
+                p2_location = self.x - self.char_image_size + 80    # May need to be adjusted
 
             return p1_location, p2_location
 
@@ -141,7 +144,15 @@ class charSelect():
 
     # Method to make the arrow button
     def makeButton(self, manager, text, size_x, size_y, location_x, location_y):
-        button = pygame_gui.elements.UIButton(pygame.Rect((location_x, location_y), (size_x, size_y)), text = text, manager = manager)
+        button = pygame_gui.elements.UIButton(pygame.Rect((location_x, location_y), (size_x, size_y)), text = '', manager = manager)
+        button_surface = pygame.Surface((self.x, self.y))
+
+        # Make text
+        new_text = self.helper_ui.create_text(button_surface, text, 24, 0, 0)
+        new_text_rect = new_text.get_rect(center = (location_x + (size_x / 2), location_y + (size_y / 2)))
+        self.all_text.append(new_text)
+        self.all_text_rect.append(new_text_rect)
+
         return button
 
     # Initialize character select
@@ -181,7 +192,7 @@ class charSelect():
         button_3 = self.makeButton(manager3, 'Map', 350, 70, (self.x / 2) - 175, (self.y / 2) - 3)
         self.all_buttons.append(button_3)
 
-        # BUG: Buttons don't appear without clicking first???
+        # BUG: Buttons don't appear without mouse movement first???
 
         self.window_surface.blit(self.background, (0, 0))
 
@@ -225,12 +236,12 @@ class charSelect():
                     else:
                         map_num = 3
 
-                    print('Returning', p1_character_num, ',', p2_character_num, ',', map_num)
+                    print('Characters selected:', p1_character_num, ',', p2_character_num, '| Map selected:', map_num)
                     return p1_character_num, p2_character_num, map_num   # Returns number for characters & maps selected
 
                 if event.type == pygame_gui.UI_BUTTON_PRESSED:  # If a button is pressed
                     if event.ui_element == self.all_buttons[0]: # P1 button
-                        print('Button_1 pressed')
+                        #print('Button_1 pressed')
                         if self.p1_character == "Zeus":
                             self.p1_character = "Hades"
                         elif self.p1_character == "Hades":
@@ -239,7 +250,7 @@ class charSelect():
                             self.p1_character = "Zeus"
                         self.add_characters()
                     if event.ui_element == self.all_buttons[1]: # P2 button
-                        print('Button_2 pressed')
+                        #print('Button_2 pressed')
                         if self.p2_character == "Zeus":
                             self.p2_character = "Hades"
                         elif self.p2_character == "Hades":
@@ -248,7 +259,7 @@ class charSelect():
                             self.p2_character = "Zeus"
                         self.add_characters()
                     if event.ui_element == self.all_buttons[2]: # Map button
-                        print('Button_3 pressed')
+                        #print('Button_3 pressed')
                         if self.map == "Zeus":
                             self.map = "Hades"
                             self.add_maps()
@@ -264,14 +275,14 @@ class charSelect():
                     manager.process_events(event)
                     manager.update(time_delta)
 
-            #self.window_surface.blit(self.background, (0, 0))
             self.window_surface.blit(self.bg_and_characters, (0, 0))
 
             # Draw buttons
             for manager in self.all_managers:
                 manager.draw_ui(self.window_surface)
 
+            # Draw button text
+            for i in range(len(self.all_text)):
+                self.window_surface.blit(self.all_text[i], self.all_text_rect[i])
+
             pygame.display.update()
-
-
-

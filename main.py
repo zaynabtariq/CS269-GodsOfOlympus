@@ -1,6 +1,6 @@
 """
 Gods of Olympus
-Last Modified: 1/24/23
+Last Modified: 1/25/23
 Course: CS269
 File: main.py
 """
@@ -32,39 +32,48 @@ WIDTH = 1300
 ACC = 0.5
 FRIC = -0.12
 FPS = 60
-game = Game(HEIGHT, WIDTH, ACC, FRIC, FPS, p1_character, p2_character, map_type)
+game = Game(False, HEIGHT, WIDTH, ACC, FRIC, FPS, p1_character, p2_character, map_type)
 
 # TitleScreen class variables
 x = WIDTH    # x-dimension (screen width)
 y = HEIGHT     # y-dimension (screen height)
 window_surface = pygame.display.set_mode((x, y))    # Creates screen surface & background
-tscreen = titleScreen(x, y, window_surface)
+helper_ui = helperUI(x, y, window_surface)
+tscreen = titleScreen(x, y, window_surface, helper_ui)
 
 # charSelect class variables
 char_image_size = 500   # Size of character image on character select screen
-charSelectScreen = charSelect(x, y, window_surface, char_image_size)
+charSelectScreen = charSelect(x, y, window_surface, helper_ui, char_image_size)
 
 # Button GUI variables
-helper_ui = helperUI(x, y, window_surface)
 character_gui_enabled = False
 control_gui_enabled = False
 settings_gui_enabled = False
-
-
-##################### Methods #####################
-
-# Runs the main game after pressing "Play"
-def initiate_game():
-    game.runGame()
-
-
-##################### Main method #####################
 
 # Start running the title screen
 background = tscreen.initializeTitleScreen()
 clock = pygame.time.Clock()
 is_running = True
 all_buttons, all_managers = tscreen.createAllButtons() 
+all_text, all_text_rect = tscreen.return_text()
+all_settings_text = []
+all_settings_text_rect = []
+
+
+##################### Methods #####################
+
+# Runs the main game after pressing "Play"
+def initiate_game():
+    game.runGame(1)
+
+# Resets the titleScreen after game is returned to menu
+def reset_screen():
+    background = tscreen.initializeTitleScreen()
+    clock = pygame.time.Clock()
+    all_buttons, all_managers = tscreen.createAllButtons() 
+
+
+##################### Main method #####################
 
 # Constant updating while loop
 while is_running:
@@ -79,23 +88,23 @@ while is_running:
             if event.ui_element == all_buttons[0]:      # Play button
                 print('Starting game...')
                 initiate_game()
-
-                # If returned, reset title screen!
-                background = tscreen.initializeTitleScreen()
-                clock = pygame.time.Clock()
-                all_buttons, all_managers = tscreen.createAllButtons() 
-                game = Game(HEIGHT, WIDTH, ACC, FRIC, FPS, p1_character, p2_character, map_type)
+                reset_screen()      # If returned, reset title screen
+                game = Game(False, HEIGHT, WIDTH, ACC, FRIC, FPS, p1_character, p2_character, map_type)
 
             elif event.ui_element == all_buttons[1]:    # Character select button
                 print('Selecting character...')
                 charSelectScreen.initialize_char_select()   # Character select background
                 p1_character, p2_character, map_type = charSelectScreen.loop_for_characters() # Loop until characters are selected and screen is closed
                 tscreen.initializeTitleScreen()
-                game = Game(HEIGHT, WIDTH, ACC, FRIC, FPS, p1_character, p2_character, map_type)
+                game = Game(False, HEIGHT, WIDTH, ACC, FRIC, FPS, p1_character, p2_character, map_type)
                 break   
 
             elif event.ui_element == all_buttons[2]:    # Freeplay button
                 print('Entering freeplay...')
+                game = Game(True, HEIGHT, WIDTH, ACC, FRIC, FPS, p1_character, p2_character, map_type)
+                initiate_game()
+                reset_screen()
+                game = Game(False, HEIGHT, WIDTH, ACC, FRIC, FPS, p1_character, p2_character, map_type)
 
             elif event.ui_element == all_buttons[3]:    # Controls button
                 print('Checking control panel...')
@@ -132,11 +141,18 @@ while is_running:
     if control_gui_enabled:
         helper_ui.initialize_control_gui()
     elif settings_gui_enabled:
-        helper_ui.initialize_settings_gui(False, all_buttons, all_managers)
+        helper_ui.initialize_settings_gui(False, all_buttons, all_managers, all_settings_text, all_settings_text_rect)
 
     # Draw buttons
     for manager in all_managers:
         manager.draw_ui(window_surface)
+
+    # Draw button text
+    for i in range(len(all_text)):  # Main button text
+        window_surface.blit(all_text[i], all_text_rect[i])
+    if len(all_managers) > 5 and len(all_settings_text) > 0:     # If Settings gui is open (Setting button text)
+        for i in range(len(all_settings_text)):
+            window_surface.blit(all_settings_text[i], all_settings_text_rect[i])
 
     # Add gear to settings button
     gear = pygame.image.load("Images/gear.png").convert_alpha()
