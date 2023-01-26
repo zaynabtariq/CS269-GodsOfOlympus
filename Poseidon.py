@@ -262,11 +262,11 @@ class Poseidon(Fighter):
                 ability2 = pygame.mixer.Sound('Game_sounds/Poseidon/wave.wav')
                 ability2.play(0, 1000, 15)
                 if target.char.centerx > self.char.centerx:
-                    wave = Wave((self.char.centerx - (30 * self.flip), 500), (1, 0), 20)
+                    wave = Wave((self.char.centerx - (30 * self.flip), 540), (1, 0), 20)
                     self.wave_bottom = wave.wave_bottom
                     self.waves.append(wave)
                 elif target.char.centerx < self.char.centerx:
-                    wave = Wave((self.char.centerx - (30 * self.flip), 500), (-1, 0), 20)
+                    wave = Wave((self.char.centerx - (30 * self.flip), 540), (-1, 0), 20)
                     self.wave_bottom = wave.wave_bottom
                     self.waves.append(wave)
 
@@ -317,10 +317,10 @@ class Wave:
         self.wave_bottom = pygame.transform.scale(self.wave_bottom, (1300, 120))
         if self.direction == (1, 0):
             self.image = pygame.image.load("Images/wave_top.png")
-            self.image = pygame.transform.scale(self.image, (160, 150))
+            self.image = pygame.transform.scale(self.image, (160, 120))
         elif self.direction == (-1, 0):
             self.image = pygame.image.load("Images/wave_top.png")
-            self.image = pygame.transform.scale(self.image, (160, 150))
+            self.image = pygame.transform.scale(self.image, (160, 120))
             self.image = pygame.transform.flip(self.image, True, False)
 
         self.rect = self.image.get_rect()
