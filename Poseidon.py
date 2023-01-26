@@ -159,7 +159,7 @@ class Poseidon(Fighter):
             for wave in self.waves:
                 # pygame.draw.rect(surface, (0, 255, 0), target_rect)
                 if wave.rect.colliderect(target_rect):
-                    target.health -= 2
+                    target.health -= 2 * self.damage_multiplier
                     self.waves.remove(wave)
                 wave.update()
 
@@ -183,7 +183,7 @@ class Poseidon(Fighter):
                         attacking_rect.y = self.flood_height
                         self.startUltimate = current_time
                         if attacking_rect.colliderect(target.char):
-                            target.health -= 0.25
+                            target.health -= 0.25 * self.damage_multiplier
 
                 if pygame.time.get_ticks() - self.attack_timer > 6000:
                     self.ultimate = False
@@ -247,7 +247,7 @@ class Poseidon(Fighter):
                 center = (target.char.centerx, target.char.centery)
 
                 if attacking_rect.collidepoint(center):
-                    target.health -= 5
+                    target.health -= 5 * self.damage_multiplier
                     if not self.flip:
                         target.action = 9
                     else:
@@ -284,7 +284,7 @@ class Poseidon(Fighter):
             melee.play()
             if attacking_rect.collidepoint(center):
                 # does damage ranging from 1 to 3
-                target.health -= Fighter.random_melee(self)
+                target.health -= Fighter.random_melee(self) * self.damage_multiplier
                 if not self.flip:
                     target.char.x += 5
                     target.action = 9
