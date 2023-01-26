@@ -20,6 +20,7 @@ class Hades(Fighter):
         self.flash_time = 0
         self.num_fireballs = 0
         self.name = 'Hades'
+
         # load images
         #  0 : idle right
         temp_list = []
@@ -147,7 +148,7 @@ class Hades(Fighter):
                 fireball.update()
                 # pygame.draw.rect(surface, (0, 255, 0), target_rect)
                 if fireball.rect.colliderect(target_rect):
-                    target.health -= 8
+                    target.health -= 8 * self.damage_multiplier
                     self.fireballs.remove(fireball)
 
         elif self.action == 8 or self.action == 9:
@@ -182,6 +183,7 @@ class Hades(Fighter):
         self.update_time = pygame.time.get_ticks()
 
     def draw(self, surface):
+        print(self.damage_multiplier)
         if not self.ultimate:
             surface.blit(self.image, self.char)
         if self.ultimate:
@@ -216,7 +218,7 @@ class Hades(Fighter):
                 # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 
                 if attacking_rect.collidepoint(center):
-                    target.health -= 5
+                    target.health -= 5 * self.damage_multiplier
 
                     if self.health < 100:
                         self.health += 3
@@ -255,7 +257,7 @@ class Hades(Fighter):
             center = (target.char.centerx, target.char.centery)
             if attacking_rect.collidepoint(center):
                 # does damage ranging from 1 to 3
-                target.health -= Fighter.random_melee(self)
+                target.health -= Fighter.random_melee(self) * self.damage_multiplier
                 if not self.flip:
                     target.char.x += 5
                     target.action = 9
