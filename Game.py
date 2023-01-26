@@ -1,13 +1,12 @@
 """
 Gods of Olympus
-Last Modified: 1/24/23
+Last Modified: 1/25/23
 Course: CS269
 File: Game.py
 """
 
 import pygame
 import pygame_gui
-from pygame import mixer
 from Zeus import Zeus
 from Hades import Hades
 from Poseidon import Poseidon
@@ -50,6 +49,16 @@ class Game():
 
         #test
 
+    # Creates text at the given location
+    def create_text(self, surface, text, font_size, color, location_x, location_y):
+        font = pygame.font.Font('freesansbold.ttf', font_size)
+        text = font.render(text, True, color)
+        textRect = text.get_rect()
+        
+        # Set text position & blit text
+        textRect.center = (location_x / 2, location_y / 2)
+        surface.blit(text, textRect)
+
     # Colors all visible pixels of an image
     def color_surface(self, surface, red, green, blue):
         arr = pygame.surfarray.pixels3d(surface)
@@ -80,7 +89,9 @@ class Game():
         # Initialize Settings GUI
         buttons = []
         managers = []
-        self.helper_ui.initialize_settings_gui(True, buttons, managers)
+        all_text = []
+        all_text_rect = []
+        self.helper_ui.initialize_settings_gui(True, buttons, managers, all_text, all_text_rect)
 
         # Update display
         pygame.display.update()
@@ -119,14 +130,21 @@ class Game():
                     manager.update(time_delta)
             
             # Update screen
-            self.helper_ui.initialize_settings_gui(True, buttons, managers)
+            self.helper_ui.initialize_settings_gui(True, buttons, managers, all_text, all_text_rect)
 
             # Draw buttons
             for manager in managers:
                 manager.draw_ui(self.screen)
 
+            # Draw button text
+            if len(all_text) > 0:
+                for i in range(len(all_text)):
+                    self.screen.blit(all_text[i], all_text_rect[i])
+
             pygame.display.update()
 
+
+    # Displays the win screen when game is over
     def win_screen(self, winner):
 
         # Stop the game loop
@@ -148,23 +166,24 @@ class Game():
             winning_character = 'poseidon'
 
         # Display the winner name
-        font = pygame.font.Font(None, 48)
+        font = pygame.font.Font('freesansbold.ttf', 60)
         text = font.render(winning_character.capitalize() + " wins!", True, (255, 255, 255))
         text_rect = text.get_rect(center=(self.WIDTH / 2, self.HEIGHT / 2))
         self.screen.blit(text, text_rect)
 
         winner_img = pygame.image.load(f'Images/{winning_character}main.png')
         winner_img = pygame.transform.scale(winner_img, (winner_img.get_width() * 2, winner_img.get_height() * 2))
-        self.screen.blit(winner_img, (self.WIDTH/2-190, self.HEIGHT/2 - 350))
+        self.screen.blit(winner_img, (self.WIDTH/2-190, self.HEIGHT/2 - 370))
 
-        # Display options
-        font = pygame.font.Font(None, 32)
-        play_again_text = font.render("Play Again", True, (255, 255, 255))
-        play_again_rect = play_again_text.get_rect(center=(self.WIDTH / 2, self.HEIGHT / 2 + 50))
+        # Create text
+        font = pygame.font.Font('freesansbold.ttf', 36)
+        play_again_text = font.render("Play Again", True, (109, 225, 255))
+        play_again_rect = play_again_text.get_rect(center=(self.WIDTH / 2, self.HEIGHT / 2 + 80))
+
+        exit_text = font.render("Exit", True, (109, 225, 255))
+        exit_rect = exit_text.get_rect(center=(self.WIDTH / 2, self.HEIGHT / 2 + 150))
+
         self.screen.blit(play_again_text, play_again_rect)
-
-        exit_text = font.render("Exit", True, (255, 255, 255))
-        exit_rect = exit_text.get_rect(center=(self.WIDTH / 2, self.HEIGHT / 2 + 100))
         self.screen.blit(exit_text, exit_rect)
 
         pygame.display.update()
@@ -191,33 +210,30 @@ class Game():
                         pygame.mixer.music.set_volume(0.3)
 
                     elif exit_rect.collidepoint(event.pos):
-                        pygame.quit()
-                        sys.exit()
-
-                        pygame.mixer.music.unload()
-                        pygame.mixer.music.load('Game_sounds/Title_music.wav')
-                        pygame.mixer.music.play(-1)
-                        pygame.mixer.music.set_volume(0.3)
+                        return
 
     # Loads the "rounds" screen
     def loadRounds(self, round_num):
         # Font settings
-        font = pygame.font.Font(None, 36)
         self.screen.fill((0, 0, 0))
 
         # Draw the background screen with the round number text TODO tomorrow
         overlay = pygame.Surface((self.WIDTH, self.HEIGHT), pygame.SRCALPHA)
         overlay.fill((0, 0, 0, 128))
-        img_bg = pygame.image.load('Images/sky_palace.jpg')
+        img_bg = pygame.image.load('Images/zeus_statue1.png')
         img_bg = pygame.transform.scale(img_bg, (self.WIDTH, self.HEIGHT))
 
-        img_round = pygame.image.load(f'Images/round_{round_num}.png')
-        img_round = pygame.transform.scale(img_round, (img_round.get_width() * 3, img_round.get_height() * 3))
-
-        img_center = (self.WIDTH/2-550, self.HEIGHT/2-330)
+        #img_round = pygame.image.load(f'Images/round_{round_num}.png')
+        #img_round = pygame.transform.scale(img_round, (img_round.get_width() * 3, img_round.get_height() * 3))
+        #img_center = (self.WIDTH/2-550, self.HEIGHT/2-330)
 
         self.screen.blit(img_bg, (0, 0))
-        self.screen.blit(img_round, img_center)
+        #self.screen.blit(img_round, img_center)
+
+        # Create round num text
+        text_color = (249, 229, 172)
+        text = 'Round ' + str(round_num)
+        self.create_text(self.screen, text, 50, text_color, (self.WIDTH - 280), (self.HEIGHT + 250))  # surface, text, font_size, location_x, location_y
 
         # Update the display
         pygame.display.flip()
@@ -259,7 +275,7 @@ class Game():
         pygame.mixer.music.play(-1)
         pygame.mixer.music.set_volume(0.3)
 
-        # Font settings
+        # Loads the round screen
         if self.is_freeplay == False:   
             self.loadRounds(round_num)
 
@@ -271,21 +287,23 @@ class Game():
 
             # checks if a fighter has no hp and restarts the game if that's the case
             if fighter_1.health <= 0 or fighter_2.health <= 0:
-                round_num += 1
-                if fighter_1.health <= 0:
-                    self.f2_wins += 1     # fighter 2 earns a round
+                if self.is_freeplay == False: 
+                    round_num += 1
+                    if fighter_1.health <= 0:
+                        self.f2_wins += 1     # fighter 2 earns a round
 
-                    if self.f2_wins == 3:
-                        round_num = 1
-                        self.win_screen(self.p2_character) # if fighter 2 wins three rounds, end game
+                        if self.f2_wins == 3:
+                            round_num = 1
+                            self.win_screen(self.p2_character) # if fighter 2 wins three rounds, end game
+                            return
 
-                else:
-                    self.f1_wins += 1     # fighter 1 earns a round
+                    else:
+                        self.f1_wins += 1     # fighter 1 earns a round
 
-                    if self.f1_wins == 3:
-                        round_num = 1
-                        self.win_screen(self.p1_character) # if fighter 1 wins three rounds, end game
-
+                        if self.f1_wins == 3:
+                            round_num = 3
+                            self.win_screen(self.p1_character) # if fighter 1 wins three rounds, end game
+                            return
 
                 pygame.time.wait(1500)
                 self.runGame(round_num)

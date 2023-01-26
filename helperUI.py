@@ -1,6 +1,6 @@
 """
 Gods of Olympus
-Last Modified: 1/24/23
+Last Modified: 1/25/23
 Course: CS269
 File: helperUI.py
 """
@@ -18,17 +18,17 @@ class helperUI():
 
     # Creates text at the given location
     def create_text(self, surface, text, font_size, location_x, location_y):
-
-        text_bg_color = (109, 225, 255)
-        text_color = (0, 201, 255)
+        color = (0, 201, 255)
 
         font = pygame.font.Font('freesansbold.ttf', font_size)
-        text = font.render(text, True, text_color, text_bg_color)
+        text = font.render(text, True, color)
         textRect = text.get_rect()
         
         # Set text position & blit text
         textRect.center = (location_x / 2, location_y / 2)
         surface.blit(text, textRect)
+
+        return text
 
     # Brings up controls gui
     def initialize_control_gui(self):
@@ -109,7 +109,7 @@ class helperUI():
         self.window_surface.blit(contr_surface, (self.x / 4 + border_size - surface_extension, self.y / 32 + border_size))
 
     # Initializes setting gui
-    def initialize_settings_gui(self, in_game, all_buttons, all_managers):
+    def initialize_settings_gui(self, in_game, all_buttons, all_managers, all_text, all_text_rect):
 
         border_size = 3
         size_x = self.x / 3 - (border_size * 2)
@@ -135,12 +135,20 @@ class helperUI():
         # Initializes buttons if needed
         if len(all_buttons) <= all_buttons_min_length:  # If list does not have resume & quit button
             resume_manager = pygame_gui.UIManager((self.x, self.y), 'sky_theme.json')
-            resume_button = pygame_gui.elements.UIButton(pygame.Rect((self.x / 3 + 20, self.y / 3 + 60), (190, 90)), text = 'Resume', manager = resume_manager)
+            resume_button = pygame_gui.elements.UIButton(pygame.Rect((self.x / 3 + 20, self.y / 3 + 60), (190, 90)), text = '', manager = resume_manager)   # resume text
+            resume_text = self.create_text(sett_surface, "Resume", 24, 0, 0)
+            resume_rect = resume_text.get_rect(center=(self.x / 3 + 112, self.y / 3 + 105))
+            all_text.append(resume_text)
+            all_text_rect.append(resume_rect)
             all_managers.append(resume_manager)
             all_buttons.append(resume_button)
 
             exit_manager = pygame_gui.UIManager((self.x, self.y), 'sky_theme.json')
-            exit_button = pygame_gui.elements.UIButton(pygame.Rect((self.x / 3 + 225, self.y / 3 + 60), (190, 90)), text = 'Exit', manager = exit_manager)
+            exit_button = pygame_gui.elements.UIButton(pygame.Rect((self.x / 3 + 225, self.y / 3 + 60), (190, 90)), text = '', manager = exit_manager)  # exit text
+            exit_text = self.create_text(sett_surface, "Exit", 24, 0, 0)
+            exit_rect = exit_text.get_rect(center=(self.x / 3 + 318, self.y / 3 + 105))
+            all_text.append(exit_text)
+            all_text_rect.append(exit_rect)
             all_managers.append(exit_manager)
             all_buttons.append(exit_button)
 
