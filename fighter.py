@@ -44,6 +44,21 @@ class Fighter():
         self.action = 0
         self.cooldown_time = 100 # cannot attack again within 0.1 seconds
 
+        self.total_time = 0
+        self.damage_multiplier = 1
+
+    def change_multiplier(self):
+        if self.get_time() - self.total_time >= 60000 and self.get_time() - self.total_time < 80000:
+            self.damage_multiplier = 2
+        elif self.get_time() - self.total_time >= 80000:
+            self.damage_multiplier = 3
+
+    def get_time(self):
+        return self.update_time
+
+    def reset_time(self):
+        self.total_time += self.update_time
+        self.update_time = pygame.time.get_ticks()
 
     def move(self, WIDTH, HEIGHT, target, surface, ledges):
         SPEED = 10
@@ -76,22 +91,21 @@ class Fighter():
                 if key[pygame.K_c] or key[pygame.K_v] or key[pygame.K_b] or key[pygame.K_q]:
                     if self.attack_clock.tick() > self.cooldown_time:
                         self.attacking = True
-                        if key[pygame.K_c]:
+                        if key[pygame.K_v]:
                             self.attack_type = 1
                             self.action = 4
                             self.frame_index = 0
                             self.update_time = pygame.time.get_ticks()
                             self.attack_timer = pygame.time.get_ticks()
                             self.attack(surface, target, self.attack_type)
-
-                        if key[pygame.K_v]:
+                        if key[pygame.K_b]:
                             self.attack_type = 2
                             self.action = 6
                             self.frame_index = 0
                             self.attack_timer = pygame.time.get_ticks()
                             self.update_time = pygame.time.get_ticks()
                             self.attack(surface, target, self.attack_type)
-                        if key[pygame.K_b]:
+                        if key[pygame.K_c]:
                             self.action = 10
                             self.frame_index = 0
                             self.update_time = pygame.time.get_ticks()
