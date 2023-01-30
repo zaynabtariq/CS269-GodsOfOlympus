@@ -1,6 +1,6 @@
 """
 Gods of Olympus
-Last Modified: 1/25/23
+Last Modified: 1/30/23
 Course: CS269
 File: Game.py
 """
@@ -47,7 +47,6 @@ class Game():
         #define fighter variables
         self.ledges = self.map.draw_ledges()
 
-        #test
 
     # Creates text at the given location
     def create_text(self, surface, text, font_size, color, location_x, location_y):
@@ -93,7 +92,7 @@ class Game():
         all_text_rect = []
         self.helper_ui.initialize_settings_gui(True, buttons, managers, all_text, all_text_rect)
 
-        # Update display
+        # Updates display
         pygame.display.update()
         
         while self.is_running:
@@ -117,22 +116,21 @@ class Game():
                     elif event.ui_element == buttons[1]:    # Exit button
                         print('Exiting game...')
                         self.return_to_menu = True  # Return to menu
-                        # TODO music
                         pygame.mixer.music.unload()
                         pygame.mixer.music.load('Game_sounds/Title_music.wav')
                         pygame.mixer.music.play(-1)
                         pygame.mixer.music.set_volume(0.3)
                         return
                     
-                # Update events (button hovering or clicking)
+                # Updates events (button hovering or clicking)
                 for manager in managers:
                     manager.process_events(event)
                     manager.update(time_delta)
             
-            # Update screen
+            # Updates screen
             self.helper_ui.initialize_settings_gui(True, buttons, managers, all_text, all_text_rect)
 
-            # Draw buttons
+            # Draws buttons
             for manager in managers:
                 manager.draw_ui(self.screen)
 
@@ -147,17 +145,17 @@ class Game():
     # Displays the win screen when game is over
     def win_screen(self, winner):
 
-        # Stop the game loop
+        # Stops the game loop
         self.is_running = False
 
-        # Make background semi-transparent
+        # Makes background semi-transparent
         transparent_surface = pygame.Surface((self.WIDTH, self.HEIGHT))
         transparent_surface.set_alpha(220)
         dark_screen = pygame.Rect(0, 0, self.WIDTH, self.HEIGHT)
         pygame.draw.rect(transparent_surface, (0, 0, 0), dark_screen)
         self.screen.blit(transparent_surface, (0, 0))
 
-        # Determine winning character
+        # Determines winning character
         if winner == 1:
             winning_character = 'zeus'
         elif winner == 2:
@@ -165,7 +163,7 @@ class Game():
         elif winner == 3:
             winning_character = 'poseidon'
 
-        # Display the winner name
+        # Displays the winner name
         font = pygame.font.Font('freesansbold.ttf', 60)
         text = font.render(winning_character.capitalize() + " wins!", True, (255, 255, 255))
         text_rect = text.get_rect(center=(self.WIDTH / 2, self.HEIGHT / 2))
@@ -175,7 +173,7 @@ class Game():
         winner_img = pygame.transform.scale(winner_img, (winner_img.get_width() * 2, winner_img.get_height() * 2))
         self.screen.blit(winner_img, (self.WIDTH/2-190, self.HEIGHT/2 - 370))
 
-        # Create text
+        # Creates text for buttons used in win screen
         font = pygame.font.Font('freesansbold.ttf', 36)
         play_again_text = font.render("Play Again", True, (109, 225, 255))
         play_again_rect = play_again_text.get_rect(center=(self.WIDTH / 2, self.HEIGHT / 2 + 80))
@@ -188,7 +186,7 @@ class Game():
 
         pygame.display.update()
 
-        # Wait for user input
+        # Waits for user input
         waiting = True
         while waiting:
             for event in pygame.event.get():
@@ -221,36 +219,31 @@ class Game():
         # Font settings
         self.screen.fill((0, 0, 0))
 
-        # Draw the background screen with the round number text TODO tomorrow
+        # Draws the background screen with the round number text TODO tomorrow
         overlay = pygame.Surface((self.WIDTH, self.HEIGHT), pygame.SRCALPHA)
         overlay.fill((0, 0, 0, 128))
         img_bg = pygame.image.load('Images/zeus_statue1.png')
         img_bg = pygame.transform.scale(img_bg, (self.WIDTH, self.HEIGHT))
 
-        #img_round = pygame.image.load(f'Images/round_{round_num}.png')
-        #img_round = pygame.transform.scale(img_round, (img_round.get_width() * 3, img_round.get_height() * 3))
-        #img_center = (self.WIDTH/2-550, self.HEIGHT/2-330)
-
         self.screen.blit(img_bg, (0, 0))
-        #self.screen.blit(img_round, img_center)
 
-        # Create round num text
+        # Creates round number text
         text_color = (249, 229, 172)
         text = 'Round ' + str(round_num)
         self.create_text(self.screen, text, 50, text_color, (self.WIDTH - 280), (self.HEIGHT + 250))  # surface, text, font_size, location_x, location_y
 
-        # Update the display
+        # Updates the display
         pygame.display.flip()
 
-        # Wait 2 seconds before continuing
+        # Waits 2 seconds before continuing
         pygame.time.wait(2000)
 
-        # Remove the semi-transparent screen
+        # Removes the semi-transparent screen
         self.screen.fill((0, 0, 0))
 
     # Runs the game
     def runGame(self, round_num):
-        # starting location of fighters
+        # Sets starting location of fighters
         if self.p1_character == 1:
             fighter_1 = Zeus(1, 0, self.HEIGHT - 200, self.ledges, self.screen)
         elif self.p1_character == 2:
@@ -271,7 +264,7 @@ class Game():
         # Sets screen header
         pygame.display.set_caption("Gods of Olympus")
 
-        # Load music
+        # Loads music
         pygame.mixer.music.unload()
         pygame.mixer.music.load('Game_sounds/Background_music.wav')
         pygame.mixer.music.play(-1)
@@ -281,11 +274,14 @@ class Game():
         if self.is_freeplay == False:   
             self.loadRounds(round_num)
 
-        # game looper
+        # Game looper
         while True:
+            
+            # Increases damage multiplier depending on time (60s and 80s)
             fighter_1.change_multiplier()
             fighter_2.change_multiplier()
             
+            # Resets the fighter hp before the new round starts (used to prevent error which made the game winner start with 1 round)
             if self.idk:
                 fighter_1.health = 100
                 fighter_2.health = 100
@@ -296,7 +292,7 @@ class Game():
             if self.return_to_menu:
                 return
 
-            # checks if a fighter has no hp and restarts the game if that's the case
+            # Checks if a fighter has no hp and restarts the game if that's the case
             if fighter_1.health <= 0 or fighter_2.health <= 0:
                 if self.is_freeplay == False: 
                     round_num += 1
@@ -306,9 +302,9 @@ class Game():
                     if fighter_1.health <= 0:
                         self.f2_wins += 1     # fighter 2 earns a round
 
-                        if self.f2_wins == 3:
+                        if self.f2_wins == 3:       # if fighter 2 wins three rounds, end game
                             round_num = 1
-                            self.win_screen(self.p2_character) # if fighter 2 wins three rounds, end game
+                            self.win_screen(self.p2_character) 
                             if self.is_freeplay == False:
                                 self.loadRounds(round_num)
                             return
@@ -316,9 +312,9 @@ class Game():
                     else:
                         self.f1_wins += 1     # fighter 1 earns a round
 
-                        if self.f1_wins == 3:
+                        if self.f1_wins == 3:       # if fighter 1 wins three rounds, end game
                             round_num = 1
-                            self.win_screen(self.p1_character) # if fighter 1 wins three rounds, end game
+                            self.win_screen(self.p1_character) 
                             if self.is_freeplay == False:
                                 self.loadRounds(round_num)
                             return
@@ -328,18 +324,19 @@ class Game():
                 pygame.time.wait(1500)
                 self.runGame(round_num)
 
-            # draw background
+            # Draws background
             self.map.draw_bg()
             self.ledges = self.map.draw_ledges()
 
-            # move fighters
+            # Moves fighters
             fighter_1.move(self.WIDTH, self.HEIGHT, fighter_2, self.screen, self.ledges)
             fighter_2.move(self.WIDTH, self.HEIGHT, fighter_1, self.screen, self.ledges)
 
-            # draw fighters
+            # Draws fighters
             fighter_1.update(fighter_2)
             fighter_2.update(fighter_1)
 
+            # TODO What's the purpose?
             if self.p1_character == 3:
                 fighter_2.draw(self.screen)
                 fighter_1.draw(self.screen)
@@ -347,7 +344,7 @@ class Game():
                 fighter_1.draw(self.screen)
                 fighter_2.draw(self.screen)
 
-            # draw hp bar for fighters
+            # Draws hp bar for fighters
             self.map.draw_health_bars(fighter_1.health, 'fighter_2')
             self.map.draw_health_bars(fighter_2.health, 'fighter_1')
             self.map.draw_score_icons(self.p1_character, self.p2_character) # draw icons of idols
@@ -356,7 +353,7 @@ class Game():
             if self.is_freeplay == False:   
                 self.map.draw_stats(self.f1_wins, self.f2_wins)
 
-            # allows player to exit
+            # Allows player to exit or pause
             key = pygame.key.get_pressed() 
             for event in pygame.event.get():
                 if event.type == QUIT:  # Quits game
@@ -365,6 +362,6 @@ class Game():
                 if key[pygame.K_ESCAPE] or key[pygame.K_p]:     # Pauses game
                     self.pauseGame()
                     
-            # Update display
+            # Updates display
             pygame.display.update()
             self.FramePerSec.tick(self.FPS)
