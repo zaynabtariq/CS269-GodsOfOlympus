@@ -1,6 +1,6 @@
 """
 Gods of Olympus
-Last Modified: 1/20/23 
+Last Modified: 1/30/23 
 Course: CS269
 File: map.py
 """
@@ -18,11 +18,11 @@ class Map():
         self.FPS = FPS
         self.num = num
 
-        # Set screen up
+        # Sets screen up
         self.screen = screen
         # pygame.display.set_caption("Gods of Olympus")
 
-        # Load background
+        # Loads background
         if self.num == 1:
             self.bg_image = pygame.image.load("Images/skybackground_2.png").convert_alpha()
         elif self.num == 2:
@@ -30,10 +30,6 @@ class Map():
         elif self.num == 3:
             self.bg_image = pygame.image.load("Images/underthesea_bg.png").convert_alpha()
 
-    # colors
-    RED = (255, 0, 0)
-    YELLOW = (255, 255, 0)
-    WHITE = (255, 255, 255)
 
     # width of hp bars
     hp_width = 500
@@ -41,7 +37,7 @@ class Map():
     # scroll indicator
     scroll = 0
 
-    # Draws map ledges
+    # Draws map ledges depending on picked one (1 - Zeus / 2 - Hades / 3 - Poseidon)
     def draw_ledges(self):
          if self.num == 1:
             ledge_1_rect = pygame.Rect((155, self.HEIGHT - 300, 260, 40))  # (left, top), (width, height)
@@ -88,13 +84,13 @@ class Map():
 
             return ledge_1_rect, ledge_2_rect
 
-    # Methods
+    # Draws the background
     def draw_bg(self):
 
         if self.num == 1:
 
             scaled_bg = pygame.transform.scale(self.bg_image, (self.WIDTH, self.HEIGHT))
-            # making the background a scrolling/moving background
+            # Makes the background a scrolling/moving background
             self.screen.fill((0, 0, 0))
             self.screen.blit(scaled_bg, (self.scroll, 0))
             self.screen.blit(scaled_bg, (self.WIDTH + self.scroll, 0))
@@ -112,7 +108,7 @@ class Map():
         if self.num == 2:
 
             scaled_bg = pygame.transform.scale(self.bg_image, (self.WIDTH, self.HEIGHT))
-            # making the background a scrolling/moving background
+            # Makes the background a scrolling/moving background
             self.screen.fill((0, 0, 0))
             self.screen.blit(scaled_bg, (self.scroll, 0))
             self.screen.blit(scaled_bg, (self.WIDTH + self.scroll, 0))
@@ -130,7 +126,7 @@ class Map():
         if self.num == 3:
 
             scaled_bg = pygame.transform.scale(self.bg_image, (self.WIDTH, self.HEIGHT))
-            # making the background a scrolling/moving background
+            # Makes the background a scrolling/moving background
             self.screen.fill((0, 0, 0))
             self.screen.blit(scaled_bg, (self.scroll, 0))
             self.screen.blit(scaled_bg, (self.WIDTH + self.scroll, 0))
@@ -175,26 +171,15 @@ class Map():
         self.screen.blit(fighter2_icon, (1170,30))
 
 
-    # draws health bars
+    # Draws health bars
     def draw_health_bars(self, health, player):
         ratio = health / 100
-        '''pygame.draw.rect(screen, (255, 255, 255), (x -2, y-2, 404, 34))
-        pygame.draw.rect(screen, (255, 0, 0), (x, y, 400, 30))
-        pygame.draw.rect(screen, (255, 255, 0), (x, y, 400 * ratio, 30))'''
-        #scoreboards
         
-        #guarantees ratio won't be negative/zero to avoid error when adding scoreboard
+        # Guarantees ratio won't be negative/zero to avoid error when adding scoreboard
         if ratio <= 0:
             ratio = 1
             
-        if player == 'fighter_2':
-            left_blue_inner = pygame.image.load("Images/left_blue_inner.jpg").convert_alpha()
-            scaled_isb2 = pygame.transform.scale(left_blue_inner, (400, 50))
-            self.screen.blit(scaled_isb2, (150,60))
-            left_green_outer = pygame.image.load("Images/left_green_outer.jpg").convert_alpha()
-            scaled_osb = pygame.transform.scale(left_green_outer, (400 * ratio, 50))
-            self.screen.blit(scaled_osb, (150 + (400 - 400 * ratio),60))
-
+        # Scoreboard
         if player == 'fighter_1':
             right_red_inner = pygame.image.load("Images/right_red_inner.jpg").convert_alpha()
             scaled_isb = pygame.transform.scale(right_red_inner, (400, 50))
@@ -203,11 +188,18 @@ class Map():
             scaled_osb2 = pygame.transform.scale(right_purple_outer, (400 * ratio, 50))
             self.screen.blit(scaled_osb2, (750, 60))
 
+        if player == 'fighter_2':
+            left_blue_inner = pygame.image.load("Images/left_blue_inner.jpg").convert_alpha()
+            scaled_isb2 = pygame.transform.scale(left_blue_inner, (400, 50))
+            self.screen.blit(scaled_isb2, (150,60))
+            left_green_outer = pygame.image.load("Images/left_green_outer.jpg").convert_alpha()
+            scaled_osb = pygame.transform.scale(left_green_outer, (400 * ratio, 50))
+            self.screen.blit(scaled_osb, (150 + (400 - 400 * ratio),60))
 
-    # draws the current score between the two fighters
-    def draw_stats(self, fighter_1_score, fighter_2_score): # screen, fighter_1 rounds won, fighter_2 rounds won
+
+
+    # Draws the current score between the two fighters
+    def draw_stats(self, fighter_1_score, fighter_2_score): 
         scoreboard = pygame.image.load(f'Images/scorecount{fighter_1_score}_{fighter_2_score}.png')
         scoreboard = pygame.transform.scale(scoreboard, (125, 50))
         self.screen.blit(scoreboard, (588, 60))
-
-        # print('Stats shown here')
