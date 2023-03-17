@@ -1,8 +1,9 @@
 """
 Gods of Olympus
-Last Modified: 1/20/23
+Last Modified: 3/17/23
 Course: CS269
 File: fighter.py
+Purpose: Abstract class used to define basic movement and abilities for player characters
 """
 
 import pygame
@@ -47,31 +48,37 @@ class Fighter():
         self.total_time = 0
         self.damage_multiplier = 1
 
+    # increases the damage done by players dependant on how much time has passed (60s & 80s) 
     def change_multiplier(self):
         if self.get_time() - self.total_time >= 60000 and self.get_time() - self.total_time < 80000:
             self.damage_multiplier = 2
         elif self.get_time() - self.total_time >= 80000:
             self.damage_multiplier = 3
 
+    # returns the current time
     def get_time(self):
         return self.update_time
 
+    # increments total time in-game and restarts the update time
     def reset_time(self):
         self.total_time += self.update_time
         self.update_time = pygame.time.get_ticks()
 
+    # defines the basic movement for each player
     def move(self, WIDTH, HEIGHT, target, surface, ledges):
+
         SPEED = 10
         GRAVITY = 1.5
         dx = 0
         dy = 0
-        # get key presses
+
+        # gets key presses
         key = pygame.key.get_pressed()
 
         #movement
         if self.attacking == False and self.alive == True:
 
-            #check player 1 controls
+            # player 1 controls
             if self.player == 1:
                 if key[pygame.K_a]:
                     dx = -SPEED
@@ -121,8 +128,7 @@ class Fighter():
                             self.attack_type = 4
                             self.attack(surface, target, self.attack_type)
 
-            #check player 2 controls
-
+            # player 2 controls
             if self.player == 2:
                 if key[pygame.K_LEFT]:
                     dx = -SPEED
@@ -173,12 +179,12 @@ class Fighter():
                             self.attack_type = 4
                             self.attack(surface, target, self.attack_type)
 
-            # apply gravity
+            # applies gravity
             if self.char.y < HEIGHT - 50:
                 self.vel_y += GRAVITY
                 dy += self.vel_y
 
-            # Zeus passive
+            # Zeus passive (slows down Zeus mid air)
             if self.name == "Zeus" and self.jump == True:
                 if self.player == 1:
                     if key[pygame.K_s]:
@@ -188,9 +194,9 @@ class Fighter():
                         dy /= 7     # slows Zeus down
 
             # ensures the player stays on screen
-            if self.char.centerx + dx < 0:
+            if self.char.centerx + dx < 0:  # sets max ceiling 
                 dx = -self.char.centerx
-            if self.char.centerx + dx > WIDTH:
+            if self.char.centerx + dx > WIDTH: # sets width limitation
                 dx = WIDTH - self.char.centerx
             if self.char.bottom + dy > HEIGHT - 100:  # write - X if there is a floor
                 self.vel_y = 0
@@ -211,8 +217,7 @@ class Fighter():
                         self.action = 8
                     if self.action == 11:
                         self.action = 10
-
-            else:
+            else:   # flips if a char is facing away from the other
                 self.flip = True
                 if self.player == 1:
                     if self.action == 0:
@@ -249,7 +254,7 @@ class Fighter():
             self.char.x += dx
             self.char.y += dy
 
-    #General attack function
+    # general attack function
     def attack(self, surface,  target, type):
         self.attacking = True
         if type == 1:
@@ -264,6 +269,7 @@ class Fighter():
                 # add a timer and make attacking false after 2 secs
             self.attacking = False
 
+    # implements random damage (1-3) for characters
     def random_melee(self):
         attack_damage = random.randint(1, 3)
         return attack_damage
